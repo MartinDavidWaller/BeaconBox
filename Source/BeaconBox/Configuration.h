@@ -11,7 +11,7 @@
 #define WIFI_SSID_SIZE 32
 #define WIFI_PASSWORD_SIZE 64
 //#define CALLSIGN_SIZE 32
-//#define TIMEZONE_SIZE 30
+#define TIMEZONE_SIZE 30
 
 #define IS_EEPROM_VALID(c) ((c->Flags & EEPROM_VALID) == EEPROM_VALID)
 #define CLEAR_EEPROM_VALID(c) (c->Flags = (ConfigurationFlags)((int)c->Flags & ~EEPROM_VALID))
@@ -43,7 +43,7 @@ struct Configuration
   char WiFi_SSID[WIFI_SSID_SIZE + 1];
   char WiFi_Password[WIFI_PASSWORD_SIZE + 1];
   //char Callsign[CALLSIGN_SIZE + 1];
-  //char TimeZone[TIMEZONE_SIZE + 1];
+  char TimeZone[TIMEZONE_SIZE + 1];
   //uint8_t Volume;
   //uint8_t MinutesBetweenAlerts;
   //uint8_t FriendCycleCount;
