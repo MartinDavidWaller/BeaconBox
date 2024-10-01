@@ -14,6 +14,7 @@
 #include "Configuration.h"
 #include "Dump.h"
 #include "LEDChain.h"
+#include "Progress.h"
 
 // Define the working data
 
@@ -123,12 +124,22 @@ void setup() {
   
   dumpConfiguration(&configuration);    
 
+  // Setup the progress LEDs
+
+  progressSetUp();
+  
   // Next start the Access Point
 
   bool accessPointStarted = startAP();
   if (false == accessPointStarted) {
     Serial.println("");
     Serial.println("Failed to start the access point!");
+  }
+  else
+  {
+    // Update the progress LEDs
+    
+    progressAccessPointOpen();
   }
   
 }
@@ -138,6 +149,6 @@ void loop() {
   // put your main code here, to run repeatedly:
 
   delay (5000);
-  ledChainBlinkAll();
+  //ledChainBlinkAll();
 
 }

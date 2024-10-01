@@ -42,3 +42,9 @@ void ledChainBlinkAll() {
   FastLED.show();
   delay(500);
 }
+
+void ledSetIndexColour(int index,CRGB colour)
+{
+  leds[index] = colour;
+  FastLED.show();
+}
