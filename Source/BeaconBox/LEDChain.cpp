@@ -24,13 +24,9 @@ void ledChainSetUp() {
 //
 void ledChainBlinkAll() {
 
-  // There is a better way of doing this but...
-
   // Make all the LEDs white
   
-  for(int i = 0; i < NUM_LEDS; i++) {
-    leds[i] = CRGB::White;
-  }
+  fill_solid(leds, NUM_LEDS, CRGB::White);
 
   // Show and delay
   
@@ -38,10 +34,8 @@ void ledChainBlinkAll() {
   delay(500);
 
   // Make all the LEDs black
-  
-  for(int i = 0; i < NUM_LEDS; i++) {
-    leds[i] = CRGB::Black;
-  }  
+
+  fill_solid(leds, NUM_LEDS, CRGB::Black);
   
   // Show and delay
   

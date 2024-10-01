@@ -1,9 +1,8 @@
 /*
  *  Dump.cpp
  *  
- *  (C) 2019 Martin D. Waller - Martin@The-Wallers.net
- *  
- *  This code is licenced under the GPL.
+ *  Author:   M.D. Waller - G0PJO
+ *  Copyright (c) 2024
  */
 
 #include <HardwareSerial.h>

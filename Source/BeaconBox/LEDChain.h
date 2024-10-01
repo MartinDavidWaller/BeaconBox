@@ -10,7 +10,7 @@
 // The following manifests define the values associated with the LED chain.
 
 #define LED_PIN 14
-#define NUM_LEDS 20
+#define NUM_LEDS 25
 
 // Define routines and functions
 

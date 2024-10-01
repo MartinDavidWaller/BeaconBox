@@ -8,6 +8,7 @@
  #include "Arduino.h"
 
 #include <FastLED.h>
+#include <WiFi.h>
 
 #include "BeaconBox.h"
 #include "Configuration.h"
@@ -17,6 +18,19 @@
 // Define the working data
 
 struct Configuration configuration;               // Configuration object
+
+boolean startAP() {
+
+  #define START_AP_DELAY 1000
+  
+  // Start the Access Point
+  
+  boolean result = WiFi.softAP(PROGRAM_NAME);
+
+  // Return the result
+  
+  return result;
+}  
 
 // This is the setup routine. It all starts here.
 
@@ -45,11 +59,6 @@ void setup() {
   Serial.println("");
   hexDump((char *)&configuration,sizeof(Configuration));
 
-  if (true == checkSumOK)
-    Serial.println("... CheckSum OK");
-  else
-    Serial.println("... CheckSum NOT OK");
-
   // If the checksum is not OK or if the version numbers
   // do not match then we must start again!
 
@@ -60,8 +69,14 @@ void setup() {
 
     // Here the versions don't match or the checksum is wrong or
     // the boot pin is pressed.
-    
-    if (true == checkSumOK) {
+
+    if (false == checkSumOK) {
+      Serial.println("");
+      Serial.println("Invalid checksum.");       
+    }
+    else if ((configuration.MajorVersion != PROGRAM_VERSION_MAJOR) || 
+             (configuration.MinorVersion != PROGRAM_VERSION_MINOR)) {
+
       Serial.println("");
       Serial.println("Different verison numbers.");
       Serial.print("...Found V");
@@ -72,7 +87,11 @@ void setup() {
       Serial.print(PROGRAM_VERSION_MAJOR);
       Serial.print(".");
       Serial.println(PROGRAM_VERSION_MINOR);    
-      Serial.println("");        
+      Serial.println("");              
+    }
+    else {
+      Serial.println("");
+      Serial.println("Reset switch active.");      
     }
       
     // Initialise the configuration data
@@ -81,8 +100,8 @@ void setup() {
     configuration.MajorVersion = PROGRAM_VERSION_MAJOR;
     configuration.MinorVersion = PROGRAM_VERSION_MINOR;
     configuration.Flags = CLEAR;
-    SET_LED_ENABLED((&configuration));
-    SET_SOUND_ENABLED((&configuration));
+    //SET_LED_ENABLED((&configuration));
+    //SET_SOUND_ENABLED((&configuration));
     strcpy((char*)&configuration.Hostname[0],PROGRAM_NAME);
     strcpy((char*)&configuration.TimeZone[0],DEFAULT_TIMEZONE);
     //configuration.Volume = DEFAULT_VOLUME;
@@ -96,15 +115,29 @@ void setup() {
     // Write it out
     
     writeConfiguration(&configuration); 
+
+    // Next we need to setup the access point.
   }
 
   // Dump the current configuration
   
   dumpConfiguration(&configuration);    
+
+  // Next start the Access Point
+
+  bool accessPointStarted = startAP();
+  if (false == accessPointStarted) {
+    Serial.println("");
+    Serial.println("Failed to start the access point!");
+  }
+  
 }
 
 void loop() {
   
   // put your main code here, to run repeatedly:
+
+  delay (5000);
+  ledChainBlinkAll();
 
 }

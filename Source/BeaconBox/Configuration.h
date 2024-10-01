@@ -13,23 +13,23 @@
 //#define CALLSIGN_SIZE 32
 #define TIMEZONE_SIZE 30
 
-#define IS_EEPROM_VALID(c) ((c->Flags & EEPROM_VALID) == EEPROM_VALID)
-#define CLEAR_EEPROM_VALID(c) (c->Flags = (ConfigurationFlags)((int)c->Flags & ~EEPROM_VALID))
-#define SET_EEPROM_VALID(c) (c->Flags = (ConfigurationFlags)((int)c->Flags | EEPROM_VALID))
+//#define IS_EEPROM_VALID(c) ((c->Flags & EEPROM_VALID) == EEPROM_VALID)
+//#define CLEAR_EEPROM_VALID(c) (c->Flags = (ConfigurationFlags)((int)c->Flags & ~EEPROM_VALID))
+//#define SET_EEPROM_VALID(c) (c->Flags = (ConfigurationFlags)((int)c->Flags | EEPROM_VALID))
 
-#define IS_SOUND_ENABLED(c) ((c->Flags & SOUND_ENABLED) == SOUND_ENABLED)
-#define CLEAR_SOUND_ENABLED(c) (c->Flags = (ConfigurationFlags)((int)c->Flags & ~SOUND_ENABLED))
-#define SET_SOUND_ENABLED(c) (c->Flags = (ConfigurationFlags)((int)c->Flags | SOUND_ENABLED))
+//#define IS_SOUND_ENABLED(c) ((c->Flags & SOUND_ENABLED) == SOUND_ENABLED)
+//#define CLEAR_SOUND_ENABLED(c) (c->Flags = (ConfigurationFlags)((int)c->Flags & ~SOUND_ENABLED))
+//#define SET_SOUND_ENABLED(c) (c->Flags = (ConfigurationFlags)((int)c->Flags | SOUND_ENABLED))
 
-#define IS_LED_ENABLED(c) ((c->Flags & LED_ENABLED) == LED_ENABLED)
-#define CLEAR_LED_ENABLED(c) (c->Flags = (ConfigurationFlags)((int)c->Flags & ~LED_ENABLED))
-#define SET_LED_ENABLED(c) (c->Flags = (ConfigurationFlags)((int)c->Flags | LED_ENABLED))
+//#define IS_LED_ENABLED(c) ((c->Flags & LED_ENABLED) == LED_ENABLED)
+//#define CLEAR_LED_ENABLED(c) (c->Flags = (ConfigurationFlags)((int)c->Flags & ~LED_ENABLED))
+//#define SET_LED_ENABLED(c) (c->Flags = (ConfigurationFlags)((int)c->Flags | LED_ENABLED))
 
 typedef enum {
   CLEAR = 0,                    // No flags set
-  EEPROM_VALID = 1 << 0,        // EEPROM contains valid friends.
-  SOUND_ENABLED = 1 << 1,       // Sound enabled.
-  LED_ENABLED = 1 << 2          // LED enabled.
+  //EEPROM_VALID = 1 << 0,        // EEPROM contains valid friends.
+  //SOUND_ENABLED = 1 << 1,       // Sound enabled.
+  //LED_ENABLED = 1 << 2          // LED enabled.
 } ConfigurationFlags;
 
 // The configuration structure holds the basic configuration data.
