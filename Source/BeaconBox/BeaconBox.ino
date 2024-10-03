@@ -8,6 +8,7 @@
  #include "Arduino.h"
 
 #include <FastLED.h>
+#include "SPIFFS.h"
 #include <WiFi.h>
 
 #include "BeaconBox.h"
@@ -15,10 +16,23 @@
 #include "Dump.h"
 #include "LEDChain.h"
 #include "Progress.h"
+#include "WebServer.h"
+
+// The following manifests are used to control the active state
+
+typedef enum {
+  
+  //STATE_BUILDING_ACCESS_POINT,
+  STATE_CONNECTING_TO_WIFI,
+  STATE_CONNECTING_TO_REVERSE_BEACON_NETWORK,
+  STATE_RECIEVING_RBN_DATA
+  
+} RUNNING_STATE;
 
 // Define the working data
 
 struct Configuration configuration;               // Configuration object
+RUNNING_STATE currentState;                       // Current running state
 
 boolean startAP() {
 
@@ -124,6 +138,38 @@ void setup() {
   
   dumpConfiguration(&configuration);    
 
+  // We are going to need access to the files stored so start up SPIFFS
+  // and list out what we have.
+
+  Serial.println("");
+  Serial.println("Contents of SPIFFS:");
+  Serial.println("");
+
+  if(false == SPIFFS.begin(true)) {
+    Serial.println("SPIFFS Mount Failed");
+    return;
+  }
+  
+  // Open the root object
+  
+  File root = SPIFFS.open("/");
+
+  // Loop through the files
+  
+  File file = root.openNextFile();
+  while (file) {
+    if (true == file.isDirectory()) {
+      Serial.print("  DIR : ");
+      Serial.println(file.name());    
+    } else {
+      Serial.printf("  FILE: %s %d\n", file.name(), file.size());
+    }
+
+    // Move to the next file
+    
+    file = root.openNextFile();
+  }  
+
   // Setup the progress LEDs
 
   progressSetUp();
@@ -137,18 +183,109 @@ void setup() {
   }
   else
   {
+    // Display the local IP address
+    
+    IPAddress ipAddress = WiFi.softAPIP();
+    Serial.printf("\nLocal Access Point IP: http://%s\n",ipAddress.toString().c_str());
+        
     // Update the progress LEDs
     
     progressAccessPointOpen();
   }
+
+  // Next setup the Web Server
+
+  webServerSetUp();
+
+  // Set the current state
+
+  currentState = STATE_CONNECTING_TO_WIFI;  
+}
+
+void connectToWiFi() {
   
+  // We are about to connect to the WiFi. We need to ensure that we
+  // have the necessary data to try.
+
+  if (0 == strlen((char *)&configuration.WiFi_SSID[0])) {
+
+    // We don't currently have a SSID, we need to comminicate this to the
+    // end user somehow!
+  }
+  else {
+
+    // We have a SSID, etc try to make the connection
+
+    // Disconnect anything that we may have
+
+    WiFi.disconnect();
+
+    // Apply any hostname that we may have. If we done have one then we
+    // can default it to the program name
+
+    Serial.printf("\nSetting hostname: %s\n",(char *)&configuration.Hostname[0]);
+    if (strlen((char *)&configuration.Hostname[0]) > 0)
+      WiFi.setHostname((char *)&configuration.Hostname[0]);
+    else
+      WiFi.setHostname(PROGRAM_NAME);    
+        
+    // Begin the connection
+  
+    WiFi.begin((char *)&configuration.WiFi_SSID[0],(char *)&configuration.WiFi_Password[0]);
+
+    // Disable sleep
+  
+    WiFi.setSleep(false);
+    
+    // Wait for the connection to be made.
+
+    int maxTry = 10;
+    while ((WiFi.status() != WL_CONNECTED) && (maxTry > 0)) {
+
+      // Wait and update the try count.
+
+      delay(1000);
+      maxTry--;
+    }
+
+    // Did we manage to connect?
+
+    if (WiFi.status() != WL_CONNECTED) {
+
+      // Here the connection has failed
+
+       Serial.printf("\nConnected to WiFi failed!\n");
+    }
+    else {
+
+      // Here we are connected to the WiFi
+
+      IPAddress ipAddress = WiFi.localIP();
+
+      Serial.printf("\nConnected to WiFi: http://%s\n",ipAddress.toString().c_str()); 
+      
+      // Kick off a WiFi Scan, we may need the SSID list later.
+
+      WiFi.scanNetworks(true);
+
+      // Move to the next state
+          
+      currentState = STATE_CONNECTING_TO_REVERSE_BEACON_NETWORK;
+    }
+  }
 }
 
 void loop() {
   
-  // put your main code here, to run repeatedly:
+  // What we do here depend on what state we are in.
 
-  delay (5000);
-  //ledChainBlinkAll();
+  switch(currentState) {
 
+    case STATE_CONNECTING_TO_WIFI:
+
+      // Make the connection to the WiFi
+      
+      connectToWiFi();
+      break;
+  }
 }

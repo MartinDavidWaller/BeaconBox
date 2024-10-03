@@ -45,7 +45,7 @@ void dumpConfiguration(struct Configuration *configuration)
   Serial.printf("   Hostname: ............... %s\n",configuration->Hostname);
   Serial.printf("   WiFi_SSID: .............. %s\n",configuration->WiFi_SSID);
   Serial.printf("   WiFi_Password: .......... %s\n",configuration->WiFi_Password);
-  //Serial.printf("   Callsign: ................ %s\n",configuration->Callsign);
+  Serial.printf("   Callsign: ................ %s\n",configuration->Callsign);
   Serial.printf("   TimeZone: ............... %s\n",configuration->TimeZone);
   //Serial.printf("   Volume: .................. %d\n",configuration->Volume);
   //Serial.printf("   Minutes Between Alerts: .. %d\n",configuration->MinutesBetweenAlerts);
