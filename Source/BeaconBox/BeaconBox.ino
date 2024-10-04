@@ -4,7 +4,14 @@
  *  Author:   M.D. Waller - G0PJO
  *  Copyright (c) 2024
  */
- 
+
+ /*
+  * Issues:
+  * 
+  * When returning SSIDs we need to provide a proper name without spaces etc so the load of the options works? Or
+  * at least that's what I think is making it fail.
+  */
+  
  #include "Arduino.h"
 
 #include <FastLED.h>
@@ -16,6 +23,7 @@
 #include "Dump.h"
 #include "LEDChain.h"
 #include "Progress.h"
+#include "RBNClient.h"
 #include "WebServer.h"
 
 // The following manifests are used to control the active state
@@ -216,9 +224,13 @@ void connectToWiFi() {
 
     // We have a SSID, etc try to make the connection
 
-    // Disconnect anything that we may have
-
-    WiFi.disconnect();
+    /*
+     * If you do disconnect here then the user is thrown off the access point.
+     * 
+     * Disconnect anything that we may have
+     *
+     * WiFi.disconnect();
+     */
 
     // Apply any hostname that we may have. If we done have one then we
     // can default it to the program name
@@ -287,5 +299,56 @@ void loop() {
       
       connectToWiFi();
       break;
+
+    case STATE_CONNECTING_TO_REVERSE_BEACON_NETWORK:
+
+      // Make sure that we are connected to the WiFi
+
+      if (WiFi.status() != WL_CONNECTED)
+      {
+        // Revert to connecting to the WiFi
+        
+        currentState = STATE_CONNECTING_TO_WIFI;
+      }
+      else
+      {
+        // Try connecting to the Reverse Beacon Network
+
+        bool connected = rbnClientConnect(REVERSE_BEACON_NETWORK_ADDRESS, REVERSE_BEACON_NETWORK_PORT);
+
+        if (true == connected) {
+
+          Serial.printf("\nConnected to RBN %s:%d\n",REVERSE_BEACON_NETWORK_ADDRESS, REVERSE_BEACON_NETWORK_PORT); 
+
+          // Update the current state to receiving RBN data
+        
+          currentState = STATE_RECIEVING_RBN_DATA;          
+        }
+        else {
+
+          // Not connected
+
+           Serial.printf("\nFailed to connect to RBN %s:%d\n",REVERSE_BEACON_NETWORK_ADDRESS, REVERSE_BEACON_NETWORK_PORT); 
+        }
+      }
+        
+      break;    
+
+    case STATE_RECIEVING_RBN_DATA:
+
+      // Process any data that we have
+      
+      bool stillConnected = rbnClientProcessData((char*)&configuration.Callsign[0]);
+
+      // Are we still connected?
+
+      if (false == stillConnected) {
+
+        // No, update the state
+
+        currentState = STATE_CONNECTING_TO_REVERSE_BEACON_NETWORK;
+      }
+            
+      break;        
   }
 }
