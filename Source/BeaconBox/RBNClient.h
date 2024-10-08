@@ -12,8 +12,9 @@
 //
 // DX de K3LR-#:    14042.0  GB2RN          CW    12 dB  18 WPM  CQ      1350Z
 
+#define RBN_SPOTTER 2
 #define RBN_FREQUENCY 3
-#define RBN_CALLSIGN 4
+#define RBN_SPOTTED 4
 #define RBN_MODE 5
 #define RBN_SPEED 8
 #define RBN_SPEED_UNITS 9

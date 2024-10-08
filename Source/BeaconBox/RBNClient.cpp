@@ -7,6 +7,7 @@
 
 #include "Arduino.h"
 #include <WiFi.h>
+#include "Beacons.h"
 #include "RBNClient.h"
 #include "StringHelper.h"
 
@@ -66,7 +67,7 @@ bool rbnClientProcessData(char *callsign) {
           break;
       }
 
-      Serial.write(rbnLineBuffer);
+      //Serial.write(rbnLineBuffer);
           
       // Do we have something worth processing
           
@@ -96,6 +97,13 @@ bool rbnClientProcessData(char *callsign) {
               
           if ((n == 12) || (n == 13)) {
 
+            // We have a valid RBN spot, pass it on for processing
+
+            beaconsSpotted(
+              parts[RBN_SPOTTER],
+              parts[RBN_SPOTTED],
+              atof(parts[RBN_FREQUENCY]));
+            
             // Update the callsign count
                 
             //runtimeData.SpotsSeen++;
