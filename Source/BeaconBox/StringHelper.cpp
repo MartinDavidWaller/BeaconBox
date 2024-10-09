@@ -104,7 +104,7 @@ int SplitStringOnSpace(const char *stringToSplit, char **partsBuffer[])
       }
       else {
 
-        // This is now space so we can simply copy it to the output buffer
+        // This is not a space so we can simply copy it to the output buffer
 
         if (ci < MAX_PART_LENGTH) {
           parts[retVal][ci++] = *p;
@@ -120,6 +120,8 @@ int SplitStringOnSpace(const char *stringToSplit, char **partsBuffer[])
 
   if (0 != retVal)
     retVal++;
+  else
+    retVal = 1;
 
   return retVal;
 }

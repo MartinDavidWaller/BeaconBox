@@ -19,6 +19,7 @@
 #include <WiFi.h>
 
 #include "BeaconBox.h"
+#include "Beacons.h"
 #include "Configuration.h"
 #include "Dump.h"
 #include "LEDChain.h"
@@ -127,6 +128,7 @@ void setup() {
     //SET_SOUND_ENABLED((&configuration));
     strcpy((char*)&configuration.Hostname[0],PROGRAM_NAME);
     strcpy((char*)&configuration.TimeZone[0],DEFAULT_TIMEZONE);
+    strcpy((char*)&configuration.SpotterWildcards[0],DEFAULT_SPOTTER_WILDCARDS);
     //configuration.Volume = DEFAULT_VOLUME;
     //configuration.MinutesBetweenAlerts = DEFAULT_MINUTES_BETWEEN_ALERTS;
     //configuration.FriendCycleCount = DEFAULT_FRIEND_CYCLE_COUNT;
@@ -200,6 +202,10 @@ void setup() {
     
     progressAccessPointOpen();
   }
+
+  // Setup the beacons
+
+  beaconsSetUp(&configuration.SpotterWildcards[0]);
 
   // Next setup the Web Server
 

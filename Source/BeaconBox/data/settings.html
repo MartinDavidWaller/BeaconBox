@@ -27,24 +27,12 @@
         			$("#ssidInput").val(settingsData.getAttribute("WiFiSSID"));
         			$("#passwordInput").val(settingsData.getAttribute("WiFiPassword"));
         			$("#callsignInput").val(settingsData.getAttribute("Callsign"));
+        			$("#spotterWildcardsInput").val(settingsData.getAttribute("SpotterWildcards"));
 
     			}).fail(function (jqXHR, textStatus) {
 
         			alert("Contact with host lost! " + textStatus);
     			});
-			}
-
-			/*
-			// This method is called when the Listen button is clicked. Here
-			// we simply ask the server to play the sound.
-			*/
-			function doListenWithVolume() {
-
-				// Play the sound
-
-        		$.ajax({
-		    		url: "doListenWithVolume?volume=" + $("#volumeInput").val()
-		    	}).done(function (data) { });
 			}
 
         	// At this point the page is running
@@ -137,6 +125,20 @@
                             	    <td>Callsign:</td>
                             	    <td>
                             	        <input type="text" name="callsignInput" id="callsignInput" placeholder="Callsign" minlength="1" maxlength="32" required />
+                            	    </td>
+                            	</tr>
+
+                   	     	</table>
+                  	  	</fieldset>
+
+                    	<fieldset>
+                        	<legend>Spotters</legend>
+
+                        	<table>
+                            	<tr>
+                            	    <td>Spotter Wildcards:</td>
+                            	    <td>
+                            	        <input type="text" name="spotterWildcardsInput" id="spotterWildcardsInput" placeholder="Spotter Wildcards" minlength="1" maxlength="100" required />
                             	    </td>
                             	</tr>
 
