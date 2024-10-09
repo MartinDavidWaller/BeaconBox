@@ -8,6 +8,7 @@
 #include "Arduino.h"
 #include <WiFi.h>
 #include "Beacons.h"
+#include "LEDChain.h"
 #include "RBNClient.h"
 #include "StringHelper.h"
 
@@ -99,10 +100,14 @@ bool rbnClientProcessData(char *callsign) {
 
             // We have a valid RBN spot, pass it on for processing
 
+            ledSetIndexColour(LED_RBN_DATA,CRGB::Green);
+
             beaconsSpotted(
               parts[RBN_SPOTTER],
               parts[RBN_SPOTTED],
               atof(parts[RBN_FREQUENCY]));
+
+            ledSetIndexColour(LED_RBN_DATA,CRGB::Black);
             
             // Update the callsign count
                 

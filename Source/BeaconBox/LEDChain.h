@@ -17,6 +17,7 @@
 #define LED_BEACON_FREQUENCY_21150 2
 #define LED_BEACON_FREQUENCY_24930 3
 #define LED_BEACON_FREQUENCY_28200 4
+#define LED_RBN_DATA 5
 
 // Define routines and functions
 
