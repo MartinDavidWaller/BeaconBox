@@ -22,7 +22,7 @@
 
 #define MAX_NUM_ELEMENTS 10
 #define FREQUENCY_DELTA 10
-#define MAXIMUM_SPOT_COUNT 10
+#define MAXIMUM_SPOT_COUNT 5
 
 #define CALLSIGN_MAX_LENGTH 20
 
@@ -140,10 +140,43 @@ void beaconsSetUp(char *givenSpotterWildcards) {
   }  
 }
 
+void dequeueSpot(struct band *band) {
+
+  // Check if the queue is empty
+  
+  if (band->Front == -1) {
+    return;
+  }
+ 
+    //int data = arr[front];
+    //arr[front] = -1;
+    
+  if (band->Front == band->Rear) {
+    band->Front = -1;
+    band->Rear = -1;
+  }
+  else if (band->Front == MAXIMUM_SPOT_COUNT - 1)
+    band->Front = 0;
+  else
+    band->Front++;
+ 
+  return;
+}
+
 void enqueueSpot(struct band *band, char *spotter) {
 
   // See: https://www.geeksforgeeks.org/introduction-to-circular-queue/
 
+  // Check to see if the queue is full
+
+  if ((band->Front == 0 && band->Rear == MAXIMUM_SPOT_COUNT - 1) ||
+            ((band->Rear + 1) % MAXIMUM_SPOT_COUNT == band->Front))
+    {
+        Serial.printf("enqueueSpot queue full\n");
+
+        dequeueSpot(band);
+    }
+    
   // Update the rear index
 
   band->Rear++;

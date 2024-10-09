@@ -180,6 +180,11 @@ void setup() {
     file = root.openNextFile();
   }  
 
+  // Set the time server
+
+  configTime(0, 0, "pool.ntp.org");
+  setenv("TZ", (char*)&configuration.TimeZone[0],1);
+
   // Setup the progress LEDs
 
   progressSetUp();
