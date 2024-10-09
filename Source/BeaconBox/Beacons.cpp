@@ -161,7 +161,7 @@ void enqueueSpot(struct band *band, char *spotter) {
 
   struct spot *spot = &band->Spots[band->Rear];
 
-  strcpy(spotter,&spot->Spotter[0]);
+  strcpy(&spot->Spotter[0],spotter);
   time(&spot->TimeHeard);
 
   Serial.printf("enqueueSpot %-10s, %s\n", &spot->Spotter[0], FormatTimeAsDateTime(spot->TimeHeard));
