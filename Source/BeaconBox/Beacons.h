@@ -43,6 +43,9 @@
 #define B_ZL6B 16
 #define B_ZS6DN 17
 
+#define B_FIRST B_4S7B
+#define B_LAST B_ZS6DN
+
 #define NUMBER_OF_BEACONS 18
 
 #define F_14100 0
@@ -51,10 +54,14 @@
 #define F_24930 3
 #define F_28200 4
 
+#define F_FIRST F_14100
+#define F_LAST F_28200
+
 #define NUMBER_OF_FREQUENCIES 5
 
  // Define routines and functions
 
 void beaconsSetUp(char *spotterWildcards);
 void beaconsSpotted(char *spotter, char* spotted, double frequency);
+void dumpBeacons();
  

@@ -42,6 +42,7 @@ typedef enum {
 
 struct Configuration configuration;               // Configuration object
 RUNNING_STATE currentState;                       // Current running state
+time_t startUpTime;                               // Startup time
 
 boolean startAP() {
 
@@ -185,6 +186,10 @@ void setup() {
   configTime(0, 0, "pool.ntp.org");
   setenv("TZ", (char*)&configuration.TimeZone[0],1);
 
+  // Set the start time
+
+  time(&startUpTime);
+
   // Setup the progress LEDs
 
   progressSetUp();
@@ -298,7 +303,13 @@ void connectToWiFi() {
   }
 }
 
+time_t lastBeaconDump = -1;
+
 void loop() {
+
+  if (-1 == lastBeaconDump) {
+    time(&lastBeaconDump);
+  }
   
   // What we do here depend on what state we are in.
 
@@ -347,6 +358,17 @@ void loop() {
 
     case STATE_RECIEVING_RBN_DATA:
 
+      // Dump the beacons if we are on time
+
+      time_t timeNow;
+      time(&timeNow);
+      if (timeNow > lastBeaconDump + 60) {
+
+        dumpBeacons();
+
+        time(&lastBeaconDump);
+      }
+      
       // Process any data that we have
       
       bool stillConnected = rbnClientProcessData((char*)&configuration.Callsign[0]);

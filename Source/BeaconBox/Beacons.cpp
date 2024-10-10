@@ -10,6 +10,7 @@
 // https://github.com/wizard97/Embedded_RingBuf_CPP
 
 #include "Arduino.h"
+#include <mutex>
 //include <RingBufCPP.h>
 #include <time.h>
 #include "Beacons.h"
@@ -64,13 +65,13 @@ struct spot {
 };
 
 /*
- * In the band structure we will store a circular buffer of beaconHeard 
+ * In the band structure we will store a circular buffer of spot 
  * structures.
  */
  
 struct band {
-  uint Front = -1;
-  uint Rear = -1;
+  int Front = -1;
+  int Rear = -1;
   struct spot Spots[MAXIMUM_SPOT_COUNT];
 };
 
@@ -85,6 +86,7 @@ struct beacon {
 struct beacon beacons[NUMBER_OF_BEACONS];
 int spotterWildcardsCount = 0;
 char **spotterWildcards;
+SemaphoreHandle_t mutex = xSemaphoreCreateMutex();
 
 void beaconsSetUp(char *givenSpotterWildcards) {
 
@@ -165,6 +167,8 @@ void dequeueSpot(struct band *band) {
 
 void enqueueSpot(struct band *band, char *spotter) {
 
+  xSemaphoreTake(mutex, portMAX_DELAY);
+  
   // See: https://www.geeksforgeeks.org/introduction-to-circular-queue/
 
   // Check to see if the queue is full
@@ -198,6 +202,8 @@ void enqueueSpot(struct band *band, char *spotter) {
   time(&spot->TimeHeard);
 
   Serial.printf("enqueueSpot %-10s, %s\n", &spot->Spotter[0], FormatTimeAsDateTime(spot->TimeHeard));
+
+  xSemaphoreGive(mutex);
 }
 
 void beaconsSpotted(char *spotter, char *spotted, double frequency) {
@@ -280,5 +286,93 @@ void beaconsSpotted(char *spotter, char *spotted, double frequency) {
        break;
     }
   }
+}
+
+char *beaconNames[] = {
+  CS_4S7B,
+  CS_4U1UN,
+  CS_4X6TU,
+  CS_5Z4B,
+  CS_CS3B,
+  CS_JA2IGY,
+  CS_KH6RS,
+  CS_LU4AA,
+  CS_OA4B,
+  CS_OH2B,
+  CS_RR90,
+  CS_VE8AT,
+  CS_VK6RBP,
+  CS_VR2B,
+  CS_W6WX,
+  CS_YV5B,
+  CS_ZL6B,
+  CS_ZS6DN,
+  };
+
+double freqencies[] = {
+  14.100,
+  18.110,
+  21.150,
+  24.930,
+  28.200
+};
+
+void dumpBeacons() {
+
+  xSemaphoreTake(mutex, portMAX_DELAY);
+  
+  Serial.printf("dumpBeacons ******\n");
+
+  // For all the beacons we have
+
+  for(int b = B_FIRST; b <= B_LAST; b++) {
+
+    // For all the frequencies
+
+    for(int f = F_FIRST; f <= F_LAST; f++) {
+
+      // Pull out the band object
+
+      struct band *band = &beacons[b].Bands[f];
+
+      // Do we have any entries in the circular buffer
+
+      if ((-1 != band->Front) && (-1 != band->Rear)) {
+
+        // Ok, we have entries
+
+        Serial.printf("%-10s %f Front %d, Rear %d\n", beaconNames[b], freqencies[f], band->Front, band->Rear);
+
+        int cbi = band->Front;
+        bool loop = true;
+        do {
+          
+          struct spot *spot = &band->Spots[cbi];
+          
+          Serial.printf("........ %-10s %s\n", &spot->Spotter[0], FormatTimeAsDateTime(spot->TimeHeard));
+
+        cbi = (cbi + 1) % MAXIMUM_SPOT_COUNT;
+
+        if (band->Front == band->Rear) {
+
+            // We are done
+
+            loop = false;
+        }
+        else if (band->Front < band->Rear) {
+           
+            loop = cbi <= band->Rear;
+        }
+        else
+        {
+            loop = cbi != band->Rear + 1;
+        }
+          
+        } while (true == loop);
+      }
+    }
+  }
+
+  xSemaphoreGive(mutex); 
 }
  
