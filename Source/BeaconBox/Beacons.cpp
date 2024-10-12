@@ -385,24 +385,24 @@ struct hhh {
 };
 
 int beaconLEDs[] = {
-  LED_VE8AT,
-  LED_KH6RS,
-  LED_W6WX,
+  LED_4S7B,
   LED_4U1UN,
-  LED_CS3B,
-  LED_YV5B,
-  LED_OA4B,
-  LED_LU4AA,
-  LED_ZS6DN,
-  LED_5Z4B,
   LED_4X6TU,
+  LED_5Z4B,
+  LED_CS3B,
+  LED_JA2IGY,
+  LED_KH6RS,
+  LED_LU4AA,
+  LED_OA4B,
   LED_OH2B,
   LED_RR90,
-  LED_4S7B,
-  LED_VR2B,
-  LED_JA2IGY,
+  LED_VE8AT,
   LED_VK6RBP,
-  LED_ZL6B
+  LED_VR2B,
+  LED_W6WX,
+  LED_YV5B,
+  LED_ZL6B,
+  LED_ZS6DN
 };
   
 int activehhh = 0;
@@ -438,7 +438,7 @@ void beaconsStepBeacon() {
 
   for(int b = 0; b < NUMBER_OF_BEACONS; b++) {
 
-    //Serial.printf(".... Beacon %s %f\n", beaconNames[b], freqencies[hhh[activehhh].Band]);
+    Serial.printf(".... Beacon %s %f\n", beaconNames[b], freqencies[hhh[activehhh].Band]);
     
     // Pull out the band that we are interested in
     
@@ -466,9 +466,15 @@ void beaconsStepBeacon() {
 
         struct spot* spot = &band->Spots[cbi];
 
+ Serial.printf("........ %-10s %s\n", &spot->Spotter[0], FormatTimeAsDateTime(spot->TimeHeard));
+
         time_t timeNow;
         time(&timeNow);
+         Serial.printf("........ %s %s\n", FormatTimeAsDateTime(timeNow), FormatTimeAsDateTime(spot->TimeHeard + 60 * 5));
+         
         if (timeNow < spot->TimeHeard + 60 * 5) {
+
+Serial.printf("........ Yes\n");
 
           lightBeacon = true;
           break;
