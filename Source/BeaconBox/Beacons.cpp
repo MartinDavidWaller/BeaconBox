@@ -409,6 +409,10 @@ int activehhh = 0;
 
 void beaconsStepBeacon() {
 
+  xSemaphoreTake(mutex, portMAX_DELAY);
+  
+  Serial.printf("beaconsStepBeacon ******\n");
+  
   // Here we display the active band and then move onto the next
 
   // Turn all the band leds off
@@ -434,7 +438,11 @@ void beaconsStepBeacon() {
 
   for(int b = 0; b < NUMBER_OF_BEACONS; b++) {
 
-    struct band *band = &beacons[b].Bands[activehhh];
+    //Serial.printf(".... Beacon %s %f\n", beaconNames[b], freqencies[hhh[activehhh].Band]);
+    
+    // Pull out the band that we are interested in
+    
+    struct band *band = &beacons[b].Bands[hhh[activehhh].Band];
 
     // Do we have any recent spots?
     
@@ -475,6 +483,7 @@ void beaconsStepBeacon() {
 
           if (true == lightBeacon) {
 
+      Serial.printf(".... Beacon %s %f\n", beaconNames[b], freqencies[hhh[activehhh].Band]);
       ledSetIndexColour(beaconLEDs[b],CRGB::White);
       
     }
@@ -489,5 +498,8 @@ void beaconsStepBeacon() {
   if (activehhh > 4) {
     activehhh = 0;
   }
+
+  
+  xSemaphoreGive(mutex); 
 }
  
