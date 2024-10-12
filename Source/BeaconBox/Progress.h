@@ -13,5 +13,5 @@
 
  // Define routines and functions
 
-void progressSetUp();
-void progressAccessPointOpen();
+//void progressSetUp();
+//void progressAccessPointOpen();

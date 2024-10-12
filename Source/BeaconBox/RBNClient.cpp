@@ -100,14 +100,14 @@ bool rbnClientProcessData(char *callsign) {
 
             // We have a valid RBN spot, pass it on for processing
 
-            ledSetIndexColour(LED_RBN_DATA,CRGB::Green);
+            ledSetIndexColour(LED_MISC_1,CRGB::Green);
 
             beaconsSpotted(
               parts[RBN_SPOTTER],
               parts[RBN_SPOTTED],
               atof(parts[RBN_FREQUENCY]));
 
-            ledSetIndexColour(LED_RBN_DATA,CRGB::Black);
+            ledSetIndexColour(LED_MISC_1,CRGB::Black);
             
             // Update the callsign count
                 

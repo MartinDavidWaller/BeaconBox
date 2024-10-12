@@ -15,6 +15,7 @@
 #include <time.h>
 #include "Beacons.h"
 #include "FormatHelper.h"
+#include "LEDChain.h"
 #include "StringHelper.h"
 
 //include "freertos/FreeRTOS.h"
@@ -343,36 +344,150 @@ void dumpBeacons() {
 
         Serial.printf("%-10s %f Front %d, Rear %d\n", beaconNames[b], freqencies[f], band->Front, band->Rear);
 
-        int cbi = band->Front;
-        bool loop = true;
+        int cbi = -1;
+    
         do {
-          
-          struct spot *spot = &band->Spots[cbi];
-          
+
+          if (-1 == cbi)
+            cbi = band->Front;
+          else
+            cbi = (cbi + 1) % MAXIMUM_SPOT_COUNT;
+
+          // We know that we can display the active entry
+
+          struct spot* spot = &band->Spots[cbi];
+
           Serial.printf("........ %-10s %s\n", &spot->Spotter[0], FormatTimeAsDateTime(spot->TimeHeard));
 
-        cbi = (cbi + 1) % MAXIMUM_SPOT_COUNT;
+          if (band->Front == band->Rear)
+            break;
 
-        if (band->Front == band->Rear) {
-
-            // We are done
-
-            loop = false;
-        }
-        else if (band->Front < band->Rear) {
-           
-            loop = cbi <= band->Rear;
-        }
-        else
-        {
-            loop = cbi != band->Rear + 1;
-        }
-          
-        } while (true == loop);
+        } while (cbi != band->Rear);
       }
     }
   }
 
   xSemaphoreGive(mutex); 
+}
+
+struct hhh {
+
+  int Band;
+  int BandLED;
+  
+} hhh[] = 
+{
+  { F_14100, LED_BEACON_FREQUENCY_14110 },
+  { F_18110, LED_BEACON_FREQUENCY_18110 },
+  { F_21150, LED_BEACON_FREQUENCY_21150 },
+  { F_24930, LED_BEACON_FREQUENCY_24930 },
+  { F_28200, LED_BEACON_FREQUENCY_28200 }
+};
+
+int beaconLEDs[] = {
+  LED_VE8AT,
+  LED_KH6RS,
+  LED_W6WX,
+  LED_4U1UN,
+  LED_CS3B,
+  LED_YV5B,
+  LED_OA4B,
+  LED_LU4AA,
+  LED_ZS6DN,
+  LED_5Z4B,
+  LED_4X6TU,
+  LED_OH2B,
+  LED_RR90,
+  LED_4S7B,
+  LED_VR2B,
+  LED_JA2IGY,
+  LED_VK6RBP,
+  LED_ZL6B
+};
+  
+int activehhh = 0;
+
+void beaconsStepBeacon() {
+
+  // Here we display the active band and then move onto the next
+
+  // Turn all the band leds off
+
+  for(int i = LED_BEACON_FREQUENCY_FIRST; i <= LED_BEACON_FREQUENCY_LAST; i++) {
+    ledSetIndexColour(i,CRGB::Black);
+  }
+
+  // Turn all the beacons leds off
+
+  for(int i = LED_BEACON_FIRST; i <= LED_BEACON_LAST; i++) {
+    ledSetIndexColour(i,CRGB::Black);
+  }
+
+  // Turn the band led on
+
+  ledSetIndexColour(hhh[activehhh].BandLED,CRGB::White);
+
+  // Now we need to loop though the spots associated with the band to see
+  // if we have anthing.
+
+  // Loop through all the beacons
+
+  for(int b = 0; b < NUMBER_OF_BEACONS; b++) {
+
+    struct band *band = &beacons[b].Bands[activehhh];
+
+    // Do we have any recent spots?
+    
+    if ((-1 != band->Front) && (-1 != band->Rear)) {
+
+      // Ok, we have entries
+
+      bool lightBeacon = false;
+        
+
+      int cbi = -1;
+    
+      do {
+
+        if (-1 == cbi)
+          cbi = band->Front;
+        else
+          cbi = (cbi + 1) % MAXIMUM_SPOT_COUNT;
+
+        // We know that we can display the active entry
+
+        struct spot* spot = &band->Spots[cbi];
+
+        time_t timeNow;
+        time(&timeNow);
+        if (timeNow < spot->TimeHeard + 60 * 5) {
+
+          lightBeacon = true;
+          break;
+        }
+      
+        
+
+        if (band->Front == band->Rear)
+          break;
+
+      } while (cbi != band->Rear);
+
+          if (true == lightBeacon) {
+
+      ledSetIndexColour(beaconLEDs[b],CRGB::White);
+      
+    }
+    }
+
+
+  }
+  
+  // Step on to the next band
+
+  activehhh++;
+  if (activehhh > 4) {
+    activehhh = 0;
+  }
 }
  

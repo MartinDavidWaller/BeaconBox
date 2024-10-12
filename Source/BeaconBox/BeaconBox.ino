@@ -192,7 +192,7 @@ void setup() {
 
   // Setup the progress LEDs
 
-  progressSetUp();
+  // ***************** progressSetUp();
   
   // Next start the Access Point
 
@@ -210,7 +210,7 @@ void setup() {
         
     // Update the progress LEDs
     
-    progressAccessPointOpen();
+    // ***************** progressAccessPointOpen();
   }
 
   // Setup the beacons
@@ -362,9 +362,10 @@ void loop() {
 
       time_t timeNow;
       time(&timeNow);
-      if (timeNow > lastBeaconDump + 60) {
+      if (timeNow > lastBeaconDump + 5) {
 
         dumpBeacons();
+        beaconsStepBeacon();
 
         time(&lastBeaconDump);
       }

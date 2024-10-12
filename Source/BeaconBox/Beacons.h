@@ -64,4 +64,5 @@
 void beaconsSetUp(char *spotterWildcards);
 void beaconsSpotted(char *spotter, char* spotted, double frequency);
 void dumpBeacons();
+void beaconsStepBeacon();
  
