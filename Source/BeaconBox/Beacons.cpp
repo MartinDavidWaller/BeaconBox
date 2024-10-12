@@ -411,7 +411,7 @@ void beaconsStepBeacon() {
 
   xSemaphoreTake(mutex, portMAX_DELAY);
   
-  Serial.printf("beaconsStepBeacon ******\n");
+  Serial.printf("beaconsStepBeacon ****** %f\n", freqencies[hhh[activehhh].Band]);
   
   // Here we display the active band and then move onto the next
 
@@ -429,7 +429,8 @@ void beaconsStepBeacon() {
 
   // Turn the band led on
 
-  ledSetIndexColour(hhh[activehhh].BandLED,CRGB::White);
+CRGB bandLEDColour = CRGB::Red;
+  //ledSetIndexColour(hhh[activehhh].BandLED,CRGB::White);
 
   // Now we need to loop though the spots associated with the band to see
   // if we have anthing.
@@ -438,7 +439,7 @@ void beaconsStepBeacon() {
 
   for(int b = 0; b < NUMBER_OF_BEACONS; b++) {
 
-    Serial.printf(".... Beacon %s %f\n", beaconNames[b], freqencies[hhh[activehhh].Band]);
+    //Serial.printf(".... Beacon %s %f\n", beaconNames[b], freqencies[hhh[activehhh].Band]);
     
     // Pull out the band that we are interested in
     
@@ -470,11 +471,12 @@ void beaconsStepBeacon() {
 
         time_t timeNow;
         time(&timeNow);
-         Serial.printf("........ %s %s\n", FormatTimeAsDateTime(timeNow), FormatTimeAsDateTime(spot->TimeHeard + 60 * 5));
+         //Serial.printf("........ %s %s\n", FormatTimeAsDateTime(timeNow), FormatTimeAsDateTime(spot->TimeHeard + 60 * 5));
          
         if (timeNow < spot->TimeHeard + 60 * 5) {
 
-Serial.printf("........ Yes\n");
+          //Serial.printf(".... Beacon %s %f\n", beaconNames[b], freqencies[hhh[activehhh].Band]);
+//Serial.printf("........ Yes\n");
 
           lightBeacon = true;
           break;
@@ -490,13 +492,21 @@ Serial.printf("........ Yes\n");
           if (true == lightBeacon) {
 
       Serial.printf(".... Beacon %s %f\n", beaconNames[b], freqencies[hhh[activehhh].Band]);
-      ledSetIndexColour(beaconLEDs[b],CRGB::White);
+      ledSetIndexColour(beaconLEDs[b],CRGB::Green);
+
+ bandLEDColour = CRGB::Green;
+        // Turn the band led on
+
+  //ledSetIndexColour(hhh[activehhh].BandLED,CRGB::Green);
       
     }
+
     }
 
 
   }
+
+  ledSetIndexColour(hhh[activehhh].BandLED,bandLEDColour);
   
   // Step on to the next band
 
