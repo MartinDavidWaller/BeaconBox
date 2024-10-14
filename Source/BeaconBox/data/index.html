@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>[RBNSpyBox] Hello, World</title>
+    <title>[RBNSpyBox]</title>
     <link rel="stylesheet" type="text/css" href="styles.css" media="all" />
 
     <meta charset="UTF-8">
@@ -12,86 +12,21 @@
 
     <script type="text/javascript">
 
- 		var indexUpdateMilliSeconds = 5 * 1000;
         //var friendsTableBody = null;
         //var eventSource = null;
 
-            function update()
-            {
-
-                // Get the friends
-
-                $.ajax({
-                    url: "getFriends"
-                }).done(function (data) {
-
-                    // We have the data, process it.
-
-                    $("#friendsDiv").empty();
-
-                    var friends = data.documentElement.getElementsByTagName("Friend");
-                    if (0 == friends.length) {
-                        var tempDiv = document.createElement("div");
-                        tempDiv.innerHTML = "No Friends!";
-                        $("#friendsDiv").append(tempDiv);
-                    }
-                    else {
-
-                        var tableBody = buildTable($("#friendsDiv"), ["Callsign", "Seen As", "Name", "Comment", "Last Seen", "Last Speed", "Last Frequency", "Last Mode", "Sound"]);
-                        for (var i = 0; i < friends.length; i++) {
-                            var friend = friends[i];
-                            var tr = $("<tr/>").appendTo(tableBody);
-
-                            var callsign = friend.getAttribute("Callsign");
-                            $("<span/>").appendTo($("<td/>").appendTo(tr)).html(callsign);
-                            $("<span/>").appendTo($("<td/>").appendTo(tr)).html(friend.getAttribute("LastSeenAs"));
-                            $("<span/>").appendTo($("<td/>").appendTo(tr)).html(friend.getAttribute("Name"));
-                            $("<span/>").appendTo($("<td/>").appendTo(tr)).html(friend.getAttribute("Comment"));
-                            $("<span/>").appendTo($("<td/>").appendTo(tr)).html(friend.getAttribute("LastSeen"));
-                            $("<span/>").appendTo($("<td/>").appendTo(tr)).html(friend.getAttribute("LastSpeed"));
-                            $("<span/>").appendTo($("<td/>").appendTo(tr)).html(friend.getAttribute("LastFrequency"));
-                            $("<span/>").appendTo($("<td/>").appendTo(tr)).html(friend.getAttribute("LastMode"));
-                            $("<span/>").appendTo($("<td/>").appendTo(tr)).html(friend.getAttribute("Sound"));
-                        }
-                    }
-                });
-
-                // Get the up time and spot data
-
-                $.ajax({
-                    url: "getUpTimeAndSpotData"
-                }).done(function (data) {
-
-                    // We have the data, process it.
-
-                    var spotCountData = data.documentElement;
-                    $("#spotCount").html(spotCountData.getAttribute("SpotsSeen"));
-                    $("#lastSpotSeen").html(spotCountData.getAttribute("LastSpotSeen"));
-                    $("#upTime").html(spotCountData.getAttribute("UpTime"));
-
-                });
-
-
-                setTimeout(update, indexUpdateMilliSeconds);
-            }
-
-		function doListen() {
-
-        	$.ajax({
-		    	url: "doListen?sound=" + $("#addFriendSoundSelection").val()
-		    }).done(function (data) { });
-		}
 
         // At this point the page is running
 
         $(document).ready(function () {
 
 
+			// Update the name and version
+
             updateNameVersion();
 
-           	//update();
-
         });
+
     </script>
 	</head>
     <body>
@@ -104,7 +39,6 @@
             </h1>
 
             <button id="homeButton" onclick="window.location.href='index.html';">Home</button>
-            <button id="friendsButton" onclick="window.location.href='friends.html';">Friends</button>
             <button id="settingsButton" onclick="window.location.href='settings.html';">Settings</button>
             <button id="backupRestoreButton" onclick="window.location.href='backupRestore.html';">Backup/Restore</button>
             <button id="helpButton" onclick="window.location.href='help.html';">Help</button>
@@ -118,24 +52,18 @@
 
                 <hr />
 
-                <h1>Spot Data</h1>
+               	<table>
+					<thead>
+						<tr>
+				       		<th>Date</th>
+				       		<th>Spotter</th>
+				       		<th>Spotted</th>
+				        </tr>
+					</thead>
+					<tbody id='rbnBody' style="font-family:'Courier New'">
+					</tbody>
+    			</table>
 
-                <table>
-                    <tr>
-                        <td>No. Spots Seen:</td>
-                        <td><span id="spotCount" /></td>
-                    </tr>
-                    <tr>
-                        <td>Last Spot Seen:</td>
-                        <td><span id="lastSpotSeen" /></td>
-                    </tr>
-                </table>
-
-                <hr />
-
-                <h1>Friends</h1>
-
-                <div id="friendsDiv"></div>
             </div>
         </div>
         <div id=footer>Copyright &copy; <span id="programCopyright"></span></div>

@@ -67,6 +67,12 @@ void setup() {
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
   } 
+
+  // Set up the mode button
+
+  pinMode(MODE_PIN,INPUT_PULLUP);
+
+  Serial.printf("********** %d\n",digitalRead(MODE_PIN));
   
   Serial.println("Up and running");
 
@@ -81,8 +87,8 @@ void setup() {
   Serial.println("Read the Configuration Data");
   bool checkSumOK = readConfiguration(&configuration);
 
-  Serial.println("");
-  hexDump((char *)&configuration,sizeof(Configuration));
+  //Serial.println("");
+  //hexDump((char *)&configuration,sizeof(Configuration));
 
   // If the checksum is not OK or if the version numbers
   // do not match then we must start again!
@@ -90,7 +96,7 @@ void setup() {
   if ((false == checkSumOK) || 
       (configuration.MajorVersion != PROGRAM_VERSION_MAJOR) || 
       (configuration.MinorVersion != PROGRAM_VERSION_MINOR) ||
-      (0 == digitalRead(BOOT_PIN))) {
+      (0 == digitalRead(MODE_PIN))) {
 
     // Here the versions don't match or the checksum is wrong or
     // the boot pin is pressed.
@@ -303,6 +309,11 @@ void connectToWiFi() {
   }
 }
 
+void spotHandler(char *spotter, char*spotted, double frequency) {
+
+  Serial.printf("spotHandler: spotter: %s, spotted %s, frequency %f\n", spotter, spotted, frequency); 
+}
+
 time_t lastBeaconDump = -1;
 
 void loop() {
@@ -336,7 +347,7 @@ void loop() {
       {
         // Try connecting to the Reverse Beacon Network
 
-        bool connected = rbnClientConnect(REVERSE_BEACON_NETWORK_ADDRESS, REVERSE_BEACON_NETWORK_PORT);
+        bool connected = rbnClientConnect(REVERSE_BEACON_NETWORK_ADDRESS, REVERSE_BEACON_NETWORK_PORT, spotHandler);
 
         if (true == connected) {
 

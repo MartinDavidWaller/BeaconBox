@@ -12,10 +12,15 @@
 #include "RBNClient.h"
 #include "StringHelper.h"
 
-WiFiClient rbnClient;                             // Telnet client
+WiFiClient rbnClient;                             // WiFi client
 char rbnLineBuffer[RBN_LINE_BUFFER_SIZE + 1];     // Line buffer for the RBN data
+void (*spotHandler)(char *, char *, double frequency);
 
-bool rbnClientConnect(char *address, int port) {
+bool rbnClientConnect(char *address, int port, void localSpotHandler(char *spotter, char*spotted, double frequency)) {
+
+  // Save the spot handler
+
+  spotHandler = localSpotHandler;
   
   // Try to make the connection
 
@@ -102,10 +107,13 @@ bool rbnClientProcessData(char *callsign) {
 
             ledSetIndexColour(LED_MISC_1,CRGB::Green);
 
-            beaconsSpotted(
-              parts[RBN_SPOTTER],
-              parts[RBN_SPOTTED],
-              atof(parts[RBN_FREQUENCY]));
+            char *spotter = parts[RBN_SPOTTER];
+            char *spotted = parts[RBN_SPOTTED];
+            double frequency = atof(parts[RBN_FREQUENCY]);
+            
+            spotHandler(spotter,spotted,frequency);
+            
+            beaconsSpotted(spotter,spotted,frequency);
 
             ledSetIndexColour(LED_MISC_1,CRGB::Black);
             
@@ -117,16 +125,6 @@ bool rbnClientProcessData(char *callsign) {
 
             //time(&runtimeData.LastSpotSeen);
                 
-            // Process the callsign
-                
-            //struct Friend *_friend = ProcessCall(
-              //parts[RBN_CALLSIGN],
-              //atoi(parts[RBN_SPEED]),
-              //parts[RBN_SPEED_UNITS],
-              //atof(parts[RBN_FREQUENCY]) / 1000.0f,
-              //parts[RBN_MODE],
-              //rbnLineBuffer
-            //);
                 
             // Did we find a friend?
                 

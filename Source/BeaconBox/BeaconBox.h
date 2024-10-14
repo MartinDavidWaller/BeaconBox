@@ -34,37 +34,23 @@
 #define DEFAULT_SPOTTER_WILDCARDS "G*"
 #define DEFAULT_TIMEZONE "GMT0BST,M3.5.0/01,M10.5.0/02"
 
-#define EEPROM_ADDRESS 0x50
-
-#define MAX_FRIEND_COUNT 50
 
 #define DEBUG 0
-#define DEBUG_ECHO_DISPLAY 0
-#define DEBUG_SOUND_QUEUE 0
-
-#define DEFAULT_VOLUME 8
-#define DEFAULT_MINUTES_BETWEEN_ALERTS 5
-#define DEFAULT_FRIEND_CYCLE_COUNT 5
 
 #define MAX_SECONDS_BEFORE_RESTART 60
 
 
-#define BOOT_PIN 0
-#define DFPLAYER_BUSY_PIN 34
+// The mode pin must support pullout. See https://forum.arduino.cc/t/esp32-pins-that-support-pullup/1173356/3
 
-// The following manifests define the hardware pins used by the
-// DFPlayer module.
+#define MODE_PIN 25
 
-//define DFPlayerRXPin 14
-//define DFPlayerTXPin 12
-
-struct RuntimeData
-{
-  time_t LastSpotSeen;
-  long SpotsSeen;
-  time_t BootTime;
-  long RBNConnectionsMade;
-};
+//struct RuntimeData
+//{
+  //time_t LastSpotSeen;
+  //long SpotsSeen;
+  //time_t BootTime;
+  //long RBNConnectionsMade;
+//};
 
 // Defined methods / data
 

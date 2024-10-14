@@ -29,6 +29,7 @@
 //#define SSID_NAME "RBNSpyBox"
 
 AsyncWebServer server(80); 
+AsyncWebSocket rbnDataWebSocket("/rbnData");
 
 extern struct Configuration configuration;
 
@@ -479,9 +480,32 @@ void onGetBackup(AsyncWebServerRequest *request){
 }
 */
 
+void onRBNDataWebSocketEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
+
+  Serial.println("onRBNDataWebSocketEvent");
+
+  if(type == WS_EVT_CONNECT){
+ 
+    Serial.println("Websocket client connection received");
+    //client->text("Hello from ESP32 Server");
+ 
+  } else if(type == WS_EVT_DISCONNECT){
+    
+    Serial.println("Client disconnected");
+ 
+  }  
+}
+
 extern void webServerSetUp()
 {
-  // We can now configure and start the server
+  // Setup the websocket
+
+  
+  rbnDataWebSocket.onEvent(onRBNDataWebSocketEvent);
+
+  server.addHandler(&rbnDataWebSocket);
+  
+  // Setup the webserver
 
   //server.on("/doAddFriend", HTTP_GET, onDoAddFriend);
   //server.on("/doFriendUpdate", HTTP_GET, onDoFriendUpdate);

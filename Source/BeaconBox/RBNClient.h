@@ -21,5 +21,5 @@
 
 // Define routines and functions
 
-bool rbnClientConnect(char *address, int port);
+bool rbnClientConnect(char *address, int port, void spotHandler(char *spotter, char*spotted, double frequency));
 bool rbnClientProcessData(char *callsign);
