@@ -18,8 +18,9 @@
 #define RBN_MODE 5
 #define RBN_SPEED 8
 #define RBN_SPEED_UNITS 9
+#define RBN_TIME 11
 
 // Define routines and functions
 
-bool rbnClientConnect(char *address, int port, void spotHandler(char *spotter, char*spotted, double frequency));
+bool rbnClientConnect(char *address, int port, void spotHandler(char *spotter, char*spotted, double frequency, char *rbnTime));
 bool rbnClientProcessData(char *callsign);

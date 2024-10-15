@@ -82,13 +82,13 @@ char *FormatUptime(time_t *bootTime) {
     int minutesUp = upTimeSeconds / SECONDS_PER_MINUTE;
     upTimeSeconds = upTimeSeconds - (minutesUp * SECONDS_PER_MINUTE);  
 
-    sprintf(formatBuffer,"%d %02d:%02d:%02d",
+    sprintf(formatBuffer,"%d %02d:%02d:%02d\0",
       daysUp,
       hoursUp,
       minutesUp,
-      upTimeSeconds);
+      (int)upTimeSeconds);
   }
-  
+
   return formatBuffer;   
 }
 

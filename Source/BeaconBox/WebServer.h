@@ -6,3 +6,4 @@
  */
  
 extern void webServerSetUp();
+extern void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char *rbnTime);

@@ -14,9 +14,9 @@
 
 WiFiClient rbnClient;                             // WiFi client
 char rbnLineBuffer[RBN_LINE_BUFFER_SIZE + 1];     // Line buffer for the RBN data
-void (*spotHandler)(char *, char *, double frequency);
+void (*spotHandler)(char *spotter, char *spotted, double frequency, char *rdbTime);
 
-bool rbnClientConnect(char *address, int port, void localSpotHandler(char *spotter, char*spotted, double frequency)) {
+bool rbnClientConnect(char *address, int port, void localSpotHandler(char *spotter, char*spotted, double frequency, char* rbnTime)) {
 
   // Save the spot handler
 
@@ -110,8 +110,9 @@ bool rbnClientProcessData(char *callsign) {
             char *spotter = parts[RBN_SPOTTER];
             char *spotted = parts[RBN_SPOTTED];
             double frequency = atof(parts[RBN_FREQUENCY]);
+            char *rbnTime = parts[12 == n ? RBN_TIME : RBN_TIME + 1];
             
-            spotHandler(spotter,spotted,frequency);
+            spotHandler(spotter,spotted,frequency,rbnTime);
             
             beaconsSpotted(spotter,spotted,frequency);
 

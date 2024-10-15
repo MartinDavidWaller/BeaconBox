@@ -7,30 +7,23 @@
 
 #include "Arduino.h"
 
+#include "ArduinoJson.h"
 #include <WiFi.h>
 #include <AsyncTCP.h>
 #include "ESPAsyncWebServer.h"
+#include "FormatHelper.h"
 #include "SPIFFS.h"
-
 #include <HardwareSerial.h>
 #include <time.h>                      
 #include <sys/time.h>         
-
-
 #include "Configuration.h"
-//include "FormatHelper.h"
-//include "Friend.h"
-//include "Friends.h"
-//include "LCD20x4.h"
 #include "BeaconBox.h"
-//include "Sounds.h"
-//#include "XMLHelper.h"
-
-//#define SSID_NAME "RBNSpyBox"
 
 AsyncWebServer server(80); 
 AsyncWebSocket rbnDataWebSocket("/rbnData");
+StaticJsonDocument<200> rbnJSONOut;        
 
+extern time_t startUpTime;
 extern struct Configuration configuration;
 
 /*
@@ -379,25 +372,21 @@ void onGetRuntime(AsyncWebServerRequest *request){
 }
 */
 
-/*
-void onGetUpTimeAndSpotData(AsyncWebServerRequest *request){
+void onGetUpTime(AsyncWebServerRequest *request){
 
-  char lineBuffer[20 + 1];
+  //char lineBuffer[20 + 1];
   
   AsyncResponseStream *response = request->beginResponseStream("text/xml");
 
   response->printf("<?xml version=\"1.0\" encoding=\"utf-16\"?>");
-  response->printf("<UpTimeAndSpotData ");
+  response->printf("<UpTime ");
   
-  response->printf("LastSpotSeen=\"%s\" ",FormatTimeAsDateTime(runtimeData.LastSpotSeen));
-  response->printf("SpotsSeen=\"%s\" ",FormatWithTriple(runtimeData.SpotsSeen,lineBuffer)); 
-  response->printf("UpTime=\"%s\"",FormatUptime(&runtimeData.BootTime));
+  response->printf("UpTime=\"%s\"",FormatUptime(&startUpTime));
   
   response->printf("/>");
 
   request->send(response);
 }
-*/
 
 void onGetSIDDs(AsyncWebServerRequest *request){
 
@@ -450,8 +439,8 @@ void onGetBackup(AsyncWebServerRequest *request){
   
   struct tm *timeInfo;
 
-      time_t now; 
-    time(&now);
+  time_t now; 
+  time(&now);
     
   timeInfo = localtime(&now);
   
@@ -496,11 +485,35 @@ void onRBNDataWebSocketEvent(AsyncWebSocket * server, AsyncWebSocketClient * cli
   }  
 }
 
+void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char *rbnTime) {
+
+  char cvtBuffer[100];
+  
+  // Clear the json object
+  
+  rbnJSONOut.clear();
+
+  // Add the data to the JSON object
+  
+  rbnJSONOut["SPOTTER"] = spotter;
+  rbnJSONOut["SPOTTED"] = spotted;
+  rbnJSONOut["TIME"] = rbnTime;
+
+  sprintf(cvtBuffer,"%.03f Mhz",frequency / 1000.0);
+  rbnJSONOut["FREQUENCY"] = cvtBuffer;
+
+  // Serialise it to the buffer
+
+  char jsonString[1024];
+  serializeJson(rbnJSONOut,jsonString);
+
+  rbnDataWebSocket.textAll(jsonString);
+}
+
 extern void webServerSetUp()
-{
+{ 
   // Setup the websocket
 
-  
   rbnDataWebSocket.onEvent(onRBNDataWebSocketEvent);
 
   server.addHandler(&rbnDataWebSocket);
@@ -526,7 +539,7 @@ extern void webServerSetUp()
   server.on("/getSettingsData", HTTP_GET, onGetSettingsData);
   //server.on("/getSounds", HTTP_GET, onGetSounds);
   server.on("/getSSIDs", HTTP_GET, onGetSIDDs);
-  //server.on("/getUpTimeAndSpotData", HTTP_GET, onGetUpTimeAndSpotData);
+  server.on("/getUpTime", HTTP_GET, onGetUpTime);
     
   server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
   

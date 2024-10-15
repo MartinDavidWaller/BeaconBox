@@ -12,8 +12,30 @@
 
     <script type="text/javascript">
 
-        //var friendsTableBody = null;
-        //var eventSource = null;
+		var MAX_RBN_ROWS = 20;
+        var INDEX_UPDATE_MILLISECONDS = 5 * 1000;
+
+        var rbnWebSocket = null;
+
+  		function updateUpTime()
+        {
+        	// Get the up time and spot data
+
+            $.ajax({
+                url: "getUpTime"
+            }).done(function (data) {
+
+                // We have the data, process it.
+
+                var data = data.documentElement;
+                $("#upTime").html(data.getAttribute("UpTime"));
+
+            });
+
+			// Set the next timeout
+
+            setTimeout(updateUpTime, INDEX_UPDATE_MILLISECONDS);
+        }
 
 
         // At this point the page is running
@@ -21,9 +43,41 @@
         $(document).ready(function () {
 
 
-			// Update the name and version
+			// Update the name and version and uptime
 
             updateNameVersion();
+            updateUpTime()
+
+            // Build the RBN WebSocket
+
+           	rbnWebSocket = new WebSocket(($(location).attr('protocol') === "http:" ? "ws://" : "wss://") + $(location).attr('host') + "/rbnData");
+
+			// This function is called when the websocket opens
+
+			rbnWebSocket.onopen = function() {
+
+				// Do nothing for the moment
+
+			};
+
+			// This function is called for every message sent to the websocket
+
+			rbnWebSocket.onmessage = function(evt) {
+
+				console.log("In> " + evt.data);
+
+
+
+				var msg = JSON.parse(evt.data);
+				$("#rbnBody").append('<tr><td>' + msg.SPOTTER + '</td><td>' + msg.SPOTTED + '</td><td>' + msg.FREQUENCY + '</td><td>' + msg.TIME + '</td></tr>');
+
+				var rowCount = $("#rbnBody > tr").length;
+				console.log("> " + rowCount);
+				if (rowCount > MAX_RBN_ROWS)
+				{
+					$("#rbnBody tr:first-child").remove();
+				}
+            };
 
         });
 
@@ -55,9 +109,10 @@
                	<table>
 					<thead>
 						<tr>
-				       		<th>Date</th>
 				       		<th>Spotter</th>
 				       		<th>Spotted</th>
+				       		<th>Frequency</th>
+				       		<th>Time</th>
 				        </tr>
 					</thead>
 					<tbody id='rbnBody' style="font-family:'Courier New'">

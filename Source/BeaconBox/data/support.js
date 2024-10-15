@@ -27,6 +27,7 @@ function updateNameVersion() {
 // It is passed the div into which to draw and it will create the new table
 // and return a reference to the associated <tbody>.
 
+/*
 function buildTable(divToUse, titles) {
 
     // Clean out the div
@@ -65,6 +66,7 @@ function buildTable(divToUse, titles) {
 
     return tbody;
 }
+*/
 
 // Settings.html specific
 
