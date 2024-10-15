@@ -6,7 +6,7 @@
  */
 
 #include "Arduino.h"
-
+#include "Esp.h"
 #include "ArduinoJson.h"
 #include <WiFi.h>
 #include <AsyncTCP.h>
@@ -381,7 +381,10 @@ void onGetUpTime(AsyncWebServerRequest *request){
   response->printf("<?xml version=\"1.0\" encoding=\"utf-16\"?>");
   response->printf("<UpTime ");
   
-  response->printf("UpTime=\"%s\"",FormatUptime(&startUpTime));
+  response->printf("UpTime=\"%s\" ",FormatUptime(&startUpTime));
+  response->printf("FreeHeap=\"%d\"",ESP.getFreeHeap());
+
+  
   
   response->printf("/>");
 

@@ -29,6 +29,7 @@
 
                 var data = data.documentElement;
                 $("#upTime").html(data.getAttribute("UpTime"));
+                $("#freeHeap").html(data.getAttribute("FreeHeap"));
 
             });
 
@@ -64,7 +65,7 @@
 
 			rbnWebSocket.onmessage = function(evt) {
 
-				console.log("In> " + evt.data);
+
 
 
 
@@ -72,7 +73,7 @@
 				$("#rbnBody").append('<tr><td>' + msg.SPOTTER + '</td><td>' + msg.SPOTTED + '</td><td>' + msg.FREQUENCY + '</td><td>' + msg.TIME + '</td></tr>');
 
 				var rowCount = $("#rbnBody > tr").length;
-				console.log("> " + rowCount);
+
 				if (rowCount > MAX_RBN_ROWS)
 				{
 					$("#rbnBody tr:first-child").remove();
@@ -89,7 +90,9 @@
             <h1>
                 <span id="programName">[programName]</span>&nbsp;<span id="programVersion">[programVersion]</span>
                 <br/>
-                Up Time: <span id="upTime" />
+                Up Time: <span id="upTime">[upTime]</span>
+                <br/>
+                Free Heap: <span id="freeHeap">[freeHeap]</span>
             </h1>
 
             <button id="homeButton" onclick="window.location.href='index.html';">Home</button>
