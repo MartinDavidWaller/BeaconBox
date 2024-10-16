@@ -42,6 +42,59 @@ void ledChainBlinkAll() {
   
   FastLED.show();
   delay(500);
+
+  // Turn all LEDs on forward
+  
+  for(int i = 0; i < NUM_LEDS; i++)
+  {
+    leds[i] = CRGB::White;
+
+    FastLED.show();
+    delay(100);
+
+    leds[i] = CRGB::Black;
+    FastLED.show();
+    
+  }
+
+  // Turn all LEDs on backwards
+  
+  for(int i = NUM_LEDS - 1; i > 0; i--)
+  {
+    leds[i] = CRGB::White;
+
+    FastLED.show();
+    delay(100);
+
+    leds[i] = CRGB::Black;
+    FastLED.show();
+    
+  }  
+
+  for(int i = 0; i < NUM_LEDS; i++)
+  {
+    leds[i] = CRGB::White;
+
+    //for(int j = 0; j < i; j++) {
+      //leds[i] = CRGB::White;
+    //}
+    FastLED.show();
+    delay(100);
+
+
+    
+  }
+
+  for(int i = 0; i < NUM_LEDS; i++)
+  {
+
+
+    leds[i] = CRGB::Black;
+    FastLED.show();
+     delay(100);
+    
+  }  
+   FastLED.show();  
 }
 
 void ledSetIndexColour(int index,CRGB colour)
