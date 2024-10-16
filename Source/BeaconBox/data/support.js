@@ -11,7 +11,12 @@ function updateNameVersion() {
         var indexNameVersionETC = data.documentElement;
         $("#programName").html(indexNameVersionETC.getAttribute("Name"));
         $("#programVersion").html(indexNameVersionETC.getAttribute("Version"));
-        $("#programCopyright").html(indexNameVersionETC.getAttribute("Copyright"));
+
+        // Pull out the copyright text
+
+        var copyrightText = indexNameVersionETC.getAttribute("Copyright");
+        copyrightText = copyrightText.replace("[YEAR]", new Date().getFullYear());
+        $("#programCopyright").html(copyrightText);
 
         document.title = indexNameVersionETC.getAttribute("Name");
 

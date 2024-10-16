@@ -10,6 +10,8 @@
   * 
   * When returning SSIDs we need to provide a proper name without spaces etc so the load of the options works? Or
   * at least that's what I think is making it fail.
+  * 
+  * Make use of DEFAULT_BEACON_TIMEOUT_MINUTES.
   */
   
  #include "Arduino.h"
@@ -136,9 +138,7 @@ void setup() {
     strcpy((char*)&configuration.Hostname[0],PROGRAM_NAME);
     strcpy((char*)&configuration.TimeZone[0],DEFAULT_TIMEZONE);
     strcpy((char*)&configuration.SpotterWildcards[0],DEFAULT_SPOTTER_WILDCARDS);
-    //configuration.Volume = DEFAULT_VOLUME;
-    //configuration.MinutesBetweenAlerts = DEFAULT_MINUTES_BETWEEN_ALERTS;
-    //configuration.FriendCycleCount = DEFAULT_FRIEND_CYCLE_COUNT;
+    configuration.BeaconTimeOutMinutes = DEFAULT_BEACON_TIMEOUT_MINUTES;
 
     Serial.println("Writing new configuration");
     Serial.println("");

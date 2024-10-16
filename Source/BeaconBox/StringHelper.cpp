@@ -75,6 +75,8 @@ int SplitStringOnSpace(const char *stringToSplit, char **partsBuffer[])
 
   int retVal = 0;
 
+  try {
+
   if (NULL != stringToSplit) {
 
     uint8_t ci = 0;
@@ -122,6 +124,11 @@ int SplitStringOnSpace(const char *stringToSplit, char **partsBuffer[])
     retVal++;
   else
     retVal = 1;
+  }
+  catch (...) {
+
+    Serial.printf("Exception!\n");
+  }
 
   return retVal;
 }

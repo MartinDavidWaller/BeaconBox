@@ -39,15 +39,7 @@
         }
 
 
-        // At this point the page is running
-
-        $(document).ready(function () {
-
-
-			// Update the name and version and uptime
-
-            updateNameVersion();
-            updateUpTime()
+		function makeWebSocketConnection() {
 
             // Build the RBN WebSocket
 
@@ -66,7 +58,7 @@
 			rbnWebSocket.onmessage = function(evt) {
 
 
-
+				console.log(evt.data);
 
 
 				var msg = JSON.parse(evt.data);
@@ -79,6 +71,39 @@
 					$("#rbnBody tr:first-child").remove();
 				}
             };
+
+
+            rbnWebSocket.onclose = function(e) {
+
+			    console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
+			    setTimeout(function() {
+
+			      makeWebSocketConnection();
+			      }, 1000);
+  			};
+
+
+			rbnWebSocket.onerror  = function(err) {
+
+				console.error('Socket encountered error: ', err.message, 'Closing socket');
+    			rbnWebSocket.close();
+			}
+		}
+
+        // At this point the page is running
+
+        $(document).ready(function () {
+
+
+			// Update the name and version and uptime
+
+            updateNameVersion();
+            updateUpTime()
+
+			// Build the WebSocket connection
+
+			makeWebSocketConnection();
+
 
         });
 

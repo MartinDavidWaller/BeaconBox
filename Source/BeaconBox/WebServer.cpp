@@ -344,7 +344,7 @@ void onGetNameVersion(AsyncWebServerRequest *request){
 
   response->printf("Name=\"%s\" ",PROGRAM_NAME);
   response->printf("Version=\"V%d.%d\" ",PROGRAM_VERSION_MAJOR,PROGRAM_VERSION_MINOR); 
-  response->printf("Copyright=\"2014 M.D.Waller G0PJO. All rights reserved.\"");
+  response->printf("Copyright=\"[YEAR] M.D.Waller G0PJO. All rights reserved.\"");
 
   response->printf("/>");
 
@@ -510,6 +510,7 @@ void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char 
   char jsonString[1024];
   serializeJson(rbnJSONOut,jsonString);
 
+  Serial.printf("*********** %s\n",jsonString);
   rbnDataWebSocket.textAll(jsonString);
 }
 

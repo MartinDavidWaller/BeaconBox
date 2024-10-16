@@ -111,6 +111,24 @@ bool rbnClientProcessData(char *callsign) {
             char *spotted = parts[RBN_SPOTTED];
             double frequency = atof(parts[RBN_FREQUENCY]);
             char *rbnTime = parts[12 == n ? RBN_TIME : RBN_TIME + 1];
+
+            // Before we pass the data back we'll clean it up a little
+
+            // Remove amy trailing -<text> from the spotter
+            
+            char *minusSign = strchr(spotter,'-');
+            if (NULL != minusSign) {
+              *minusSign = '\0';
+            }
+
+            // Remove amy trailing \r from the rbnTime
+            
+            char *carraigeReturn = strchr(rbnTime,'\r');
+            if (NULL != carraigeReturn) {
+              *carraigeReturn = '\0';
+            }            
+
+            // Pass the data on
             
             spotHandler(spotter,spotted,frequency,rbnTime);
             
@@ -125,7 +143,6 @@ bool rbnClientProcessData(char *callsign) {
             // Update the last spot seen date/time
 
             //time(&runtimeData.LastSpotSeen);
-                
                 
             // Did we find a friend?
                 
