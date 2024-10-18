@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>[BeaconBox]</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" media="all" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="support.js"></script>
+
+    <script type="text/javascript">
+
+		var MAX_RBN_ROWS = 20;
+        var INDEX_UPDATE_MILLISECONDS = 5 * 1000;
+
+        var rbnWebSocket = null;
+
+  		function updateUpTime()
+        {
+        	// Get the up time and spot data
+
+            $.ajax({
+                url: "getUpTime"
+            }).done(function (data) {
+
+                // We have the data, process it.
+
+                var data = data.documentElement;
+                $("#upTime").html(data.getAttribute("UpTime"));
+                $("#freeHeap").html(data.getAttribute("FreeHeap"));
+
+            });
+
+			// Set the next timeout
+
+            setTimeout(updateUpTime, INDEX_UPDATE_MILLISECONDS);
+        }
+
+
+		function makeWebSocketConnection() {
+
+            // Build the RBN WebSocket
+
+           	rbnWebSocket = new WebSocket(($(location).attr('protocol') === "http:" ? "ws://" : "wss://") + $(location).attr('host') + "/rbnData");
+
+			// This function is called when the websocket opens
+
+			rbnWebSocket.onopen = function() {
+
+				// Do nothing for the moment
+
+			};
+
+			// This function is called for every message sent to the websocket
+
+			rbnWebSocket.onmessage = function(evt) {
+
+
+				console.log(evt.data);
+
+
+				var msg = JSON.parse(evt.data);
+				$("#rbnBody").append('<tr><td>' + msg.SPOTTER + '</td><td>' + msg.SPOTTED + '</td><td>' + msg.FREQUENCY + '</td><td>' + msg.TIME + '</td></tr>');
+
+				var rowCount = $("#rbnBody > tr").length;
+
+				if (rowCount > MAX_RBN_ROWS)
+				{
+					$("#rbnBody tr:first-child").remove();
+				}
+            };
+
+
+            rbnWebSocket.onclose = function(e) {
+
+			    console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
+			    setTimeout(function() {
+
+			      makeWebSocketConnection();
+			      }, 1000);
+  			};
+
+
+			rbnWebSocket.onerror  = function(err) {
+
+				console.error('Socket encountered error: ', err.message, 'Closing socket');
+    			rbnWebSocket.close();
+			}
+		}
+
+        // At this point the page is running
+
+        $(document).ready(function () {
+
+
+			// Update the name and version and uptime
+
+            updateNameVersion();
+            updateUpTime()
+
+			// Build the WebSocket connection
+
+			makeWebSocketConnection();
+
+        });
+
+    </script>
+	</head>
+    <body>
+        <div class='norm'>
+
+            <h1>
+                <span id="programName">[programName]</span>&nbsp;<span id="programVersion">[programVersion]</span>
+                <br/>
+                Up Time: <span id="upTime">[upTime]</span>
+                <br/>
+                Free Heap: <span id="freeHeap">[freeHeap]</span>
+            </h1>
+
+            <button id="homeButton" onclick="window.location.href='index.html';">Home</button>
+            <button id="reverseBeaconNetworkDataButton" onclick="window.location.href='reverseBeaconNetworkData.html';">Reverse Beacon Network Data</button>
+            <button id="settingsButton" onclick="window.location.href='settings.html';">Settings</button>
+            <button id="backupRestoreButton" onclick="window.location.href='backupRestore.html';">Backup/Restore</button>
+            <button id="helpButton" onclick="window.location.href='help.html';">Help</button>
+            <button id="aboutButton" onclick="window.location.href='about.html';">About</button>
+            <br />
+            <br />
+
+            <!-- Home Div -->
+
+            <div id="homeDiv">
+
+                <hr />
+
+               	<table>
+					<thead>
+						<tr>
+				       		<th>Spotter</th>
+				       		<th>Spotted</th>
+				       		<th>Frequency</th>
+				       		<th>Time</th>
+				        </tr>
+					</thead>
+					<tbody id='rbnBody' style="font-family:'Courier New'">
+					</tbody>
+    			</table>
+
+            </div>
+        </div>
+        <div id=footer>Copyright &copy; <span id="programCopyright"></span></div>
+    </body>
+</html>

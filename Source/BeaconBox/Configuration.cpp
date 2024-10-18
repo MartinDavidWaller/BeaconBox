@@ -48,7 +48,7 @@ void dumpConfiguration(struct Configuration *configuration)
   Serial.printf("   Callsign: ............... %s\n",configuration->Callsign);
   Serial.printf("   Spotter Wildcards: ...... %s\n",configuration->SpotterWildcards);
   Serial.printf("   TimeZone: ............... %s\n",configuration->TimeZone);
-  Serial.printf("   BeaconTimeOutMinutes .... %d\n",configuration->BeaconTimeOutMinutes);
+  Serial.printf("   SpotterTimeOutMinutes ... %d\n",configuration->SpotterTimeOutMinutes);
   //Serial.printf("   Volume: .................. %d\n",configuration->Volume);
   //Serial.printf("   Minutes Between Alerts: .. %d\n",configuration->MinutesBetweenAlerts);
   //Serial.printf("   Friend Cycle Count: ...... %d\n",configuration->FriendCycleCount);

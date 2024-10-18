@@ -12,6 +12,8 @@
   * at least that's what I think is making it fail.
   * 
   * Make use of DEFAULT_BEACON_TIMEOUT_MINUTES.
+  * 
+  * https://mapsvg.com/maps/world
   */
   
  #include "Arduino.h"
@@ -138,7 +140,7 @@ void setup() {
     strcpy((char*)&configuration.Hostname[0],PROGRAM_NAME);
     strcpy((char*)&configuration.TimeZone[0],DEFAULT_TIMEZONE);
     strcpy((char*)&configuration.SpotterWildcards[0],DEFAULT_SPOTTER_WILDCARDS);
-    configuration.BeaconTimeOutMinutes = DEFAULT_BEACON_TIMEOUT_MINUTES;
+    configuration.SpotterTimeOutMinutes = DEFAULT_SPOTTER_TIMEOUT_MINUTES;
 
     Serial.println("Writing new configuration");
     Serial.println("");

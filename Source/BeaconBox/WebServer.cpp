@@ -235,6 +235,8 @@ void onDoSettingsUpdate(AsyncWebServerRequest *request){
   AsyncWebParameter* ssidInputParam = request->getParam("ssidInput");
   AsyncWebParameter* callsignInputParam = request->getParam("callsignInput");
   AsyncWebParameter* spotterWildcardsInput = request->getParam("spotterWildcardsInput");
+  AsyncWebParameter* spotterTimeOutMinutesInput = request->getParam("spotterTimeOutMinutesInput");
+
 
   Serial.println("Update settings:");
   
@@ -253,11 +255,15 @@ void onDoSettingsUpdate(AsyncWebServerRequest *request){
   Serial.print("...spotterWildcardsInputnInputParam = ");
   Serial.println(spotterWildcardsInput->value().c_str());  
 
+  Serial.print("...spotterTimeOutInputParam = ");
+  Serial.println(spotterTimeOutMinutesInput->value().c_str());
+
   strcpy((char*)&configuration.Hostname[0],hostnameInputParam->value().c_str());
   strcpy((char*)&configuration.WiFi_SSID[0],ssidInputParam->value().c_str());
   strcpy((char*)&configuration.WiFi_Password[0],passwordInputParam->value().c_str());
   strcpy((char*)&configuration.Callsign[0],callsignInputParam->value().c_str());
   strcpy((char*)&configuration.SpotterWildcards[0],spotterWildcardsInput->value().c_str());
+  configuration.SpotterTimeOutMinutes = atoi(spotterTimeOutMinutesInput->value().c_str());
 
   // Write it out
     
@@ -280,6 +286,7 @@ void onGetSettingsData(AsyncWebServerRequest *request){
   response->printf("WiFiPassword=\"%s\" ",&configuration.WiFi_Password[0]);
   response->printf("Callsign=\"%s\" ",&configuration.Callsign[0]);
   response->printf("SpotterWildcards=\"%s\" ",&configuration.SpotterWildcards[0]); 
+  response->printf("SpotterTimeOutMinutes=\"%d\" ",configuration.SpotterTimeOutMinutes);
   //$("#spotterWildcardsInput").val(settingsData.getAttribute("SpotterWildcards"));
   //response->printf("FriendCycleCount=\"%d\" ",configuration.FriendCycleCount);
   //response->printf("LEDEnabled=\"%s\" ",IS_LED_ENABLED((&configuration)) ? "true" : "false");

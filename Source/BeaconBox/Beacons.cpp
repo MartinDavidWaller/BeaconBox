@@ -14,6 +14,7 @@
 //include <RingBufCPP.h>
 #include <time.h>
 #include "Beacons.h"
+#include "Configuration.h"
 #include "FormatHelper.h"
 #include "LEDChain.h"
 #include "StringHelper.h"
@@ -27,6 +28,8 @@
 #define MAXIMUM_SPOT_COUNT 5
 
 #define CALLSIGN_MAX_LENGTH 20
+
+extern struct Configuration configuration;
 
 struct beaconCallsignIndex {
   char *Callsign;
@@ -473,7 +476,7 @@ CRGB bandLEDColour = CRGB::Red;
         time(&timeNow);
          //Serial.printf("........ %s %s\n", FormatTimeAsDateTime(timeNow), FormatTimeAsDateTime(spot->TimeHeard + 60 * 5));
          
-        if (timeNow < spot->TimeHeard + 60 * 5) {
+        if (timeNow < spot->TimeHeard + 60 * configuration.SpotterTimeOutMinutes) {
 
           //Serial.printf(".... Beacon %s %f\n", beaconNames[b], freqencies[hhh[activehhh].Band]);
 //Serial.printf("........ Yes\n");

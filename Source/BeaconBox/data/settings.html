@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 	<head>
-    	<title>[RBNSpyBox]</title>
+    	<title>[BeaconBox]</title>
     	<link rel="stylesheet" type="text/css" href="styles.css" media="all" />
 
     	<meta charset="UTF-8">
@@ -28,6 +28,7 @@
         			$("#passwordInput").val(settingsData.getAttribute("WiFiPassword"));
         			$("#callsignInput").val(settingsData.getAttribute("Callsign"));
         			$("#spotterWildcardsInput").val(settingsData.getAttribute("SpotterWildcards"));
+        			$("#spotterTimeOutMinutesInput").val(settingsData.getAttribute("SpotterTimeOutMinutes"));
 
     			}).fail(function (jqXHR, textStatus) {
 
@@ -46,9 +47,17 @@
             	if (true === isSafari)
                 	$('#refreshRow').hide();
 
+            	// Populate the spotterTimeOut drop down
+
+            	var select = $("#spotterTimeOutMinutesInput");
+	            for (var i = 1; i < 31; i++) {
+					$("<option/>", { value: i, text: i }).appendTo(select);
+				}
+
             	updateNameVersion();
             	updateForm();
             	updateSSIDs();
+
         	});
 
     	</script>
@@ -61,7 +70,7 @@
             	</h1>
 
             	<button id="homeButton" onclick="window.location.href='index.html';">Home</button>
-            	<button id="friendsButton" onclick="window.location.href='friends.html';">Friends</button>
+            	<button id="reverseBeaconNetworkDataButton" onclick="window.location.href='reverseBeaconNetworkData.html';">Reverse Beacon Network Data</button>
             	<button id="settingsButton" onclick="window.location.href='settings.html';">Settings</button>
             	<button id="backupRestoreButton" onclick="window.location.href='backupRestore.html';">Backup/Restore</button>
             	<button id="helpButton" onclick="window.location.href='help.html';">Help</button>
@@ -131,15 +140,25 @@
                    	     	</table>
                   	  	</fieldset>
 
+						<br />
+
                     	<fieldset>
                         	<legend>Spotters</legend>
 
                         	<table>
+
                             	<tr>
                             	    <td>Spotter Wildcards:</td>
                             	    <td>
                             	        <input type="text" name="spotterWildcardsInput" id="spotterWildcardsInput" placeholder="Spotter Wildcards" minlength="1" maxlength="100" required />
                             	    </td>
+                            	</tr>
+
+                            	<tr>
+                            	    <td>Spotter Time Out (Minutes):</td>
+                            	    <td>
+                            	    	<select name="spotterTimeOutMinutesInput" id="spotterTimeOutMinutesInput"></select>
+                                   	</td>
                             	</tr>
 
                    	     	</table>

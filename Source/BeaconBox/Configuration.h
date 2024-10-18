@@ -46,7 +46,7 @@ struct Configuration
   char Callsign[CALLSIGN_SIZE + 1];
   char SpotterWildcards[SPOTTER_WILDCARD_SIZE + 1];
   char TimeZone[TIMEZONE_SIZE + 1];
-  uint8_t BeaconTimeOutMinutes;
+  uint8_t SpotterTimeOutMinutes;
   //uint8_t Volume;
   //uint8_t MinutesBetweenAlerts;
   //uint8_t FriendCycleCount;
