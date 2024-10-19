@@ -14,6 +14,8 @@
   * Make use of DEFAULT_BEACON_TIMEOUT_MINUTES.
   * 
   * https://mapsvg.com/maps/world
+  * 
+  * Map from https://www.fla-shop.com/svg/
   */
   
  #include "Arduino.h"

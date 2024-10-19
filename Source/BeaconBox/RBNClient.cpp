@@ -57,7 +57,7 @@ bool rbnClientProcessData(char *callsign) {
       // Yes, clear the buffer and read until the end of line
           
       int bi = 0;
-      memset(rbnLineBuffer,0,2048 + 1);
+      memset(rbnLineBuffer,0,RBN_LINE_BUFFER_SIZE + 1);
       while ((rbnClient.connected()) && (rbnClient.available()) && (bi < RBN_LINE_BUFFER_SIZE)) {
 
         //Serial.printf("%s\n",rbnLineBuffer);

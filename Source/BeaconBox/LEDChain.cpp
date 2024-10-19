@@ -43,6 +43,7 @@ void ledChainBlinkAll() {
   FastLED.show();
   delay(500);
 
+/*
   // Turn all LEDs on forward
   
   for(int i = 0; i < NUM_LEDS; i++)
@@ -56,7 +57,9 @@ void ledChainBlinkAll() {
     FastLED.show();
     
   }
+  */
 
+/*
   // Turn all LEDs on backwards
   
   for(int i = NUM_LEDS - 1; i > 0; i--)
@@ -70,6 +73,7 @@ void ledChainBlinkAll() {
     FastLED.show();
     
   }  
+  */
 
   for(int i = 0; i < NUM_LEDS; i++)
   {
