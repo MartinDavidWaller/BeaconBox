@@ -11,17 +11,12 @@
 
 #include "Arduino.h"
 #include <mutex>
-//include <RingBufCPP.h>
 #include <time.h>
 #include "Beacons.h"
 #include "Configuration.h"
 #include "FormatHelper.h"
 #include "LEDChain.h"
 #include "StringHelper.h"
-
-//include "freertos/FreeRTOS.h"
-//include "freertos/task.h"
-//include "freertos/ringbuf.h"
 
 #define MAX_NUM_ELEMENTS 10
 #define FREQUENCY_DELTA 10
@@ -30,6 +25,8 @@
 #define CALLSIGN_MAX_LENGTH 20
 
 extern struct Configuration configuration;
+extern void sendAllBeaconsOffToBeaconListeners();
+extern void sendBeaconOnOffToBeaconListeners(char *beacon, bool onOff);
 
 struct beaconCallsignIndex {
   char *Callsign;
@@ -427,16 +424,18 @@ void beaconsStepBeacon() {
   // Turn all the beacons leds off
 
   for(int i = LED_BEACON_FIRST; i <= LED_BEACON_LAST; i++) {
+    
     ledSetIndexColour(i,CRGB::Black);
   }
 
-  // Turn the band led on
-
-CRGB bandLEDColour = CRGB::Red;
-  //ledSetIndexColour(hhh[activehhh].BandLED,CRGB::White);
+  sendAllBeaconsOffToBeaconListeners();
 
   // Now we need to loop though the spots associated with the band to see
   // if we have anthing.
+
+  // Set the band led red to indicate no beacons spotted
+  
+  CRGB bandLEDColour = CRGB::Red;
 
   // Loop through all the beacons
 
@@ -456,7 +455,6 @@ CRGB bandLEDColour = CRGB::Red;
 
       bool lightBeacon = false;
         
-
       int cbi = -1;
     
       do {
@@ -492,23 +490,26 @@ CRGB bandLEDColour = CRGB::Red;
 
       } while (cbi != band->Rear);
 
-          if (true == lightBeacon) {
-
-      Serial.printf(".... Beacon %s %f\n", beaconNames[b], freqencies[hhh[activehhh].Band]);
-      ledSetIndexColour(beaconLEDs[b],CRGB::Green);
-
- bandLEDColour = CRGB::Green;
-        // Turn the band led on
-
-  //ledSetIndexColour(hhh[activehhh].BandLED,CRGB::Green);
+      // Do we need to light the beacon?
       
+      if (true == lightBeacon) {
+
+        // Yes we do.
+        
+        Serial.printf(".... Beacon %s %f\n", beaconNames[b], freqencies[hhh[activehhh].Band]);
+        ledSetIndexColour(beaconLEDs[b],CRGB::Green);
+
+        sendBeaconOnOffToBeaconListeners(beaconNames[b], true);
+
+        // Set the band LED colour green to mark beacons have been seen
+        
+        bandLEDColour = CRGB::Green;
+      }
     }
-
-    }
-
-
   }
 
+  // Set the band LED 
+  
   ledSetIndexColour(hhh[activehhh].BandLED,bandLEDColour);
   
   // Step on to the next band
@@ -518,6 +519,7 @@ CRGB bandLEDColour = CRGB::Red;
     activehhh = 0;
   }
 
+  // Clear the mutex access
   
   xSemaphoreGive(mutex); 
 }

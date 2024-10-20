@@ -135,54 +135,6 @@ bool rbnClientProcessData(char *callsign) {
             beaconsSpotted(spotter,spotted,frequency);
 
             ledSetIndexColour(LED_MISC_1,CRGB::Black);
-            
-            // Update the callsign count
-                
-            //runtimeData.SpotsSeen++;
-                
-            // Update the last spot seen date/time
-
-            //time(&runtimeData.LastSpotSeen);
-                
-            // Did we find a friend?
-                
-            //if (NULL != _friend) {
-
-              // Yes, we have just seen a friend. We need to locate the FriendExt record
-              // and decide if we need to make a sound!
-
-              //struct FriendExt *friendExt = GetFriendExt(_friend);
-
-              // We are going to need to the time to decide if we sound an alert
-              // and to update the FriendExt record
-
-              //time_t now;
-              //time(&now);
-
-              // Do we action this alert
-
-              //if (now - friendExt->LastAlert > configuration.MinutesBetweenAlerts * 60) {
-
-                // Yes we action the alert.
-
-                //currentRBNState = DISPLAY_FRIEND_ALERT;
-                //displayFriendAlert(_friend);  
-  
-                // Do we want to make a noise?
-
-                //if ((true == IS_SOUND_ENABLED((&configuration))) &&
-                //    (true == IS_FRIEND_SOUND_ENABLED(_friend))) {
-
-                  // Yes we do, we need to sound an alert.
-
-                  //PlaySound(_friend->Sound);                    
-                //}
-
-                // Update the last alert time
-
-                //friendExt->LastAlert = now;                    
-              //}                    
-            //}
           }
         }
       }

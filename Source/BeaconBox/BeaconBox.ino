@@ -315,7 +315,7 @@ void connectToWiFi() {
 
 void spotHandler(char *spotter, char*spotted, double frequency, char *rbnTime) {
 
-  Serial.printf("spotHandler: spotter: %s, spotted %s, frequency %f, time %s\n", spotter, spotted, frequency, rbnTime); 
+  //Serial.printf("spotHandler: spotter: %s, spotted %s, frequency %f, time %s\n", spotter, spotted, frequency, rbnTime); 
 
   sendToRBNDataListeners(spotter, spotted, frequency, rbnTime);
 }

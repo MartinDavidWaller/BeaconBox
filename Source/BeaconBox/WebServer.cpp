@@ -21,6 +21,8 @@
 
 AsyncWebServer server(80); 
 AsyncWebSocket rbnDataWebSocket("/rbnData");
+AsyncWebSocket beaconDataWebSocket("/beaconData");
+StaticJsonDocument<200> beaconJSONOut; 
 StaticJsonDocument<200> rbnJSONOut;        
 
 extern time_t startUpTime;
@@ -479,6 +481,86 @@ void onGetBackup(AsyncWebServerRequest *request){
 }
 */
 
+void onBeaconDataWebSocketEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
+
+  Serial.println("onRBNDataWebSocketEvent");
+
+  if(type == WS_EVT_CONNECT){
+ 
+    Serial.println("Websocket client connection received");
+    //client->text("Hello from ESP32 Server");
+ 
+  } else if(type == WS_EVT_DISCONNECT){
+    
+    Serial.println("Client disconnected");
+ 
+  }  
+}
+
+void sendAllBeaconsOffToBeaconListeners() {
+
+  // Clear the json object
+  
+  beaconJSONOut.clear();
+
+  // Add the data to the JSON object
+
+  beaconJSONOut["ACTION"] = "ALL_BEACONS_OFF";
+
+  // Serialise it to the buffer
+
+  char jsonString[1024];
+  serializeJson(beaconJSONOut,jsonString);
+
+  Serial.printf("*********** %s\n",jsonString);
+  beaconDataWebSocket.textAll(jsonString);
+}
+
+void sendBeaconOnOffToBeaconListeners(char *beacon, bool onOff) {
+
+  char cvtBuffer[100];
+  
+  // Clear the json object
+  
+  beaconJSONOut.clear();
+
+  // Add the data to the JSON object
+
+  beaconJSONOut["ACTION"] = "BEACON_ON_OFF";
+  beaconJSONOut["BEACON"] = beacon;
+  beaconJSONOut["ONOFF"] = true == onOff ? "1" : "0";
+
+  // Serialise it to the buffer
+
+  char jsonString[1024];
+  serializeJson(beaconJSONOut,jsonString);
+
+  Serial.printf("*********** %s\n",jsonString);
+  beaconDataWebSocket.textAll(jsonString);
+}
+
+void sendToBeaconListeners(char *beacon, bool onOff) {
+
+  char cvtBuffer[100];
+  
+  // Clear the json object
+  
+  beaconJSONOut.clear();
+
+  // Add the data to the JSON object
+  
+  beaconJSONOut["BEACON"] = beacon;
+  beaconJSONOut["ONOFF"] = true == onOff ? "1" : "0";
+
+  // Serialise it to the buffer
+
+  char jsonString[1024];
+  serializeJson(beaconJSONOut,jsonString);
+
+  Serial.printf("*********** %s\n",jsonString);
+  beaconDataWebSocket.textAll(jsonString);
+}
+
 void onRBNDataWebSocketEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
 
   Serial.println("onRBNDataWebSocketEvent");
@@ -497,36 +579,43 @@ void onRBNDataWebSocketEvent(AsyncWebSocket * server, AsyncWebSocketClient * cli
 
 void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char *rbnTime) {
 
-  char cvtBuffer[100];
+  // Do we have space to queue up the next message?
   
-  // Clear the json object
+  if (true == rbnDataWebSocket.availableForWriteAll()) {
   
-  rbnJSONOut.clear();
-
-  // Add the data to the JSON object
+    char cvtBuffer[100];
   
-  rbnJSONOut["SPOTTER"] = spotter;
-  rbnJSONOut["SPOTTED"] = spotted;
-  rbnJSONOut["TIME"] = rbnTime;
+    // Clear the json object
+  
+    rbnJSONOut.clear();
 
-  sprintf(cvtBuffer,"%.03f Mhz",frequency / 1000.0);
-  rbnJSONOut["FREQUENCY"] = cvtBuffer;
+    // Add the data to the JSON object
+  
+    rbnJSONOut["SPOTTER"] = spotter;
+    rbnJSONOut["SPOTTED"] = spotted;
+    rbnJSONOut["TIME"] = rbnTime;
 
-  // Serialise it to the buffer
+    sprintf(cvtBuffer,"%.03f Mhz",frequency / 1000.0);
+    rbnJSONOut["FREQUENCY"] = cvtBuffer;
 
-  char jsonString[1024];
-  serializeJson(rbnJSONOut,jsonString);
+    // Serialise it to the buffer
 
-  Serial.printf("*********** %s\n",jsonString);
-  rbnDataWebSocket.textAll(jsonString);
+    char jsonString[1024];
+    serializeJson(rbnJSONOut,jsonString);
+
+    //Serial.printf("*********** %s\n",jsonString);
+    rbnDataWebSocket.textAll(jsonString);
+  }
 }
 
 extern void webServerSetUp()
 { 
-  // Setup the websocket
+  // Setup the websockets
 
+  rbnDataWebSocket.onEvent(onBeaconDataWebSocketEvent);
+  server.addHandler(&beaconDataWebSocket);
+  
   rbnDataWebSocket.onEvent(onRBNDataWebSocketEvent);
-
   server.addHandler(&rbnDataWebSocket);
   
   // Setup the webserver
