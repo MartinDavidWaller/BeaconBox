@@ -539,6 +539,52 @@ void sendBeaconOnOffToBeaconListeners(char *beacon, bool onOff) {
   beaconDataWebSocket.textAll(jsonString);
 }
 
+void sendAllFrequenciesOffToBeaconListeners() {
+
+  // Clear the json object
+  
+  beaconJSONOut.clear();
+
+  // Add the data to the JSON object
+
+  beaconJSONOut["ACTION"] = "ALL_FREQUENCIES_OFF";
+
+  // Serialise it to the buffer
+
+  char jsonString[1024];
+  serializeJson(beaconJSONOut,jsonString);
+
+  Serial.printf("*********** %s\n",jsonString);
+  beaconDataWebSocket.textAll(jsonString);
+}
+
+void sendFrequencyActiveInActiveToBeaconListeners(double frequency, bool activeInActive) {
+
+  char cvtBuffer[100];
+  
+  // Clear the json object
+  
+  beaconJSONOut.clear();
+
+  // Add the data to the JSON object
+
+  beaconJSONOut["ACTION"] = "FREQUENCY_ACTIVE_INACTIVE";
+
+  sprintf(cvtBuffer,"%d",(int)(frequency * 1000)); 
+  beaconJSONOut["FREQUENCY"] = cvtBuffer;
+  
+  beaconJSONOut["ACTIVEINACTIVE"] = true == activeInActive ? "1" : "0";
+
+  // Serialise it to the buffer
+
+  char jsonString[1024];
+  serializeJson(beaconJSONOut,jsonString);
+
+  Serial.printf("*********** %s\n",jsonString);
+  beaconDataWebSocket.textAll(jsonString);
+}
+
+/*
 void sendToBeaconListeners(char *beacon, bool onOff) {
 
   char cvtBuffer[100];
@@ -560,6 +606,7 @@ void sendToBeaconListeners(char *beacon, bool onOff) {
   Serial.printf("*********** %s\n",jsonString);
   beaconDataWebSocket.textAll(jsonString);
 }
+*/
 
 void onRBNDataWebSocketEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
 

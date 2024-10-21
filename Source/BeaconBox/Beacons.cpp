@@ -27,6 +27,8 @@
 extern struct Configuration configuration;
 extern void sendAllBeaconsOffToBeaconListeners();
 extern void sendBeaconOnOffToBeaconListeners(char *beacon, bool onOff);
+extern void sendAllFrequenciesOffToBeaconListeners();
+extern void sendFrequencyActiveInActiveToBeaconListeners(double frequency, bool activeInActive);
 
 struct beaconCallsignIndex {
   char *Callsign;
@@ -377,7 +379,7 @@ struct hhh {
   
 } hhh[] = 
 {
-  { F_14100, LED_BEACON_FREQUENCY_14110 },
+  { F_14100, LED_BEACON_FREQUENCY_14100 },
   { F_18110, LED_BEACON_FREQUENCY_18110 },
   { F_21150, LED_BEACON_FREQUENCY_21150 },
   { F_24930, LED_BEACON_FREQUENCY_24930 },
@@ -429,6 +431,10 @@ void beaconsStepBeacon() {
   }
 
   sendAllBeaconsOffToBeaconListeners();
+
+  // Turn all frequencies off
+
+  sendAllFrequenciesOffToBeaconListeners();
 
   // Now we need to loop though the spots associated with the band to see
   // if we have anthing.
@@ -511,6 +517,8 @@ void beaconsStepBeacon() {
   // Set the band LED 
   
   ledSetIndexColour(hhh[activehhh].BandLED,bandLEDColour);
+
+  sendFrequencyActiveInActiveToBeaconListeners(freqencies[hhh[activehhh].Band], CRGB::Green == bandLEDColour);
   
   // Step on to the next band
 

@@ -36,6 +36,22 @@
 		  	"B_ZS6DN",
 		 ];
 
+		 var allFrequencyCircleIDs = [
+		 	"F_14100_C",
+		 	"F_18110_C",
+		 	"F_21150_C",
+		 	"F_24930_C",
+		 	"F_28200_C"
+		 ];
+
+		 var allFrequencyTextIDs = [
+		 	"F_14100_T",
+		 	"F_18110_T",
+		 	"F_21150_T",
+		 	"F_24930_T",
+		 	"F_28200_T"
+		 ];
+
   		function updateUpTime()
         {
             //$("#svgMap").contents().find("myRectangle").attr("fill", "red");
@@ -89,10 +105,29 @@
 				if (msg.ACTION == "BEACON_ON_OFF") {
 
 					$("#B_" + msg.BEACON).attr("fill", "green");
+					$("#B_" + msg.BEACON + "_T").attr("fill", "green");
+
 				}
 				else if (msg.ACTION == "ALL_BEACONS_OFF") {
 
 					allBeaconIDs.forEach((e) => $("#" + e).attr("fill", "white"));
+					allBeaconIDs.forEach((e) => $("#" + e + "_T").attr("fill", "black"));
+
+				}
+				else if (msg.ACTION == "ALL_FREQUENCIES_OFF") {
+
+					allFrequencyCircleIDs.forEach((e) => $("#" + e).attr("fill", "white"));
+					allFrequencyTextIDs.forEach((e) => $("#" + e).attr("fill", "black"));
+
+				}
+				else if (msg.ACTION == "FREQUENCY_ACTIVE_INACTIVE") {
+
+					let frequency = msg.FREQUENCY;
+					let activeInActive = msg.ACTIVEINACTIVE;
+
+					$("#F_" + msg.FREQUENCY + "_C").attr("fill", msg.ACTIVEINACTIVE == "1" ? "green" : "red");
+					$("#F_" + msg.FREQUENCY + "_T").attr("fill", msg.ACTIVEINACTIVE == "1" ? "green" : "red");
+
 				}
             };
 
@@ -180,24 +215,25 @@
 							.frequency {
     							font-family: Georgia, "Trebuchet MS", Arial, Helvetica, sans-serif;
     							font-size: 8px;
+    							font-weight: bold;
 							}
 
   						</style>
 
-						<circle id="F_14110_C" cx="10" cy="20" r="10" fill="black" />
-						<text id="F_14110_T" x="0" y="50" fill="black" class="frequency">14.110 Mhz</text>
+						<circle id="F_14100_C" cx="20" cy="20" r="10" stroke="black" stroke-width="2" fill="white" />
+						<text id="F_14100_T" x="0" y="50" fill="black" class="frequency">14.100Mhz</text>
 
-						<circle id="F_18110_C" cx="60" cy="20" r="10" fill="black" />
-						<text id="F_18110_T" x="50" y="50" fill="black" class="frequency">18.110 Mhz</text>
+						<circle id="F_18110_C" cx="70" cy="20" r="10" stroke="black" stroke-width="2" fill="white" />
+						<text id="F_18110_T" x="50" y="50" fill="black" class="frequency">18.110Mhz</text>
 
-						<circle id="F_21150_C" cx="110" cy="20" r="10" fill="black" />
-						<text id="F_21150_T" x="100" y="50" fill="black" class="frequency">21.150 Mhz</text>
+						<circle id="F_21150_C" cx="120" cy="20" r="10" stroke="black" stroke-width="2" fill="white" />
+						<text id="F_21150_T" x="100" y="50" fill="black" class="frequency">21.150Mhz</text>
 
-						<circle id="F_24930_C" cx="160" cy="20" r="10" fill="black" />
-						<text id="F_24930_T" x="150" y="50" fill="black" class="frequency">24.930 Mhz</text>
+						<circle id="F_24930_C" cx="170" cy="20" r="10" stroke="black" stroke-width="2" fill="white" />
+						<text id="F_24930_T" x="150" y="50" fill="black" class="frequency">24.930Mhz</text>
 
-						<circle id="F_28200_C" cx="210" cy="20" r="10" fill="black" />
-						<text id="F_28200_T" x="200" y="50" fill="black" class="frequency">28.200 Mhz</text>
+						<circle id="F_28200_C" cx="220" cy="20" r="10" stroke="black" stroke-width="2" fill="white" />
+						<text id="F_28200_T" x="200" y="50" fill="black" class="frequency">28.200Mhz</text>
 
 					</svg>
 				</div>
@@ -225,76 +261,76 @@
 				   	<!-- <rect id="myRectangle" width="200" height="100" x="1000" y="640" rx="20" ry="20" fill="green" /> -->
 
 					<!-- 4S7B -->
-					<circle id="B_4S7B" cx="1395" cy="870" r="10" stroke="black" stroke-width="2" fill="white" />
-				   	<text x="1415" y="870" fill="red" class="heavy">4S7B</text>
+					<circle id="B_4S7B" cx="1395" cy="870" r="16" stroke="black" stroke-width="2" fill="white" />
+				   	<text id="B_4S7B_T" x="1418" y="873" fill="black" class="heavy">4S7B</text>
 
 				   	<!-- 4U1UN -->
-				   	<circle id="B_4U1UN" cx="580" cy="670" r="10" stroke="black" stroke-width="2" fill="white" />
-				   	<text x="600" y="670" fill="red" class="heavy">4U1UN</text>
+				   	<circle id="B_4U1UN" cx="580" cy="670" r="16" stroke="black" stroke-width="2" fill="white" />
+				   	<text id="B_4U1UN_T" x="603" y="673" fill="black" class="heavy">4U1UN</text>
 
     				<!-- 4X6TU -->
-    				<circle id="B_4X6TU" cx="1160" cy="710" r="10" stroke="black" stroke-width="2" fill="white" />
-  					<text x="1180" y="710" fill="red" class="heavy">4X6TU</text>
+    				<circle id="B_4X6TU" cx="1160" cy="710" r="16" stroke="black" stroke-width="2" fill="white" />
+  					<text id="B_4X6TU_T" x="1183" y="713" fill="black" class="heavy">4X6TU</text>
 
    					<!-- 5Z4B -->
-    				<circle id="B_5Z4B" cx="1175" cy="915" r="10" stroke="black" stroke-width="2" fill="white" />
-  					<text x="1195" y="915" fill="red" class="heavy">5Z4B</text>
+    				<circle id="B_5Z4B" cx="1175" cy="915" r="16" stroke="black" stroke-width="2" fill="white" />
+  					<text id="B_5Z4B_T" x="1198" y="918" fill="black" class="heavy">5Z4B</text>
 
   				   	<!-- CS3B -->
-    			   	<circle id="B_CS3B" cx="880" cy="720" r="10" stroke="black" stroke-width="2" fill="white" />
-  					<text x="900" y="720" fill="red" class="heavy">CS3B</text>
+    			   	<circle id="B_CS3B" cx="880" cy="720" r="16" stroke="black" stroke-width="2" fill="white" />
+  					<text id="B_CS3B_T" x="903" y="723" fill="black" class="heavy">CS3B</text>
 
 					<!-- JA2IGY -->
-				   	<circle id="B_JA2IGY" cx="1690" cy="710" r="10" stroke="black" stroke-width="2" fill="white" />
-				   	<text x="1710" y="710" fill="red" class="heavy">JA2IGY</text>
+				   	<circle id="B_JA2IGY" cx="1690" cy="710" r="16" stroke="black" stroke-width="2" fill="white" />
+				   	<text id="B_JA2IGY_T" x="1713" y="713" fill="black" class="heavy">JA2IGY</text>
 
 				   	<!-- KH6RS -->
-				   	<circle id="B_KH6RS" cx="140" cy="800" r="10" stroke="black" stroke-width="2" fill="white" />
-				   	<text x="160" y="800" fill="red" class="heavy">KH6RS</text>
+				   	<circle id="B_KH6RS" cx="140" cy="800" r="16" stroke="black" stroke-width="2" fill="white" />
+				   	<text id="B_KH6RS_T" x="163" y="803" fill="black" class="heavy">KH6RS</text>
 
    					<!-- LU4AA -->
-   					<circle id="B_LU4AA" cx="660" cy="1100" r="10" stroke="black" stroke-width="2" fill="white" />
-  					<text x="680" y="1100" fill="red" class="heavy">LU4AA</text>
+   					<circle id="B_LU4AA" cx="660" cy="1100" r="16" stroke="black" stroke-width="2" fill="white" />
+  					<text id="B_LU4AA_T" x="683" y="1103" fill="black" class="heavy">LU4AA</text>
 
    					<!-- OA4B -->
-    				<circle id="B_OA4B" cx="560" cy="970" r="10" stroke="black" stroke-width="2" fill="white" />
-  					<text x="580" y="970" fill="red" class="heavy">OA4B</text>
+    				<circle id="B_OA4B" cx="560" cy="970" r="16" stroke="black" stroke-width="2" fill="white" />
+  					<text id="B_OA4B_T" x="583" y="973" fill="black" class="heavy">OA4B</text>
 
    					<!-- OH2B -->
-    				<circle id="B_OH2B" cx="1100" cy="495" r="10" stroke="black" stroke-width="2" fill="white" />
-  					<text x="1120" y="495" fill="red" class="heavy">OH2B</text>
+    				<circle id="B_OH2B" cx="1100" cy="495" r="16" stroke="black" stroke-width="2" fill="white" />
+  					<text id="B_OH2B_T" x="1123" y="498" fill="black" class="heavy">OH2B</text>
 
 					<!-- RR90 -->
-					<circle id="B_RR90" cx="1390" cy="520" r="10" stroke="black" stroke-width="2" fill="white" />
-				   	<text x="1410" y="520" fill="red" class="heavy">RR90</text>
+					<circle id="B_RR90" cx="1390" cy="520" r="16" stroke="black" stroke-width="2" fill="white" />
+				   	<text id="B_RR90_T" x="1413" y="523" fill="black" class="heavy">RR90</text>
 
   					<!-- VE8AT -->
-  				    <circle id="B_VE8AT" cx="250" cy="400" r="10" stroke="black" stroke-width="2" fill="white" />
-  					<text x="270" y="400" fill="red" class="heavy">VE8AT</text>
+  				    <circle id="B_VE8AT" cx="250" cy="400" r="16" stroke="black" stroke-width="2" fill="white" />
+  					<text id="B_VE8AT_T" x="273" y="403" fill="black" class="heavy">VE8AT</text>
 
 					<!-- VK6RBP -->
-				   	<circle id="B_VK6RBP" cx="1585" cy="1080" r="10" stroke="black" stroke-width="2" fill="white" />
-				   	<text x="1605" y="1080" fill="red" class="heavy">VK6RBP</text>
+				   	<circle id="B_VK6RBP" cx="1585" cy="1080" r="16" stroke="black" stroke-width="2" fill="white" />
+				   	<text id="B_VK6RBP_T" x="1608" y="1083" fill="black" class="heavy">VK6RBP</text>
 
 					<!-- VR2B -->
-				   	<circle id="B_VR2B" cx="1575" cy="780" r="10" stroke="black" stroke-width="2" fill="white" />
-				   	<text x="1595" y="780" fill="red" class="heavy">VR2B</text>
+				   	<circle id="B_VR2B" cx="1575" cy="780" r="16" stroke="black" stroke-width="2" fill="white" />
+				   	<text id="B_VR2B_T" x="1598" y="783" fill="black" class="heavy">VR2B</text>
 
 				    <!-- W6XW -->
-				    <circle id="B_W6XW" cx="320" cy="700" r="10" stroke="black" stroke-width="2" fill="white" />
-  					<text x="340" y="700" fill="red" class="heavy">W6XW</text>
+				    <circle id="B_W6XW" cx="320" cy="700" r="16" stroke="black" stroke-width="2" fill="white" />
+  					<text id="B_W6XW_T" x="343" y="703" fill="black" class="heavy">W6XW</text>
 
          			<!-- YV5B -->
-  				    <circle id="B_YV5B" cx="610" cy="850" r="10" stroke="black" stroke-width="2" fill="white" />
-  					<text x="630" y="850" fill="red" class="heavy">YV5B</text>
+  				    <circle id="B_YV5B" cx="610" cy="850" r="16" stroke="black" stroke-width="2" fill="white" />
+  					<text id="B_YV5B_T" x="633" y="853" fill="black" class="heavy">YV5B</text>
 
        				<!-- Zl6B -->
-			     	<circle id="B_Zl6B" cx="1910" cy="1140" r="10" stroke="black" stroke-width="2" fill="white" />
-  					<text x="1930" y="1140" fill="red" class="heavy">Zl6B</text>
+			     	<circle id="B_Zl6B" cx="1910" cy="1140" r="16" stroke="black" stroke-width="2" fill="white" />
+  					<text id="B_Zl6B_T" x="1933" y="1143" fill="black" class="heavy">Zl6B</text>
 
        				<!-- ZS6DN -->
-					<circle id="B_ZS6DN" cx="1120" cy="1060" r="10" stroke="black" stroke-width="2" fill="white" />
-  					<text x="1140" y="1060" fill="red" class="heavy">ZS6DN</text>
+					<circle id="B_ZS6DN" cx="1120" cy="1060" r="16" stroke="black" stroke-width="2" fill="white" />
+  					<text id="B_ZS6DN_T" x="1143" y="1063" fill="black" class="heavy">ZS6DN</text>
 
 				</svg>
 
