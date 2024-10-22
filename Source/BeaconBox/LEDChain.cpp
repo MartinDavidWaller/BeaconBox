@@ -106,3 +106,18 @@ void ledSetIndexColour(int index,CRGB colour)
   leds[index] = colour;
   FastLED.show();
 }
+
+void ledTurnOffAllFrequencyLeds() {
+
+  for(int i = LED_BEACON_FREQUENCY_FIRST; i <= LED_BEACON_FREQUENCY_LAST; i++) {
+    ledSetIndexColour(i,CRGB::Black);
+  }
+}
+
+void ledTurnOffAllBeaconLeds() {
+
+  for(int i = LED_BEACON_FIRST; i <= LED_BEACON_LAST; i++) {
+    
+    ledSetIndexColour(i,CRGB::Black);
+  }
+}

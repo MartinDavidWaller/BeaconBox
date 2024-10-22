@@ -32,7 +32,6 @@
 
 #define MODE_PIN 25
 
-
 // Defined methods / data
 
 //extern struct RuntimeData runtimeData;

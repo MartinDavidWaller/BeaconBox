@@ -33,6 +33,14 @@
 #include "RBNClient.h"
 #include "WebServer.h"
 
+// The following enumeration is used to control the operation mode
+
+typedef enum {
+  
+  OPERATION_MODE_BEACONS_HEARD,     // Usual mode, reporting beacons that have been heard
+  OPERATION_MODE_NCDXF_IARU         // NCDXF/IARU Transmission schedule mode
+} OPERATION_MODE;
+
 // The following manifests are used to control the active state
 
 typedef enum {
@@ -47,6 +55,8 @@ typedef enum {
 // Define the working data
 
 struct Configuration configuration;               // Configuration object
+OPERATION_MODE activeMode;                        // Active mode
+OPERATION_MODE requestedMode;                     // Requested mode, changed by the mode switch
 RUNNING_STATE currentState;                       // Current running state
 time_t startUpTime;                               // Startup time
 
@@ -63,6 +73,34 @@ boolean startAP() {
   return result;
 }  
 
+void IRAM_ATTR switchInterrupt() {
+
+  static unsigned long last_interrupt_time = 0;
+
+  // Get the interrupt time
+  
+  unsigned long interrupt_time = millis();
+  
+  // Is it 200 ms greater than the last interrupt, if not ignore it
+  
+  if (interrupt_time - last_interrupt_time > 200) 
+  {
+    Serial.printf("********** INTERRUPT\n");
+
+    // Update the requested mode depending on the active node. Basically
+    // switch it between the two.
+
+    if (OPERATION_MODE_BEACONS_HEARD == activeMode)
+      activeMode = OPERATION_MODE_NCDXF_IARU;
+    else
+      activeMode = OPERATION_MODE_BEACONS_HEARD;
+  }
+
+  // Update the last interrupt time
+  
+  last_interrupt_time = interrupt_time;
+}
+
 // This is the setup routine. It all starts here.
 
 void setup() {
@@ -74,13 +112,18 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
   } 
 
+  Serial.println("Up and running");
+  
   // Set up the mode button
 
   pinMode(MODE_PIN,INPUT_PULLUP);
 
   Serial.printf("********** %d\n",digitalRead(MODE_PIN));
-  
-  Serial.println("Up and running");
+
+  // Set the active mode and requested mode to the default
+
+  activeMode = OPERATION_MODE_BEACONS_HEARD;
+  requestedMode = OPERATION_MODE_BEACONS_HEARD;
 
   // Setup the LEDs and put on a short display.
 
@@ -223,6 +266,10 @@ void setup() {
     // ***************** progressAccessPointOpen();
   }
 
+  // Setup the interrupt service routine
+
+  attachInterrupt(MODE_PIN, switchInterrupt, FALLING);
+  
   // Setup the beacons
 
   beaconsSetUp(&configuration.SpotterWildcards[0]);
@@ -320,12 +367,41 @@ void spotHandler(char *spotter, char*spotted, double frequency, char *rbnTime) {
   sendToRBNDataListeners(spotter, spotted, frequency, rbnTime);
 }
 
-time_t lastBeaconDump = -1;
+time_t lastBeaconFrequencyStep = -1;
+
+void doBeaconsHeardMode() {
+
+  // Here we are displaying beacons that have been heard.
+  
+  // We need to decide if the time is right to step on to the
+  // next beacon frequency
+
+  // Get the time
+  
+  time_t timeNow;
+  time(&timeNow);
+
+  // Is it time to update the beacons frequency?
+  
+  if (timeNow > lastBeaconFrequencyStep + 5) {
+
+    // Yes, step the beacons
+    
+    dumpBeacons();
+    beaconsStepBeacon();
+
+    // Update the time of the last step
+    
+    time(&lastBeaconFrequencyStep);
+  }
+}
 
 void loop() {
 
-  if (-1 == lastBeaconDump) {
-    time(&lastBeaconDump);
+  // Do we need to initialise the last frequency step time?
+  
+  if (-1 == lastBeaconFrequencyStep) {
+    time(&lastBeaconFrequencyStep);
   }
   
   // What we do here depend on what state we are in.
@@ -375,19 +451,34 @@ void loop() {
 
     case STATE_RECIEVING_RBN_DATA:
 
+      // Have we changed mode?
+
+      if (activeMode == requestedMode) {
+
+        // No change.
+
+        if (activeMode == OPERATION_MODE_BEACONS_HEARD) {
+
+          doBeaconsHeardMode();
+        }
+        else {
+          
+        }
+      }
       // Dump the beacons if we are on time
 
-      time_t timeNow;
-      time(&timeNow);
-      if (timeNow > lastBeaconDump + 5) {
+      //time_t timeNow;
+      //time(&timeNow);
+      //if (timeNow > lastBeaconDump + 5) {
 
-        dumpBeacons();
-        beaconsStepBeacon();
+        //dumpBeacons();
+        //beaconsStepBeacon();
 
-        time(&lastBeaconDump);
-      }
+        //time(&lastBeaconDump);
+      //}
       
-      // Process any data that we have
+      // Whatever mode we are in we need to process any data that we have received
+      // from the reverse beacon network.
       
       bool stillConnected = rbnClientProcessData((char*)&configuration.Callsign[0]);
 

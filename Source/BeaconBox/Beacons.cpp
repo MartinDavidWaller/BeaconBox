@@ -417,31 +417,21 @@ void beaconsStepBeacon() {
   
   // Here we display the active band and then move onto the next
 
-  // Turn all the band leds off
-
-  for(int i = LED_BEACON_FREQUENCY_FIRST; i <= LED_BEACON_FREQUENCY_LAST; i++) {
-    ledSetIndexColour(i,CRGB::Black);
-  }
-
-  // Turn all the beacons leds off
-
-  for(int i = LED_BEACON_FIRST; i <= LED_BEACON_LAST; i++) {
-    
-    ledSetIndexColour(i,CRGB::Black);
-  }
-
-  sendAllBeaconsOffToBeaconListeners();
-
-  // Turn all frequencies off
+  // Turn off all frequency and beacons leds both on the board and
+  // on the webpage.
+  
+  ledTurnOffAllFrequencyLeds();
+  ledTurnOffAllBeaconLeds();
 
   sendAllFrequenciesOffToBeaconListeners();
+  sendAllBeaconsOffToBeaconListeners();
 
   // Now we need to loop though the spots associated with the band to see
   // if we have anthing.
 
-  // Set the band led red to indicate no beacons spotted
+  // Set the frequency led red to indicate no beacons spotted
   
-  CRGB bandLEDColour = CRGB::Red;
+  CRGB frequencyLEDColour = CRGB::Red;
 
   // Loop through all the beacons
 
@@ -509,16 +499,16 @@ void beaconsStepBeacon() {
 
         // Set the band LED colour green to mark beacons have been seen
         
-        bandLEDColour = CRGB::Green;
+        frequencyLEDColour = CRGB::Green;
       }
     }
   }
 
-  // Set the band LED 
+  // Set the frequency LED 
   
-  ledSetIndexColour(hhh[activehhh].BandLED,bandLEDColour);
+  ledSetIndexColour(hhh[activehhh].BandLED,frequencyLEDColour);
 
-  sendFrequencyActiveInActiveToBeaconListeners(freqencies[hhh[activehhh].Band], CRGB::Green == bandLEDColour);
+  sendFrequencyActiveInActiveToBeaconListeners(freqencies[hhh[activehhh].Band], CRGB::Green == frequencyLEDColour);
   
   // Step on to the next band
 
@@ -530,5 +520,117 @@ void beaconsStepBeacon() {
   // Clear the mutex access
   
   xSemaphoreGive(mutex); 
+}
+
+// All code below this point implements the OPERATION_MODE_NCDXF_IARU mode of
+// operation.
+
+void beaconsStepNCDXFIARUFrequency() {
+
+  // Turn off all frequency and beacons leds both on the board and
+  // on the webpage.
+  
+  ledTurnOffAllFrequencyLeds();
+  ledTurnOffAllBeaconLeds();
+
+  sendAllFrequenciesOffToBeaconListeners();
+  sendAllBeaconsOffToBeaconListeners();
+
+  
+
+  // Now we need to loop though the spots associated with the band to see
+  // if we have anthing.
+
+  // Set the band led red to indicate no beacons spotted
+  
+  //CRGB bandLEDColour = CRGB::Red;
+
+  // Loop through all the beacons
+
+  //for(int b = 0; b < NUMBER_OF_BEACONS; b++) {
+
+    //Serial.printf(".... Beacon %s %f\n", beaconNames[b], freqencies[hhh[activehhh].Band]);
+    
+    // Pull out the band that we are interested in
+    
+    //struct band *band = &beacons[b].Bands[hhh[activehhh].Band];
+
+    // Do we have any recent spots?
+    
+    //if ((-1 != band->Front) && (-1 != band->Rear)) {
+
+      // Ok, we have entries
+
+      //bool lightBeacon = false;
+        
+      //int cbi = -1;
+    
+     // do {
+
+        //if (-1 == cbi)
+          //cbi = band->Front;
+        //else
+          //cbi = (cbi + 1) % MAXIMUM_SPOT_COUNT;
+
+        // We know that we can display the active entry
+
+        //struct spot* spot = &band->Spots[cbi];
+
+ //Serial.printf("........ %-10s %s\n", &spot->Spotter[0], FormatTimeAsDateTime(spot->TimeHeard));
+
+        //time_t timeNow;
+        //time(&timeNow);
+         //Serial.printf("........ %s %s\n", FormatTimeAsDateTime(timeNow), FormatTimeAsDateTime(spot->TimeHeard + 60 * 5));
+         
+        //if (timeNow < spot->TimeHeard + 60 * configuration.SpotterTimeOutMinutes) {
+
+          //Serial.printf(".... Beacon %s %f\n", beaconNames[b], freqencies[hhh[activehhh].Band]);
+//Serial.printf("........ Yes\n");
+
+          //lightBeacon = true;
+          //break;
+        //}
+      
+        
+
+        //if (band->Front == band->Rear)
+          //break;
+
+      //} while (cbi != band->Rear);
+
+      // Do we need to light the beacon?
+      
+      //if (true == lightBeacon) {
+
+        // Yes we do.
+        
+        //Serial.printf(".... Beacon %s %f\n", beaconNames[b], freqencies[hhh[activehhh].Band]);
+        //ledSetIndexColour(beaconLEDs[b],CRGB::Green);
+
+        //sendBeaconOnOffToBeaconListeners(beaconNames[b], true);
+
+        // Set the band LED colour green to mark beacons have been seen
+        
+        //bandLEDColour = CRGB::Green;
+      //}
+    //}
+  //}
+
+  // Set the band LED 
+  
+  //ledSetIndexColour(hhh[activehhh].BandLED,bandLEDColour);
+
+  //sendFrequencyActiveInActiveToBeaconListeners(freqencies[hhh[activehhh].Band], CRGB::Green == bandLEDColour);
+  
+  // Step on to the next band
+
+  //activehhh++;
+  //if (activehhh > 4) {
+    //activehhh = 0;
+  //}
+
+  // Clear the mutex access
+  
+  //xSemaphoreGive(mutex); 
 }
  

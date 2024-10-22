@@ -51,3 +51,5 @@
 void ledChainSetUp();
 void ledChainBlinkAll();
 void ledSetIndexColour(int index,CRGB colour);
+void ledTurnOffAllFrequencyLeds();
+void ledTurnOffAllBeaconLeds();
