@@ -16,8 +16,8 @@ CRGB leds[NUM_LEDS];
 //
 void ledChainSetUp() {
 
-    FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, NUM_LEDS);
-     FastLED.setBrightness(64);
+  FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, NUM_LEDS);
+  FastLED.setBrightness(64);
 }
 
 //
@@ -25,6 +25,14 @@ void ledChainSetUp() {
 //
 void ledChainBlinkAll() {
 
+  ledSetIndexColour(LED_BEACON_FREQUENCY_14100, CRGB( 0x80,0x00,0x00));   // Maroon
+  ledSetIndexColour(LED_BEACON_FREQUENCY_18110, CRGB( 0x80,0x80,0x00));   // Olive
+  ledSetIndexColour(LED_BEACON_FREQUENCY_21150, CRGB( 0x00,0x00,0x75));   // Navy
+  ledSetIndexColour(LED_BEACON_FREQUENCY_24930, CRGB( 0xff,0xe1,0x19));   // Yellow
+  ledSetIndexColour(LED_BEACON_FREQUENCY_28200, CRGB( 0xff,0xff,0xff));   // White
+  FastLED.show();
+  delay(2000);
+  
   // Make all the LEDs white
   
   fill_solid(leds, NUM_LEDS, CRGB::White);

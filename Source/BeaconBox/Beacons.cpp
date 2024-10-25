@@ -525,30 +525,86 @@ void beaconsStepBeacon() {
 // All code below this point implements the OPERATION_MODE_NCDXF_IARU mode of
 // operation.
 
-struct hhhx {
+CRGB beaconFrequencyColours[] = 
+{
+  CRGB( 0x80,0x00,0x00),   // 14.100 Maroon
+  CRGB( 0x80,0x80,0x00),   // 18.110 Olive
+  CRGB( 0x00,0x00,0x75),   // 21.150 Navy
+  CRGB( 0xff,0xe1,0x19),   // 24.930 Yellow
+  CRGB( 0xff,0xff,0xff)    // 28.200 White
+};
+
+struct beaconFreequencyTime {
   char *Country;
   char *Call;
   int FrequencTimes[5];
+  int Beacon;
   
-} hhhh[] = {
+} beaconFreequencyTimes[] = {
 
-//  Country               Call    Frequency / Time
-//                                14.100        18.110        21.150        24.930        28.200
-  { "United Nations NY", "4U1UN", 00 * 60 + 00, 00 * 60 + 10, 00 * 60 + 20, 00 * 60 + 30, 00 * 60 + 40 },
-  { "Northern Canada",   "VE8AT", 00 * 60 + 10, 00 * 60 + 20, 00 * 60 + 30, 00 * 40 + 30, 00 * 60 + 50 },
-  { "USA (CA)",          "W6WX",  00 * 60 + 20, 00 * 60 + 30, 00 * 60 + 40, 00 * 40 + 50, 01 * 60 + 00 }  
+//  Country               Call     Frequency / Time
+//                                 14.100        18.110        21.150        24.930        28.200        Beacon
+  { "United Nations NY", "4U1UN",  00 * 60 + 00, 00 * 60 + 10, 00 * 60 + 20, 00 * 60 + 30, 00 * 60 + 40, B_4U1UN },
+  { "Northern Canada",   "VE8AT",  00 * 60 + 10, 00 * 60 + 20, 00 * 60 + 30, 00 * 60 + 40, 00 * 60 + 50, B_VE8AT },
+  { "USA (CA)",          "W6WX",   00 * 60 + 20, 00 * 60 + 30, 00 * 60 + 40, 00 * 60 + 50, 01 * 60 + 00, B_W6WX },  
+  { "Hawaii",            "KH6RS",  00 * 60 + 30, 00 * 60 + 40, 00 * 60 + 50, 01 * 60 + 00, 01 * 60 + 10, B_KH6RS },
+  { "New Zealand",       "ZL6N",   00 * 60 + 40, 00 * 60 + 50, 01 * 60 + 00, 01 * 60 + 10, 01 * 60 + 20, B_ZL6B },  
+  { "West Australia",    "VK6RBP", 00 * 60 + 50, 01 * 60 + 00, 01 * 60 + 10, 01 * 60 + 20, 01 * 60 + 30, B_VK6RBP },  
+  { "Japan",             "JA2IGY", 01 * 60 + 00, 01 * 60 + 10, 01 * 60 + 20, 01 * 60 + 30, 01 * 60 + 40, B_JA2IGY },  
+  { "Siberia",           "RR9O",   01 * 60 + 10, 01 * 60 + 20, 01 * 60 + 30, 01 * 60 + 40, 01 * 60 + 50, B_RR90 },    
+  { "Hong Kong",         "VR22B",  01 * 60 + 20, 01 * 60 + 30, 01 * 60 + 40, 01 * 60 + 50, 02 * 60 + 00, B_VR2B},  
+  { "Sri Lanka",         "4S7B" ,  01 * 60 + 30, 01 * 60 + 40, 01 * 60 + 50, 02 * 60 + 00, 02 * 60 + 10, B_4S7B },  
+  { "South Africa",      "ZS6DN",  01 * 60 + 40, 01 * 60 + 50, 02 * 60 + 00, 02 * 60 + 10, 02 * 60 + 20, B_ZS6DN }, 
+  { "Kenya",             "5Z4B",   01 * 60 + 50, 02 * 60 + 00, 02 * 60 + 10, 02 * 60 + 20, 02 * 60 + 30, B_5Z4B }, 
+  { "Isreal",            "4X6TU",  02 * 60 + 00, 02 * 60 + 10, 02 * 60 + 20, 02 * 60 + 30, 02 * 60 + 40, B_4X6TU },
+  { "Finland",           "OH2B",   02 * 60 + 10, 02 * 60 + 20, 02 * 60 + 30, 02 * 60 + 40, 02 * 60 + 50, B_OH2B },
+  { "Maderia",           "CS3B",   02 * 60 + 20, 02 * 60 + 30, 02 * 60 + 40, 02 * 60 + 50, 00 * 60 + 00, B_CS3B },
+  { "Argentina",         "LU4AA",  02 * 60 + 30, 02 * 60 + 40, 02 * 60 + 50, 00 * 60 + 00, 00 * 60 + 10, B_LU4AA },
+  { "Peru",              "OA4B",   02 * 60 + 40, 02 * 60 + 50, 00 * 60 + 00, 00 * 60 + 10, 00 * 60 + 20, B_OA4B },
+  { "Venezuela",         "YV5B",   02 * 60 + 50, 00 * 60 + 00, 00 * 60 + 10, 00 * 60 + 20, 00 * 60 + 30, B_YV5B }
 };
 
-void beaconsStepNCDXFIARUFrequency() {
+void beaconsShowFrequencyColours() {
+
+  ledSetIndexColour(LED_BEACON_FREQUENCY_14100, beaconFrequencyColours[0]);
+  ledSetIndexColour(LED_BEACON_FREQUENCY_18110, beaconFrequencyColours[1]);
+  ledSetIndexColour(LED_BEACON_FREQUENCY_21150, beaconFrequencyColours[2]);
+  ledSetIndexColour(LED_BEACON_FREQUENCY_24930, beaconFrequencyColours[3]);
+  ledSetIndexColour(LED_BEACON_FREQUENCY_28200, beaconFrequencyColours[4]);
+  FastLED.show();
+}
+
+void beaconsShowActiveBeacons() {
+
+  // Start by getting the current time
+
+  time_t timeNow;
+  time(&timeNow);
+
+  // Turn this into a time info buffer
+  
+  struct tm *timeInfo;
+  timeInfo = localtime(&timeNow);
+
+  // Next we need to determine which how far into each 3 minute slot within the
+  // hour we are actually in.
+
+  int threeMinutesMinute = timeInfo->tm_min % 3;
+
+  // Now add in the seconds
+
+  int timeSlotSeconds =threeMinutesMinute + timeInfo->tm_sec;
+    
+  Serial.printf(".... beaconsShowActiveBeacons %d\n",timeSlotSeconds);
 
   // Turn off all frequency and beacons leds both on the board and
   // on the webpage.
   
-  ledTurnOffAllFrequencyLeds();
-  ledTurnOffAllBeaconLeds();
+  //ledTurnOffAllFrequencyLeds();
+  //ledTurnOffAllBeaconLeds();
 
-  sendAllFrequenciesOffToBeaconListeners();
-  sendAllBeaconsOffToBeaconListeners();
+  //sendAllFrequenciesOffToBeaconListeners();
+  //sendAllBeaconsOffToBeaconListeners();
 
   
 

@@ -85,15 +85,15 @@ void IRAM_ATTR switchInterrupt() {
   
   if (interrupt_time - last_interrupt_time > 200) 
   {
-    Serial.printf("********** INTERRUPT\n");
-
     // Update the requested mode depending on the active node. Basically
     // switch it between the two.
 
     if (OPERATION_MODE_BEACONS_HEARD == activeMode)
-      activeMode = OPERATION_MODE_NCDXF_IARU;
+      requestedMode = OPERATION_MODE_NCDXF_IARU;
     else
-      activeMode = OPERATION_MODE_BEACONS_HEARD;
+      requestedMode = OPERATION_MODE_BEACONS_HEARD;
+
+    // Serial.printf("********** INTERRUPT, requested mode = %d\n", activeMode);
   }
 
   // Update the last interrupt time
@@ -367,7 +367,7 @@ void spotHandler(char *spotter, char*spotted, double frequency, char *rbnTime) {
   sendToRBNDataListeners(spotter, spotted, frequency, rbnTime);
 }
 
-time_t lastBeaconFrequencyStep = -1;
+time_t lastBeaconsHeard = -1;
 
 void doBeaconsHeardMode() {
 
@@ -383,7 +383,7 @@ void doBeaconsHeardMode() {
 
   // Is it time to update the beacons frequency?
   
-  if (timeNow > lastBeaconFrequencyStep + 5) {
+  if ((-1 == lastBeaconsHeard) || (timeNow > lastBeaconsHeard + 5)) {
 
     // Yes, step the beacons
     
@@ -392,17 +392,48 @@ void doBeaconsHeardMode() {
 
     // Update the time of the last step
     
-    time(&lastBeaconFrequencyStep);
+    time(&lastBeaconsHeard);
+  }
+}
+
+time_t lastBeaconsActive = -1;
+
+void doBeaconsActiveMode() {
+
+  // Here we are displaying beacons that are active.
+  
+  // We need to decide if the time is right to move on
+
+  // Get the time
+  
+  time_t timeNow;
+  time(&timeNow);
+
+  // Is it time to update the beacons frequency?
+  
+  if ((-1 == lastBeaconsActive) || (timeNow > lastBeaconsActive + 1)) {
+
+    // Yes, update the active beacons
+    
+    beaconsShowActiveBeacons();
+
+    // Update the time of the last step
+    
+    time(&lastBeaconsActive);
   }
 }
 
 void loop() {
 
-  // Do we need to initialise the last frequency step time?
+  // Do we need to initialise the last active times?
   
-  if (-1 == lastBeaconFrequencyStep) {
-    time(&lastBeaconFrequencyStep);
-  }
+  //if (-1 == lastBeaconsHeard) {
+    //time(&lastBeaconsHeard);
+  //}
+
+  //if (-1 == lastBeaconsActive) {
+    //time(&lastBeaconsActive);
+  //}
   
   // What we do here depend on what state we are in.
 
@@ -462,9 +493,48 @@ void loop() {
           doBeaconsHeardMode();
         }
         else {
-          
+
+          doBeaconsActiveMode();
         }
       }
+      else {
+
+        // Here we have a change of mode!
+
+        // Clear all frequency LEDs before moving on
+
+        ledTurnOffAllFrequencyLeds();
+
+        // What's changing
+        
+        if (OPERATION_MODE_BEACONS_HEARD == requestedMode) {
+
+          // Usual mode, reporting beacons that have been heard
+
+          lastBeaconsHeard = -1;
+        }
+        else {
+
+          // NCDXF/IARU Transmission schedule mode
+
+          // Clear down al beacons LED
+
+          ledTurnOffAllBeaconLeds();
+          
+          // Reset the tim
+
+          lastBeaconsActive = -1;
+          
+          // Set the frequency colours
+          
+          beaconsShowFrequencyColours();
+        }
+
+        // Finally make this the active mode
+
+        activeMode = requestedMode;
+      }
+      
       // Dump the beacons if we are on time
 
       //time_t timeNow;
