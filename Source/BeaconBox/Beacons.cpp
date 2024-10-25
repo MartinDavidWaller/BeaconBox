@@ -525,6 +525,20 @@ void beaconsStepBeacon() {
 // All code below this point implements the OPERATION_MODE_NCDXF_IARU mode of
 // operation.
 
+struct hhhx {
+  char *Country;
+  char *Call;
+  int FrequencTimes[5];
+  
+} hhhh[] = {
+
+//  Country               Call    Frequency / Time
+//                                14.100        18.110        21.150        24.930        28.200
+  { "United Nations NY", "4U1UN", 00 * 60 + 00, 00 * 60 + 10, 00 * 60 + 20, 00 * 60 + 30, 00 * 60 + 40 },
+  { "Northern Canada",   "VE8AT", 00 * 60 + 10, 00 * 60 + 20, 00 * 60 + 30, 00 * 40 + 30, 00 * 60 + 50 },
+  { "USA (CA)",          "W6WX",  00 * 60 + 20, 00 * 60 + 30, 00 * 60 + 40, 00 * 40 + 50, 01 * 60 + 00 }  
+};
+
 void beaconsStepNCDXFIARUFrequency() {
 
   // Turn off all frequency and beacons leds both on the board and
