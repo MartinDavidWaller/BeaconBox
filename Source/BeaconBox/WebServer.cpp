@@ -539,6 +539,29 @@ void sendBeaconOnOffToBeaconListeners(char *beacon, bool onOff) {
   beaconDataWebSocket.textAll(jsonString);
 }
 
+void sendBeaconColourToBeaconListeners(char *beacon, char *colour) {
+
+  char cvtBuffer[100];
+  
+  // Clear the json object
+  
+  beaconJSONOut.clear();
+
+  // Add the data to the JSON object
+
+  beaconJSONOut["ACTION"] = "BEACON_COLOUR";
+  beaconJSONOut["BEACON"] = beacon;  
+  beaconJSONOut["COLOUR"] = colour;
+
+  // Serialise it to the buffer
+
+  char jsonString[1024];
+  serializeJson(beaconJSONOut,jsonString);
+
+  Serial.printf("*********** %s\n",jsonString);
+  beaconDataWebSocket.textAll(jsonString);
+}
+
 void sendAllFrequenciesOffToBeaconListeners() {
 
   // Clear the json object
@@ -574,6 +597,32 @@ void sendFrequencyActiveInActiveToBeaconListeners(double frequency, bool activeI
   beaconJSONOut["FREQUENCY"] = cvtBuffer;
   
   beaconJSONOut["ACTIVEINACTIVE"] = true == activeInActive ? "1" : "0";
+
+  // Serialise it to the buffer
+
+  char jsonString[1024];
+  serializeJson(beaconJSONOut,jsonString);
+
+  Serial.printf("*********** %s\n",jsonString);
+  beaconDataWebSocket.textAll(jsonString);
+}
+
+void sendFrequencyColourToBeaconListeners(double frequency, char *colour) {
+
+  char cvtBuffer[100];
+  
+  // Clear the json object
+  
+  beaconJSONOut.clear();
+
+  // Add the data to the JSON object
+
+  beaconJSONOut["ACTION"] = "FREQUENCY_COLOUR";
+
+  sprintf(cvtBuffer,"%d",(int)(frequency * 1000)); 
+  beaconJSONOut["FREQUENCY"] = cvtBuffer;
+  
+  beaconJSONOut["COLOUR"] = colour;
 
   // Serialise it to the buffer
 

@@ -7,3 +7,5 @@
  
 extern void webServerSetUp();
 extern void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char *rbnTime);
+extern void sendBeaconColourToBeaconListeners(char *beacon, char *colour);
+extern void sendFrequencyColourToBeaconListeners(double frequency, char *colour);

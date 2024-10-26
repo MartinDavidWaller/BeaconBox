@@ -17,6 +17,7 @@
 #include "FormatHelper.h"
 #include "LEDChain.h"
 #include "StringHelper.h"
+#include "WebServer.h"
 
 #define MAX_NUM_ELEMENTS 10
 #define FREQUENCY_DELTA 10
@@ -528,10 +529,23 @@ void beaconsStepBeacon() {
 CRGB beaconFrequencyColours[] = 
 {
   CRGB( 0x80,0x00,0x00),   // 14.100 Maroon
-  CRGB( 0x80,0x80,0x00),   // 18.110 Olive
+  
+  CRGB( 0x80,0x80,0x00),   // 18.110 Olive **********
   CRGB( 0x00,0x00,0x75),   // 21.150 Navy
-  CRGB( 0xff,0xe1,0x19),   // 24.930 Yellow
-  CRGB( 0xff,0xff,0xff)    // 28.200 White
+  
+  //CRGB( 0xff,0xe1,0x19),   // 24.930 Yellow *********
+  //CRGB( 0x9a,0x63,0x24),   // 24.930 Brown *********
+  //CRGB( 0x49,0x99,0x90),   // 24.930 Teal ********* Goer
+  //CRGB( 0xf5,0x82,0x31),   // 24.930 Orange
+  //CRGB( 0xff, 0x00, 0x00),   // 14.100 Red
+  //CRGB( 0xf0, 0x32, 0xe6),   // 14.100 Magenta
+  CRGB( 0xff, 0x14, 0x93),   // 14.100 Deeppink
+  //CRGB( 0x91,0x1e,0xb4),   // 24.930 Purple
+  //CRGB( 0xa9,0xa9,0xa9),   // 24.930 Grey *********
+  //CRGB( 0xff,0xff,0xff)    // 28.200 White
+  //CRGB( 0x3c,0xb4,0x4b)    // 28.200 Green
+  //CRGB( 0xfa,0xbe,0xd4)    // 28.200 Pink
+  CRGB( 0xff,0xd8,0xb1)    // 28.200 Apricot
 };
 
 struct beaconFreequencyTime {
@@ -548,11 +562,11 @@ struct beaconFreequencyTime {
   { "Northern Canada",   "VE8AT",  00 * 60 + 10, 00 * 60 + 20, 00 * 60 + 30, 00 * 60 + 40, 00 * 60 + 50, B_VE8AT },
   { "USA (CA)",          "W6WX",   00 * 60 + 20, 00 * 60 + 30, 00 * 60 + 40, 00 * 60 + 50, 01 * 60 + 00, B_W6WX },  
   { "Hawaii",            "KH6RS",  00 * 60 + 30, 00 * 60 + 40, 00 * 60 + 50, 01 * 60 + 00, 01 * 60 + 10, B_KH6RS },
-  { "New Zealand",       "ZL6N",   00 * 60 + 40, 00 * 60 + 50, 01 * 60 + 00, 01 * 60 + 10, 01 * 60 + 20, B_ZL6B },  
+  { "New Zealand",       "ZL6B",   00 * 60 + 40, 00 * 60 + 50, 01 * 60 + 00, 01 * 60 + 10, 01 * 60 + 20, B_ZL6B },  
   { "West Australia",    "VK6RBP", 00 * 60 + 50, 01 * 60 + 00, 01 * 60 + 10, 01 * 60 + 20, 01 * 60 + 30, B_VK6RBP },  
   { "Japan",             "JA2IGY", 01 * 60 + 00, 01 * 60 + 10, 01 * 60 + 20, 01 * 60 + 30, 01 * 60 + 40, B_JA2IGY },  
   { "Siberia",           "RR9O",   01 * 60 + 10, 01 * 60 + 20, 01 * 60 + 30, 01 * 60 + 40, 01 * 60 + 50, B_RR90 },    
-  { "Hong Kong",         "VR22B",  01 * 60 + 20, 01 * 60 + 30, 01 * 60 + 40, 01 * 60 + 50, 02 * 60 + 00, B_VR2B},  
+  { "Hong Kong",         "VR2B",   01 * 60 + 20, 01 * 60 + 30, 01 * 60 + 40, 01 * 60 + 50, 02 * 60 + 00, B_VR2B},  
   { "Sri Lanka",         "4S7B" ,  01 * 60 + 30, 01 * 60 + 40, 01 * 60 + 50, 02 * 60 + 00, 02 * 60 + 10, B_4S7B },  
   { "South Africa",      "ZS6DN",  01 * 60 + 40, 01 * 60 + 50, 02 * 60 + 00, 02 * 60 + 10, 02 * 60 + 20, B_ZS6DN }, 
   { "Kenya",             "5Z4B",   01 * 60 + 50, 02 * 60 + 00, 02 * 60 + 10, 02 * 60 + 20, 02 * 60 + 30, B_5Z4B }, 
@@ -572,6 +586,13 @@ void beaconsShowFrequencyColours() {
   ledSetIndexColour(LED_BEACON_FREQUENCY_24930, beaconFrequencyColours[3]);
   ledSetIndexColour(LED_BEACON_FREQUENCY_28200, beaconFrequencyColours[4]);
   FastLED.show();
+
+  char cvtBuffer[100];
+
+  for(int f = 0; f < 5; f++) {
+    sprintf(cvtBuffer,"#%02x%02x%02x",beaconFrequencyColours[f].red,beaconFrequencyColours[f].green,beaconFrequencyColours[f].blue); 
+    sendFrequencyColourToBeaconListeners(freqencies[f], cvtBuffer);
+  }
 }
 
 void beaconsShowActiveBeacons() {
@@ -586,6 +607,8 @@ void beaconsShowActiveBeacons() {
   struct tm *timeInfo;
   timeInfo = localtime(&timeNow);
 
+  char *FormatTimeAsDateTime(time_t _time);
+
   // Next we need to determine which how far into each 3 minute slot within the
   // hour we are actually in.
 
@@ -593,10 +616,47 @@ void beaconsShowActiveBeacons() {
 
   // Now add in the seconds
 
-  int timeSlotSeconds =threeMinutesMinute + timeInfo->tm_sec;
+  int timeSlotSeconds = threeMinutesMinute * 60 + timeInfo->tm_sec;
     
-  Serial.printf(".... beaconsShowActiveBeacons %d\n",timeSlotSeconds);
+  Serial.printf("%s %d\n",FormatTimeAsDateTime(timeNow), timeSlotSeconds);
 
+  // Loop through all the beacons that we have
+  
+  for(int b = 0; b < 18; b++) {
+
+    // Set the beacon colour to black
+
+    CRGB beaconColour = CRGB::Black;
+    
+    // Loop through all the frequencies that we have
+    
+    for(int f = 0; f < 5; f++) {
+
+      int frequencyTime = beaconFreequencyTimes[b].FrequencTimes[f];
+      //Serial.printf(".... %d\n",frequencyTime);
+      if ((timeSlotSeconds >= frequencyTime) && (timeSlotSeconds < frequencyTime + 10)) {
+
+        Serial.printf(".... %f %s\n",freqencies[f],beaconFreequencyTimes[b].Call);
+
+        beaconColour = beaconFrequencyColours[f];
+
+       break;
+        
+      }
+    }
+
+     ledSetIndexColour(beaconLEDs[beaconFreequencyTimes[b].Beacon], beaconColour);
+
+      char cvtBuffer[100];
+
+     if (CRGB::Black == beaconColour) {
+      beaconColour = CRGB::White;
+     }
+      sprintf(cvtBuffer,"#%02x%02x%02x",beaconColour.red,beaconColour.green,beaconColour.blue);
+    
+     sendBeaconColourToBeaconListeners(beaconFreequencyTimes[b].Call, cvtBuffer);
+  }
+  
   // Turn off all frequency and beacons leds both on the board and
   // on the webpage.
   

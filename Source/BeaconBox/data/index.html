@@ -114,6 +114,14 @@
 					allBeaconIDs.forEach((e) => $("#" + e + "_T").attr("fill", "black"));
 
 				}
+				else if (msg.ACTION == "BEACON_COLOUR") {
+
+					let beacon = msg.BEACON;
+					let colour = msg.COLOUR;
+
+					$("#B_" + msg.BEACON).attr("fill", colour);
+
+				}
 				else if (msg.ACTION == "ALL_FREQUENCIES_OFF") {
 
 					allFrequencyCircleIDs.forEach((e) => $("#" + e).attr("fill", "white"));
@@ -127,6 +135,15 @@
 
 					$("#F_" + msg.FREQUENCY + "_C").attr("fill", msg.ACTIVEINACTIVE == "1" ? "green" : "red");
 					$("#F_" + msg.FREQUENCY + "_T").attr("fill", msg.ACTIVEINACTIVE == "1" ? "green" : "red");
+
+				}
+				else if (msg.ACTION == "FREQUENCY_COLOUR") {
+
+					let frequency = msg.FREQUENCY;
+					let colour = msg.COLOUR;
+
+					$("#F_" + msg.FREQUENCY + "_C").attr("fill", colour);
+					$("#F_" + msg.FREQUENCY + "_T").attr("fill", colour);
 
 				}
             };
