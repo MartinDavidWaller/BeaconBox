@@ -58,6 +58,20 @@
             	updateForm();
             	updateSSIDs();
 
+            	var coll = document.getElementsByClassName("collapsible");
+
+				for (var i = 0; i < coll.length; i++) {
+				  coll[i].addEventListener("click", function() {
+				    this.classList.toggle("active");
+				    var content = this.nextElementSibling;
+				    if (content.style.display === "block") {
+				      content.style.display = "none";
+				    } else {
+				      content.style.display = "block";
+				    }
+  				});
+  				}
+
         	});
 
     	</script>
@@ -72,8 +86,6 @@
             	<button id="homeButton" onclick="window.location.href='index.html';">Home</button>
             	<button id="reverseBeaconNetworkDataButton" onclick="window.location.href='reverseBeaconNetworkData.html';">Reverse Beacon Network Data</button>
             	<button id="settingsButton" onclick="window.location.href='settings.html';">Settings</button>
-            	<button id="backupRestoreButton" onclick="window.location.href='backupRestore.html';">Backup/Restore</button>
-            	<button id="helpButton" onclick="window.location.href='help.html';">Help</button>
             	<button id="aboutButton" onclick="window.location.href='about.html';">About</button>
             	<br />
             	<br />
@@ -90,6 +102,17 @@
 
                     	<fieldset>
                         	<legend>Wi-Fi</legend>
+
+							<button type="button" class="collapsible">Click for help.</button>
+							<div class="content">
+								  <p>
+								      BeaconBox reads data from the <a href='https://www.reversebeacon.net/'>Reverse Beacon Network</a>.
+								      To do this it requires access to the Internet. The details should be completed to indicate the
+								      Wi-Fi to connect to and the associated password.
+								      The hostname can be set to provide the name that the BeaconBox will appear as on
+								      your Wi-Fi network.
+								  </p>
+							</div>
 
                         	<table>
                             	<tr>
@@ -129,6 +152,15 @@
                     	<fieldset>
                         	<legend>Reverse Beacon Network</legend>
 
+							<button type="button" class="collapsible">Click for help.</button>
+							<div class="content">
+								  <p>
+								      The <a href='https://www.reversebeacon.net/'>Reverse Beacon Network</a> prompts for
+								      a callsign that is used to identify the person reading the data. This can be set to
+								      your callsign or just a simple name.
+								  </p>
+							</div>
+
                         	<table>
                             	<tr>
                             	    <td>Callsign:</td>
@@ -144,6 +176,13 @@
 
                     	<fieldset>
                         	<legend>Spotters</legend>
+
+							<button type="button" class="collapsible">Click for help.</button>
+							<div class="content">
+								  <p>
+								      ??????????
+								  </p>
+							</div>
 
                         	<table>
 

@@ -517,7 +517,7 @@ void loop() {
 
           // NCDXF/IARU Transmission schedule mode
 
-          // Clear down al beacons LED
+          // Clear down all beacons LED
 
           ledTurnOffAllBeaconLeds();
           
@@ -528,24 +528,16 @@ void loop() {
           // Set the frequency colours
           
           beaconsShowFrequencyColours();
+
+          // Clean up all beacons
+          
+          sendAllBeaconsOffToBeaconListeners();
         }
 
         // Finally make this the active mode
 
         activeMode = requestedMode;
       }
-      
-      // Dump the beacons if we are on time
-
-      //time_t timeNow;
-      //time(&timeNow);
-      //if (timeNow > lastBeaconDump + 5) {
-
-        //dumpBeacons();
-        //beaconsStepBeacon();
-
-        //time(&lastBeaconDump);
-      //}
       
       // Whatever mode we are in we need to process any data that we have received
       // from the reverse beacon network.
