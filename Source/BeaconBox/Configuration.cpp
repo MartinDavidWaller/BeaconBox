@@ -35,13 +35,6 @@ void dumpConfiguration(struct Configuration *configuration)
   Serial.println("Configuration");
   Serial.printf("   MajorVersion: ........... %d\n",configuration->MajorVersion);
   Serial.printf("   MinorVersion: ........... %d\n",configuration->MinorVersion);
-  Serial.printf("   Flags: .................. 0x%02x\n",configuration->Flags);
-  //if (true == IS_EEPROM_VALID(configuration))
-    //Serial.printf("                               EEPROM_VALID\n");
-  //if (true == IS_LED_ENABLED(configuration))
-    //Serial.printf("                               LED ENABLED\n");    
-  //if (true == IS_SOUND_ENABLED(configuration))
-    //Serial.printf("                               SOUND ENABLED\n");    
   Serial.printf("   Hostname: ............... %s\n",configuration->Hostname);
   Serial.printf("   WiFi_SSID: .............. %s\n",configuration->WiFi_SSID);
   Serial.printf("   WiFi_Password: .......... %s\n",configuration->WiFi_Password);
@@ -49,9 +42,6 @@ void dumpConfiguration(struct Configuration *configuration)
   Serial.printf("   Spotter Wildcards: ...... %s\n",configuration->SpotterWildcards);
   Serial.printf("   TimeZone: ............... %s\n",configuration->TimeZone);
   Serial.printf("   SpotterTimeOutMinutes ... %d\n",configuration->SpotterTimeOutMinutes);
-  //Serial.printf("   Volume: .................. %d\n",configuration->Volume);
-  //Serial.printf("   Minutes Between Alerts: .. %d\n",configuration->MinutesBetweenAlerts);
-  //Serial.printf("   Friend Cycle Count: ...... %d\n",configuration->FriendCycleCount);
 }
 
 //

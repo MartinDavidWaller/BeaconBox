@@ -179,9 +179,6 @@ void setup() {
     memset(&configuration,0,sizeof(Configuration));
     configuration.MajorVersion = PROGRAM_VERSION_MAJOR;
     configuration.MinorVersion = PROGRAM_VERSION_MINOR;
-    configuration.Flags = CLEAR;
-    //SET_LED_ENABLED((&configuration));
-    //SET_SOUND_ENABLED((&configuration));
     strcpy((char*)&configuration.Hostname[0],PROGRAM_NAME);
     strcpy((char*)&configuration.TimeZone[0],DEFAULT_TIMEZONE);
     strcpy((char*)&configuration.SpotterWildcards[0],DEFAULT_SPOTTER_WILDCARDS);
