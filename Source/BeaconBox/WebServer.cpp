@@ -28,208 +28,6 @@ StaticJsonDocument<200> rbnJSONOut;
 extern time_t startUpTime;
 extern struct Configuration configuration;
 
-/*
-void onDoReboot(AsyncWebServerRequest *request){
-
-  // Redirect to the index page
-    
-  request->redirect("friends.html");  
-
-  ESP.restart();
-}
-*/
-
-/*
-void onDoAddFriend(AsyncWebServerRequest *request){
-
-  AsyncWebParameter* callsignParam = request->getParam("addFriendCallsign");
-  AsyncWebParameter* nameParam = request->getParam("addFriendName");
-  AsyncWebParameter* commentParam = request->getParam("addFriendComment");
-  
-  AsyncWebParameter* soundSelectionParam = request->getParam("addFriendSoundSelection");
-
-  bool soundEnabled = false;
-  
-  if(request->hasParam("addFriendSoundEnabled")) {
-    
-    AsyncWebParameter* soundEnabledParam = request->getParam("addFriendSoundEnabled");
-    if (NULL != soundEnabledParam->value()) {
-      soundEnabled = (0 == strcmp("on", soundEnabledParam->value().c_str()));
-    }
-  }
- 
-  bool friendAdded = AddNewFriend(
-    callsignParam->value().c_str(),
-    nameParam->value().c_str(),
-    commentParam->value().c_str(),
-    soundEnabled,
-    atoi(soundSelectionParam->value().c_str()));
-
-  // Redirect to the index page
-    
-  request->redirect("friends.html");  
-}
-*/
-
-/*
-void onDoRestoreFriendsBegin(AsyncWebServerRequest *request) {
-
-  RemoveAllFriends(false);
-   
-  // Return OK
-
-  request->send(200, "text/plain", "OK");          
-}
-*/
-
-/*(
-void onDoRestoreFriendsCommit(AsyncWebServerRequest *request) {
-
-  CommitAllFriends();
-   
-  // Return OK
-
-  request->send(200, "text/plain", "OK");          
-}
-*/
-
-/*
-void onDoRestoreFriend(AsyncWebServerRequest *request) {
- 
-  AsyncWebParameter* memorySlotParam = request->getParam("MemorySlot");
-  AsyncWebParameter* callsignParam = request->getParam("Callsign");
-  AsyncWebParameter* nameParam = request->getParam("Name");
-  AsyncWebParameter* commentParam = request->getParam("Comment");
-  AsyncWebParameter* soundEnabledParam = request->getParam("SoundEnabled");
-  AsyncWebParameter* soundIndexParam = request->getParam("SoundIndex");
-  AsyncWebParameter* soundParam = request->getParam("Sound");
-  AsyncWebParameter* lastSeenAsParam = request->getParam("LastSeenAs");
-  AsyncWebParameter* lastSeenParam = request->getParam("LastSeen");
-  AsyncWebParameter* lastSeenSecondsParam = request->getParam("LastSeenSeconds");
-  AsyncWebParameter* lastSpeedParam = request->getParam("LastSpeed");
-  AsyncWebParameter* lastSpeedUnitsParam = request->getParam("LastSpeedUnits");
-  AsyncWebParameter* lastFrequencyParam = request->getParam("LastFrequency");
-  AsyncWebParameter* lastModeParam = request->getParam("LastMode");
-
-  Serial.printf("**** Memory Slot = %d\n",atoi(memorySlotParam->value().c_str()));
-  Serial.printf("**** Callsign = %s\n",callsignParam->value().c_str());
-  Serial.printf("**** Name = %s\n",nameParam->value().c_str());
-  Serial.printf("**** Comment = %s\n",commentParam->value().c_str());
-  Serial.printf("**** SoundEnabled = %s\n",soundEnabledParam->value().c_str());
-  Serial.printf("**** SoundIndex = %s\n",soundIndexParam->value().c_str());
-  Serial.printf("**** Sound = %s\n",soundParam->value().c_str());
-  Serial.printf("**** Last Seen As = %s\n",lastSeenAsParam->value().c_str());
-  Serial.printf("**** Last Seen = %s\n",lastSeenParam->value().c_str());
-  Serial.printf("**** Last Seen Seconds = %s\n",lastSeenSecondsParam->value().c_str());
-  Serial.printf("**** Last Speed = %s\n",lastSpeedParam->value().c_str());
-  Serial.printf("**** Last Frequency = %s\n",lastFrequencyParam->value().c_str());
-  Serial.printf("**** Last Mode = %s\n",lastModeParam->value().c_str());
-
-  RestoreFriend(
-    atoi(memorySlotParam->value().c_str()),
-    callsignParam->value().c_str(), 
-    nameParam->value().c_str(),
-    commentParam->value().c_str(), 
-    (0 == strcmp("on", soundEnabledParam->value().c_str())),
-    atoi(soundIndexParam->value().c_str()),
-    lastSeenAsParam->value().c_str(),
-    atoi(lastSeenSecondsParam->value().c_str()),
-    atoi(lastSpeedParam->value().c_str()),
-    lastSpeedUnitsParam->value().c_str(),
-    atof(lastFrequencyParam->value().c_str()),
-    lastModeParam->value().c_str());
-   
-  // Return OK
-
-  request->send(200, "text/plain", "OK");          
-}
-*/
-
-/*
-void onDoFriendUpdate(AsyncWebServerRequest *request) {
-
-  // Pull out the parameters
-
-  AsyncWebParameter* memorySlotParam = request->getParam("MemorySlot");
-  AsyncWebParameter* callsignParam = request->getParam("Callsign");
-  AsyncWebParameter* nameParam = request->getParam("Name");
-  AsyncWebParameter* commentParam = request->getParam("Comment");
-  AsyncWebParameter* soundEnabledParam = request->getParam("SoundEnabled");
-  AsyncWebParameter* soundSelectedParam = request->getParam("SoundSelected"); // Integer value
-
-  //Serial.printf("**** Memory Slot = %s\n",memorySlotParam->value().c_str());
-  //Serial.printf("**** Callsign = %s\n",callsignParam->value().c_str());
-  //Serial.printf("**** Name = %s\n",nameParam->value().c_str());
-  //Serial.printf("**** Comment = %s\n",commentParam->value().c_str());
-  //Serial.printf("**** Sound Enabled = %s\n",soundEnabledParam->value().c_str());
-  //Serial.printf("**** Sound Selected = %s\n",soundSelectedParam->value().c_str());
-  
-  // Update the friend
-  
-  UpdateFriend(
-    atoi(memorySlotParam->value().c_str()), 
-    callsignParam->value().c_str(),
-    nameParam->value().c_str(),
-    commentParam->value().c_str(),
-    (0 == strcmp("on", soundEnabledParam->value().c_str())),
-    atoi(soundSelectedParam->value().c_str())
-    );
-
-  // Return OK
-
-  request->send(200, "text/plain", "OK");
-}
-*/
-
-/*
-void onDoRemoveFriend(AsyncWebServerRequest *request){
-
-  AsyncWebParameter* callsignParam = request->getParam("callsign");
-
-  bool friendRemoved = RemoveFriend(callsignParam->value().c_str());
-
-  if (true == friendRemoved)
-   request->send(200, "text/plain", "Friend removed!");
-  else
-   request->send(200, "text/plain", "Friend not found?");
-}
-*/
-
-/*
-void onDoRemoveAllFriends(AsyncWebServerRequest *request){
-
-  RemoveAllFriends(true);
-
-  request->redirect("friends.html"); 
-}
-*/
-
-/*
-void onDoListen(AsyncWebServerRequest *request){
-
-  AsyncWebParameter* soundParam = request->getParam("sound");
-
-  PlaySound(atoi(soundParam->value().c_str()));
-  //playSound(atoi(soundParam->value().c_str()));
-    
-  request->send(200, "text/plain", "OK");
-}
-*/
-
-/*
-void onDoListenWithVolume(AsyncWebServerRequest *request){
-
-  AsyncWebParameter* volumeParam = request->getParam("volume");
-
-  //doListenWithVolumeVolume = atoi(volumeParam->value().c_str());
-  //doListenWithVolume = true;
-
-  PlaySoundAtVolume(SOUND_NOTE,atoi(volumeParam->value().c_str()),configuration.Volume);
-    
-  request->send(200, "text/plain", "OK");
-}
-*/
-
 void onDoSettingsUpdate(AsyncWebServerRequest *request){
 
   AsyncWebParameter* hostnameInputParam = request->getParam("hostnameInput");
@@ -302,48 +100,6 @@ void onGetSettingsData(AsyncWebServerRequest *request){
 
 AsyncResponseStream *response;
 
-/*
-void onGetFriends(AsyncWebServerRequest *request){
-
-  response = request->beginResponseStream("text/xml");
-  
-  GetFriendsAsXML([] (char *xmlLine) 
-  {
-    response->printf("%s",escapeXML(xmlLine));
-  });
-    
-  request->send(response);
-}
-*/
-
-/*
-void onGetFriendsForEdit(AsyncWebServerRequest *request){
-
-  response = request->beginResponseStream("text/xml");
-  
-  GetFriendsForEditAsXML([] (char *xmlLine) 
-  {
-    response->printf("%s",escapeXML(xmlLine));
-  });
-    
-  request->send(response);
-}
-*/
-
-/*
-void onGetSounds(AsyncWebServerRequest *request){
-
-  response = request->beginResponseStream("text/xml");
-  
-  GetSoundsAsXML([] (char *xmlLine) 
-  {
-    response->printf("%s",xmlLine);
-  });
-    
-  request->send(response);
-}
-*/
-
 void onGetNameVersion(AsyncWebServerRequest *request){
 
   AsyncResponseStream *response = request->beginResponseStream("text/xml");
@@ -359,27 +115,6 @@ void onGetNameVersion(AsyncWebServerRequest *request){
 
   request->send(response);
 }
-
-/*
-void onGetRuntime(AsyncWebServerRequest *request){
-
-  AsyncResponseStream *response = request->beginResponseStream("text/xml");
-
-  response->printf("<?xml version=\"1.0\" encoding=\"utf-16\"?>");
-  response->printf("<Runtime xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">");
-
-  response->printf("<ConfigurationSize>%d</ConfigurationSize>",sizeof(Configuration)); 
-  response->printf("<CpuFreqMHz>%d</CpuFreqMHz>",ESP.getCpuFreqMHz()); 
-  response->printf("<FreeHeap>%d</FreeHeap>",ESP.getFreeHeap());
-  response->printf("<FriendSize>%d</FriendSize>",sizeof(Friend)); 
-  response->printf("<MaxFriendCount>%d</MaxFriendCount>",MAX_FRIEND_COUNT); 
-  response->printf("<FriendMemoryRequirement>%d</FriendMemoryRequirement>",MAX_FRIEND_COUNT * sizeof(Friend)); 
-  response->printf("<RBNConnectionsMade>%d</RBNConnectionsMade>",runtimeData.RBNConnectionsMade); 
-  response->printf("</Runtime>");
-
-  request->send(response);
-}
-*/
 
 void onGetUpTime(AsyncWebServerRequest *request){
 
@@ -441,45 +176,6 @@ void onGetSIDDs(AsyncWebServerRequest *request){
   
   request->send(200, "text/xml", b);
 }
-
-/*
-void onGetBackup(AsyncWebServerRequest *request){
-
-  response = request->beginResponseStream("text/xml");
-
-  char filnameBuffer[100];
-  
-  struct tm *timeInfo;
-
-  time_t now; 
-  time(&now);
-    
-  timeInfo = localtime(&now);
-  
-  sprintf(filnameBuffer,"attachment; filename=\"%s_%04d%02d%02d_%02d%02d%02d.xml\";",
-    PROGRAM_NAME,
-    timeInfo->tm_year + 1900,
-    timeInfo->tm_mday,
-    timeInfo->tm_mon + 1,
-    timeInfo->tm_hour,
-    timeInfo->tm_min,
-    timeInfo->tm_sec); 
-
-  response->addHeader("Content-Disposition",filnameBuffer);
-
-  response->printf("<?xml version=\"1.0\" encoding=\"utf-16\"?>\n");
-  response->printf("<%s Major=\"%d\" Minor=\"%d\">\n",PROGRAM_NAME,PROGRAM_VERSION_MAJOR,PROGRAM_VERSION_MINOR);
-
-  GetFriendsForBackup([] (char *xmlLine) 
-  {
-    response->printf("    %s\n",xmlLine);
-  });
-  
-  response->printf("</%s>\n",PROGRAM_NAME);
-
-  request->send(response);
-}
-*/
 
 void onBeaconDataWebSocketEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
 
@@ -633,30 +329,6 @@ void sendFrequencyColourToBeaconListeners(double frequency, char *colour) {
   beaconDataWebSocket.textAll(jsonString);
 }
 
-/*
-void sendToBeaconListeners(char *beacon, bool onOff) {
-
-  char cvtBuffer[100];
-  
-  // Clear the json object
-  
-  beaconJSONOut.clear();
-
-  // Add the data to the JSON object
-  
-  beaconJSONOut["BEACON"] = beacon;
-  beaconJSONOut["ONOFF"] = true == onOff ? "1" : "0";
-
-  // Serialise it to the buffer
-
-  char jsonString[1024];
-  serializeJson(beaconJSONOut,jsonString);
-
-  Serial.printf("*********** %s\n",jsonString);
-  beaconDataWebSocket.textAll(jsonString);
-}
-*/
-
 void onRBNDataWebSocketEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
 
   Serial.println("onRBNDataWebSocketEvent");
@@ -716,24 +388,9 @@ extern void webServerSetUp()
   
   // Setup the webserver
 
-  //server.on("/doAddFriend", HTTP_GET, onDoAddFriend);
-  //server.on("/doFriendUpdate", HTTP_GET, onDoFriendUpdate);
-  //server.on("/doListen", HTTP_GET, onDoListen);  
-  //server.on("/doListenWithVolume", HTTP_GET, onDoListenWithVolume);  
-  //server.on("/doReboot", HTTP_GET, onDoReboot);
-  //server.on("/doRemoveFriend", HTTP_GET, onDoRemoveFriend);
-  //server.on("/doRemoveAllFriends", HTTP_GET, onDoRemoveAllFriends);
-  //server.on("/doRestoreFriend", HTTP_GET, onDoRestoreFriend);
-  //server.on("/doRestoreFriendsBegin", HTTP_GET, onDoRestoreFriendsBegin);
-  //server.on("/doRestoreFriendsCommit", HTTP_GET, onDoRestoreFriendsCommit);
   server.on("/doSettingsUpdate", HTTP_GET, onDoSettingsUpdate);  
-  //server.on("/getBackup", HTTP_GET, onGetBackup);
-  //server.on("/getFriends", HTTP_GET, onGetFriends);
-  //server.on("/getFriendsForEdit", HTTP_GET, onGetFriendsForEdit);
   server.on("/getNameVersion", HTTP_GET, onGetNameVersion);
-  //server.on("/getRuntime", HTTP_GET, onGetRuntime);
   server.on("/getSettingsData", HTTP_GET, onGetSettingsData);
-  //server.on("/getSounds", HTTP_GET, onGetSounds);
   server.on("/getSSIDs", HTTP_GET, onGetSIDDs);
   server.on("/getUpTime", HTTP_GET, onGetUpTime);
     
