@@ -235,7 +235,7 @@ void sendBeaconOnOffToBeaconListeners(char *beacon, bool onOff) {
   beaconDataWebSocket.textAll(jsonString);
 }
 
-void sendBeaconColourToBeaconListeners(char *beacon, char *colour) {
+void sendBeaconColourToBeaconListeners(char *beacon, char *colour, char *subText) {
 
   char cvtBuffer[100];
   
@@ -248,6 +248,7 @@ void sendBeaconColourToBeaconListeners(char *beacon, char *colour) {
   beaconJSONOut["ACTION"] = "BEACON_COLOUR";
   beaconJSONOut["BEACON"] = beacon;  
   beaconJSONOut["COLOUR"] = colour;
+  beaconJSONOut["SUBTEXT"] = subText;
 
   // Serialise it to the buffer
 

@@ -67,4 +67,5 @@ void dumpBeacons();
 void beaconsStepBeacon();
 void beaconsShowActiveBeacons();
 void beaconsShowFrequencyColours();
+void clearActiveBeaconColours();
  

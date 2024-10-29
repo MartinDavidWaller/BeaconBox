@@ -10,7 +10,7 @@
 // The following manifests define the values associated with the LED chain.
 
 #define LED_PIN 14
-#define NUM_LEDS 25
+#define LED_CHAIN_LENGTH 25
 
 #define LED_BEACON_FREQUENCY_14100 0
 #define LED_BEACON_FREQUENCY_18110 1

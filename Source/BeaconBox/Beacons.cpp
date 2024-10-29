@@ -597,6 +597,37 @@ void beaconsShowFrequencyColours() {
   }
 }
 
+CRGB activeBeaconColour[NUMBER_OF_BEACONS];
+
+void clearActiveBeaconColours() {
+
+  for(int i = 0; i < NUMBER_OF_BEACONS; i++) {
+    activeBeaconColour[i] = CRGB::Black;
+  }
+}
+
+void setBeaconColourAndFrequency(char *beaconCall, int beaconManifest, CRGB requiredColour, char *frequency) {
+
+  // Do we need to change the beacon colour?
+  
+  if (activeBeaconColour[beaconManifest] != requiredColour) {
+
+    // Yes we do. Convert the colour into HTML text
+    
+    char cvtBuffer[10];
+
+    sprintf(cvtBuffer,"#%02x%02x%02x",requiredColour.red,requiredColour.green,requiredColour.blue);
+
+    // Send it on to the clients
+
+    sendBeaconColourToBeaconListeners(beaconCall, cvtBuffer, frequency);
+
+    // Save the active colour
+
+    activeBeaconColour[beaconManifest] = requiredColour;
+  }
+}
+
 void beaconsShowActiveBeacons() {
 
   // Start by getting the current time
@@ -629,6 +660,7 @@ void beaconsShowActiveBeacons() {
     // Set the beacon colour to black
 
     CRGB beaconColour = CRGB::Black;
+    char *formattedFrequency = "\0";
     
     // Loop through all the frequencies that we have
     
@@ -642,21 +674,31 @@ void beaconsShowActiveBeacons() {
 
         beaconColour = beaconFrequencyColours[f];
 
+        formattedFrequency = FormatFrequency(freqencies[f]);
+       
+
        break;
         
       }
     }
 
-     ledSetIndexColour(beaconLEDs[beaconFreequencyTimes[b].Beacon], beaconColour);
+    ledSetIndexColour(beaconLEDs[beaconFreequencyTimes[b].Beacon], beaconColour);
 
-      char cvtBuffer[100];
-
-     if (CRGB::Black == beaconColour) {
+    if (CRGB::Black == beaconColour) {
       beaconColour = CRGB::White;
-     }
-      sprintf(cvtBuffer,"#%02x%02x%02x",beaconColour.red,beaconColour.green,beaconColour.blue);
+    }
+
+    setBeaconColourAndFrequency(beaconFreequencyTimes[b].Call, beaconFreequencyTimes[b].Beacon, beaconColour, formattedFrequency);
+    //setBeaconColour(beaconFreequencyTimes[b].Call, beaconFreequencyTimes[b].Beacon, beaconColour);
     
-     sendBeaconColourToBeaconListeners(beaconFreequencyTimes[b].Call, cvtBuffer);
+    //  char cvtBuffer[100];
+
+    // if (CRGB::Black == beaconColour) {
+    //  beaconColour = CRGB::White;
+    // }
+    //  sprintf(cvtBuffer,"#%02x%02x%02x",beaconColour.red,beaconColour.green,beaconColour.blue);
+    
+    // sendBeaconColourToBeaconListeners(beaconFreequencyTimes[b].Call, cvtBuffer);
   } 
 }
  

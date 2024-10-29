@@ -9,14 +9,14 @@
 
 // Define the working data
 
-CRGB leds[NUM_LEDS];
+CRGB leds[LED_CHAIN_LENGTH];
 
 //
 // This method is called to setup the LED chain.
 //
 void ledChainSetUp() {
 
-  FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, NUM_LEDS);
+  FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, LED_CHAIN_LENGTH);
   FastLED.setBrightness(64);
 }
 
@@ -27,7 +27,7 @@ void ledChainBlinkAll() {
   
   // Make all the LEDs white
   
-  fill_solid(leds, NUM_LEDS, CRGB::White);
+  fill_solid(leds, LED_CHAIN_LENGTH, CRGB::White);
 
   // Show and delay
   
@@ -36,7 +36,7 @@ void ledChainBlinkAll() {
 
   // Make all the LEDs black
 
-  fill_solid(leds, NUM_LEDS, CRGB::Black);
+  fill_solid(leds, LED_CHAIN_LENGTH, CRGB::Black);
   
   // Show and delay
   
@@ -75,7 +75,7 @@ void ledChainBlinkAll() {
   }  
   */
 
-  for(int i = 0; i < NUM_LEDS; i++)
+  for(int i = 0; i < LED_CHAIN_LENGTH; i++)
   {
     leds[i] = CRGB::White;
 
@@ -89,7 +89,7 @@ void ledChainBlinkAll() {
     
   }
 
-  for(int i = 0; i < NUM_LEDS; i++)
+  for(int i = 0; i < LED_CHAIN_LENGTH; i++)
   {
 
 

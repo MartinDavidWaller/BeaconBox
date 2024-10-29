@@ -527,7 +527,8 @@ void loop() {
           beaconsShowFrequencyColours();
 
           // Clean up all beacons
-          
+
+          clearActiveBeaconColours();
           sendAllBeaconsOffToBeaconListeners();
         }
 

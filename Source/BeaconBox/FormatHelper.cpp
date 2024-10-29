@@ -17,7 +17,7 @@ char *FormatFrequency(float frequency) {
 
   static char formatBuffer[20];  
   
-  sprintf(formatBuffer,"%.4f Mhz",frequency);
+  sprintf(formatBuffer,"%.3f Mhz",frequency);
 
   return formatBuffer;
 }

@@ -112,14 +112,17 @@
 
 					allBeaconIDs.forEach((e) => $("#" + e).attr("fill", "white"));
 					allBeaconIDs.forEach((e) => $("#" + e + "_T").attr("fill", "black"));
+					allBeaconIDs.forEach((e) => $("#" + e + "_ST").text(""));
 
 				}
 				else if (msg.ACTION == "BEACON_COLOUR") {
 
 					let beacon = msg.BEACON;
 					let colour = msg.COLOUR;
+					let subText = msg.SUBTEXT;
 
 					$("#B_" + msg.BEACON).attr("fill", colour);
+					$("#B_" + msg.BEACON + "_ST").text(subText);
 
 				}
 				else if (msg.ACTION == "ALL_FREQUENCIES_OFF") {
@@ -253,7 +256,7 @@
 					</svg>
 				</div>
 
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2010 1280" fill="none">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2055 1280" fill="none">
 
 					<style>
 						.small {
@@ -278,74 +281,92 @@
 					<!-- 4S7B -->
 					<circle id="B_4S7B" cx="1395" cy="870" r="16" stroke="black" stroke-width="2" fill="white" />
 				   	<text id="B_4S7B_T" x="1418" y="873" fill="black" class="heavy">4S7B</text>
+				   	<text id="B_4S7B_ST" x="1378" y="913" fill="black" class="heavy"></text>
 
 				   	<!-- 4U1UN -->
 				   	<circle id="B_4U1UN" cx="580" cy="670" r="16" stroke="black" stroke-width="2" fill="white" />
 				   	<text id="B_4U1UN_T" x="603" y="673" fill="black" class="heavy">4U1UN</text>
+				   	<text id="B_4U1UN_ST" x="563" y="713" fill="black" class="heavy"></text>
 
     				<!-- 4X6TU -->
     				<circle id="B_4X6TU" cx="1160" cy="710" r="16" stroke="black" stroke-width="2" fill="white" />
   					<text id="B_4X6TU_T" x="1183" y="713" fill="black" class="heavy">4X6TU</text>
+  					<text id="B_4X6TU_ST" x="1143" y="753" fill="black" class="heavy"></text>
 
    					<!-- 5Z4B -->
     				<circle id="B_5Z4B" cx="1175" cy="915" r="16" stroke="black" stroke-width="2" fill="white" />
   					<text id="B_5Z4B_T" x="1198" y="918" fill="black" class="heavy">5Z4B</text>
+  					<text id="B_5Z4B_ST" x="1158" y="958" fill="black" class="heavy"></text>
 
   				   	<!-- CS3B -->
     			   	<circle id="B_CS3B" cx="880" cy="720" r="16" stroke="black" stroke-width="2" fill="white" />
   					<text id="B_CS3B_T" x="903" y="723" fill="black" class="heavy">CS3B</text>
+  					<text id="B_CS3B_ST" x="863" y="763" fill="black" class="heavy"></text>
 
 					<!-- JA2IGY -->
 				   	<circle id="B_JA2IGY" cx="1690" cy="710" r="16" stroke="black" stroke-width="2" fill="white" />
 				   	<text id="B_JA2IGY_T" x="1713" y="713" fill="black" class="heavy">JA2IGY</text>
+				   	<text id="B_JA2IGY_ST" x="1673" y="753" fill="black" class="heavy"></text>
 
 				   	<!-- KH6RS -->
 				   	<circle id="B_KH6RS" cx="140" cy="800" r="16" stroke="black" stroke-width="2" fill="white" />
 				   	<text id="B_KH6RS_T" x="163" y="803" fill="black" class="heavy">KH6RS</text>
+				   	<text id="B_KH6RS_ST" x="123" y="843" fill="black" class="heavy"></text>
 
    					<!-- LU4AA -->
    					<circle id="B_LU4AA" cx="660" cy="1100" r="16" stroke="black" stroke-width="2" fill="white" />
   					<text id="B_LU4AA_T" x="683" y="1103" fill="black" class="heavy">LU4AA</text>
+  					<text id="B_LU4AA_ST" x="643" y="1143" fill="black" class="heavy"></text>
 
    					<!-- OA4B -->
     				<circle id="B_OA4B" cx="560" cy="970" r="16" stroke="black" stroke-width="2" fill="white" />
   					<text id="B_OA4B_T" x="583" y="973" fill="black" class="heavy">OA4B</text>
+  					<text id="B_OA4B_ST" x="543" y="1013" fill="black" class="heavy"></text>
 
    					<!-- OH2B -->
     				<circle id="B_OH2B" cx="1100" cy="495" r="16" stroke="black" stroke-width="2" fill="white" />
   					<text id="B_OH2B_T" x="1123" y="498" fill="black" class="heavy">OH2B</text>
+  					<text id="B_OH2B_ST" x="1083" y="538" fill="black" class="heavy"></text>
 
 					<!-- RR90 -->
 					<circle id="B_RR90" cx="1390" cy="520" r="16" stroke="black" stroke-width="2" fill="white" />
 				   	<text id="B_RR90_T" x="1413" y="523" fill="black" class="heavy">RR90</text>
+				   	<text id="B_RR90_ST" x="1373" y="563" fill="black" class="heavy"></text>
 
   					<!-- VE8AT -->
   				    <circle id="B_VE8AT" cx="250" cy="400" r="16" stroke="black" stroke-width="2" fill="white" />
   					<text id="B_VE8AT_T" x="273" y="403" fill="black" class="heavy">VE8AT</text>
+  					<text id="B_VE8AT_ST" x="233" y="443" fill="black" class="heavy"></text>
 
 					<!-- VK6RBP -->
 				   	<circle id="B_VK6RBP" cx="1585" cy="1080" r="16" stroke="black" stroke-width="2" fill="white" />
 				   	<text id="B_VK6RBP_T" x="1608" y="1083" fill="black" class="heavy">VK6RBP</text>
+				   	<text id="B_VK6RBP_ST" x="1568" y="1123" fill="black" class="heavy"></text>
 
 					<!-- VR2B -->
 				   	<circle id="B_VR2B" cx="1575" cy="780" r="16" stroke="black" stroke-width="2" fill="white" />
 				   	<text id="B_VR2B_T" x="1598" y="783" fill="black" class="heavy">VR2B</text>
+				   	<text id="B_VR2B_ST" x="1558" y="823" fill="black" class="heavy"></text>
 
 				    <!-- W6WX -->
 				    <circle id="B_W6WX" cx="320" cy="700" r="16" stroke="black" stroke-width="2" fill="white" />
   					<text id="B_W6WX_T" x="343" y="703" fill="black" class="heavy">W6WX</text>
+  					<text id="B_W6WX_ST" x="303" y="743" fill="black" class="heavy"></text>
 
          			<!-- YV5B -->
   				    <circle id="B_YV5B" cx="610" cy="850" r="16" stroke="black" stroke-width="2" fill="white" />
   					<text id="B_YV5B_T" x="633" y="853" fill="black" class="heavy">YV5B</text>
+  					<text id="B_YV5B_ST" x="593" y="893" fill="black" class="heavy"></text>
 
        				<!-- ZL6B -->
 			     	<circle id="B_ZL6B" cx="1910" cy="1140" r="16" stroke="black" stroke-width="2" fill="white" />
   					<text id="B_ZL6B_T" x="1933" y="1143" fill="black" class="heavy">ZL6B</text>
+  					<text id="B_ZL6B_ST" x="1893" y="1183" fill="black" class="heavy"></text>
 
        				<!-- ZS6DN -->
 					<circle id="B_ZS6DN" cx="1120" cy="1060" r="16" stroke="black" stroke-width="2" fill="white" />
   					<text id="B_ZS6DN_T" x="1143" y="1063" fill="black" class="heavy">ZS6DN</text>
+  					<text id="B_ZS6DN_ST" x="1103" y="1103" fill="black" class="heavy"></text>
 
 				</svg>
 
