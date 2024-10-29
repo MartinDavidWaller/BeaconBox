@@ -55,6 +55,7 @@
 				}
 
             	updateNameVersion();
+            	updateUpTime();
             	updateForm();
             	updateSSIDs();
 
@@ -125,7 +126,7 @@
                             	<tr>
                                 	<td>Wi-Fi SSID:</td>
                                 	<td>
-                                    	<input type="text" name="ssidInput" id="ssidInput" placeholder="32 characters maximum" minlength="1" maxlength="32" list="availableSSIDS" required />
+                                    	<input type="text" name="ssidInput" id="ssidInput" autocomplete="username" placeholder="32 characters maximum" minlength="1" maxlength="32" list="availableSSIDS" required />
                                     	<datalist id="availableSSIDS"></datalist>
                                 	</td>
                             	</tr>
@@ -140,7 +141,7 @@
                             	<tr>
                                 	<td>Wi-Fi Password:</td>
                                 	<td>
-                                    	<input type="password" name="passwordInput" id="passwordInput" placeholder="64 characters maximum" maxlength="64" />
+                                    	<input type="password" name="passwordInput" id="passwordInput" autocomplete="current-password" placeholder="64 characters maximum" maxlength="64" />
                                 	</td>
                             	</tr>
 

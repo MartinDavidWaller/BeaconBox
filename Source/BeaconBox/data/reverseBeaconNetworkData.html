@@ -17,27 +17,6 @@
 
         var rbnWebSocket = null;
 
-  		function updateUpTime()
-        {
-        	// Get the up time and spot data
-
-            $.ajax({
-                url: "getUpTime"
-            }).done(function (data) {
-
-                // We have the data, process it.
-
-                var data = data.documentElement;
-                $("#upTime").html(data.getAttribute("UpTime"));
-                $("#freeHeap").html(data.getAttribute("FreeHeap"));
-
-            });
-
-			// Set the next timeout
-
-            setTimeout(updateUpTime, INDEX_UPDATE_MILLISECONDS);
-        }
-
 
 		function makeWebSocketConnection() {
 
@@ -113,10 +92,6 @@
 
             <h1>
                 <span id="programName">[programName]</span>&nbsp;<span id="programVersion">[programVersion]</span>
-                <br/>
-                Up Time: <span id="upTime">[upTime]</span>
-                <br/>
-                Free Heap: <span id="freeHeap">[freeHeap]</span>
             </h1>
 
             <button id="homeButton" onclick="window.location.href='index.html';">Home</button>
