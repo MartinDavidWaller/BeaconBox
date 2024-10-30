@@ -422,16 +422,6 @@ void doBeaconsActiveMode() {
 }
 
 void loop() {
-
-  // Do we need to initialise the last active times?
-  
-  //if (-1 == lastBeaconsHeard) {
-    //time(&lastBeaconsHeard);
-  //}
-
-  //if (-1 == lastBeaconsActive) {
-    //time(&lastBeaconsActive);
-  //}
   
   // What we do here depend on what state we are in.
 
