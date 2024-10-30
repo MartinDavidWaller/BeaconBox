@@ -183,6 +183,7 @@ void setup() {
     strcpy((char*)&configuration.TimeZone[0],DEFAULT_TIMEZONE);
     strcpy((char*)&configuration.SpotterWildcards[0],DEFAULT_SPOTTER_WILDCARDS);
     configuration.SpotterTimeOutMinutes = DEFAULT_SPOTTER_TIMEOUT_MINUTES;
+    configuration.FrequencyStepTimeSeconds = DEFAULT_FREQUENCY_STEP_TIME_SECONDS;
 
     Serial.println("Writing new configuration");
     Serial.println("");
@@ -380,7 +381,7 @@ void doBeaconsHeardMode() {
 
   // Is it time to update the beacons frequency?
   
-  if ((-1 == lastBeaconsHeard) || (timeNow > lastBeaconsHeard + 5)) {
+  if ((-1 == lastBeaconsHeard) || (timeNow > lastBeaconsHeard + configuration.FrequencyStepTimeSeconds)) {
 
     // Yes, step the beacons
     

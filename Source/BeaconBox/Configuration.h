@@ -27,6 +27,7 @@ struct Configuration
   char SpotterWildcards[SPOTTER_WILDCARD_SIZE + 1];
   char TimeZone[TIMEZONE_SIZE + 1];
   uint8_t SpotterTimeOutMinutes;
+  uint8_t FrequencyStepTimeSeconds;
 };
 
 // The EPPROM_DATA structure wraps the configuration structure and adds a checksum

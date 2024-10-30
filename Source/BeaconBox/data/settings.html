@@ -20,7 +20,7 @@
         			url: "getSettingsData"
     			}).done(function (data) {
 
-        			// We have the data, process it.
+        			// We have the data, display it.
 
         			var settingsData = data.documentElement;
         			$("#hostnameInput").val(settingsData.getAttribute("Hostname"));
@@ -29,6 +29,7 @@
         			$("#callsignInput").val(settingsData.getAttribute("Callsign"));
         			$("#spotterWildcardsInput").val(settingsData.getAttribute("SpotterWildcards"));
         			$("#spotterTimeOutMinutesInput").val(settingsData.getAttribute("SpotterTimeOutMinutes"));
+        			$("#frequencyStepTimeSecondsInput").val(settingsData.getAttribute("FrequencyStepTimeSeconds"));
 
     			}).fail(function (jqXHR, textStatus) {
 
@@ -51,6 +52,13 @@
 
             	var select = $("#spotterTimeOutMinutesInput");
 	            for (var i = 1; i < 31; i++) {
+					$("<option/>", { value: i, text: i }).appendTo(select);
+				}
+
+            	// Populate the frequencyStepTime drop down
+
+            	var select = $("#frequencyStepTimeSecondsInput");
+	            for (var i = 1; i < 121; i++) {
 					$("<option/>", { value: i, text: i }).appendTo(select);
 				}
 
@@ -105,12 +113,22 @@
 
 							<button type="button" class="collapsible">Click for help.</button>
 							<div class="content">
-								  <p>
-								      BeaconBox reads data from the <a href='https://www.reversebeacon.net/'>Reverse Beacon Network</a>.
-								      To do this it requires access to the Internet. The details should be completed to indicate the
-								      Wi-Fi to connect to and the associated password.
-								      The hostname can be set to provide the name that the BeaconBox will appear as on
-								      your Wi-Fi network.
+							    <p>
+							        BeaconBox reads data from the <a href='https://www.reversebeacon.net/'>Reverse Beacon Network</a>.
+								    To do this it requires access to the Internet. The details should be completed to indicate the
+								    Wi-Fi to connect to and the associated password.
+								    <ul>
+								        <li>
+								            Hostname - The hostname can be set to provide the name that the BeaconBox will appear
+								            as on your Wi-Fi network.
+								        </li>
+								        <li>
+								            Wi-Fi SSID - The name of the Wi-Fi SSID to connect to.
+								        </li>
+								        <li>
+								            Wi-Fi Password - The password associated with the Wi-Fi SSID to connect to.
+								        </li>
+								    </ul>
 								  </p>
 							</div>
 
@@ -154,11 +172,15 @@
 
 							<button type="button" class="collapsible">Click for help.</button>
 							<div class="content">
-								  <p>
-								      The <a href='https://www.reversebeacon.net/'>Reverse Beacon Network</a> prompts for
-								      a callsign that is used to identify the person reading the data. This can be set to
-								      your callsign or just a simple name.
-								  </p>
+							    <p>
+								    <ul>
+								        <li>
+								            Callsign - The <a href='https://www.reversebeacon.net/'>Reverse Beacon Network</a>
+								            prompts for a callsign that is used to identify the person reading the data. This
+								            can be set to your callsign or just a simple name.
+								        </li>
+								    </ul>
+						        </p>
 							</div>
 
                         	<table>
@@ -179,9 +201,24 @@
 
 							<button type="button" class="collapsible">Click for help.</button>
 							<div class="content">
-								  <p>
-								      ??????????
-								  </p>
+							    <p>
+								    <ul>
+								        <li>
+								            Spotter Wildcards - This is a comma separated list of callsigns containing wildcards,
+								            either *, or ?, that are compared against the Reverse Beacon Network "spotter" data
+								            to determine if a beacon has been heard. The default value for this is G* which is
+								            any station within the United Kingdom.
+								        </li>
+								        <li>
+								            Spotter Time Out (Minutes) - Beacons spots time out. After this time the spot is ignored.
+								            The default value for this is 5 minutes.
+								        </li>
+								        <li>
+								            Frequency Step Time (Seconds) - This is the time, in seconds, that the beacons associated
+								            with the active frequency remain visible. The default value for this is 5 seconds.
+								        </li>
+								    </ul>
+						        </p>
 							</div>
 
                         	<table>
@@ -197,6 +234,13 @@
                             	    <td>Spotter Time Out (Minutes):</td>
                             	    <td>
                             	    	<select name="spotterTimeOutMinutesInput" id="spotterTimeOutMinutesInput"></select>
+                                   	</td>
+                            	</tr>
+
+                            	<tr>
+                            	    <td>Frequency Step Time (Seconds):</td>
+                            	    <td>
+                            	    	<select name="frequencyStepTimeSecondsInput" id="frequencyStepTimeSecondsInput"></select>
                                    	</td>
                             	</tr>
 
