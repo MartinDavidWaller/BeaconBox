@@ -22,6 +22,7 @@
 #include "FormatHelper.h"
 #include "LEDChain.h"
 #include "StringHelper.h"
+#include "SunData.h"
 #include "WebServer.h"
 
 #define MAX_NUM_ELEMENTS 10
@@ -690,16 +691,67 @@ void beaconsShowActiveBeacons() {
     }
 
     setBeaconColourAndFrequency(beaconFreequencyTimes[b].Call, beaconFreequencyTimes[b].Beacon, beaconColour, formattedFrequency);
-    //setBeaconColour(beaconFreequencyTimes[b].Call, beaconFreequencyTimes[b].Beacon, beaconColour);
-    
-    //  char cvtBuffer[100];
-
-    // if (CRGB::Black == beaconColour) {
-    //  beaconColour = CRGB::White;
-    // }
-    //  sprintf(cvtBuffer,"#%02x%02x%02x",beaconColour.red,beaconColour.green,beaconColour.blue);
-    
-    // sendBeaconColourToBeaconListeners(beaconFreequencyTimes[b].Call, cvtBuffer);
   } 
 }
+
+void beaconsShowBeaconsInDaylight() {
+
+  Serial.printf("beaconsShowBeaconsInDaylight\n");
+
+  // Start by getting the current time
+
+  time_t timeNow;
+  time(&timeNow);
+
+  // Turn this into a time info buffer
+  
+  struct tm *timeInfo;
+  timeInfo = localtime(&timeNow);
+
+  // Loop through all the beacons that we have
+  
+  for(int b = 0; b < 18; b++) {
+
+Serial.printf("....%s\n",beaconFreequencyTimes[b].Call);
+
+    // Set the beacon colour to black
+
+    CRGB beaconColour = CRGB::Brown;
+
+
+    struct SunData *sunData = GetSunPosition(
+      timeInfo->tm_year, 
+      timeInfo->tm_mon + 1,
+      timeInfo->tm_mday,
+      timeInfo->tm_hour,
+      timeInfo->tm_min,
+      beaconFreequencyTimes[b].Latitude,
+      beaconFreequencyTimes[b].Longitude);
+
+    
+
+    if (sunData->Altitude > 40) {
+
+      Serial.printf("....%s %f\n",beaconFreequencyTimes[b].Call, sunData->Altitude);
+      
+      beaconColour = CRGB::Yellow;
+    }
+    else if (sunData->Altitude > 0) {
+
+      Serial.printf("....%s %f\n",beaconFreequencyTimes[b].Call, sunData->Altitude);
+      
+      beaconColour = CRGB(0xf0,0xe8,0x91);
+      beaconColour = CRGB(0x00, 0xcc, 0x66);
+    }    
+
+    ledSetIndexColour(beaconLEDs[beaconFreequencyTimes[b].Beacon], beaconColour);
+
+    //if (CRGB::Black == beaconColour) {
+      //beaconColour = CRGB::White;
+    //}
+
+    setBeaconColourAndFrequency(beaconFreequencyTimes[b].Call, beaconFreequencyTimes[b].Beacon, beaconColour, "");
+  } 
+}
+ 
  

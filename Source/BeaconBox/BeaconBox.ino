@@ -38,7 +38,9 @@
 typedef enum {
   
   OPERATION_MODE_BEACONS_HEARD,     // Usual mode, reporting beacons that have been heard
-  OPERATION_MODE_NCDXF_IARU         // NCDXF/IARU Transmission schedule mode
+  OPERATION_MODE_NCDXF_IARU,        // NCDXF/IARU Transmission schedule mode
+  OPERATION_MODE_DAYLIGHT           // Daylight mode
+  
 } OPERATION_MODE;
 
 // The following manifests are used to control the active state
@@ -86,12 +88,25 @@ void IRAM_ATTR switchInterrupt() {
   if (interrupt_time - last_interrupt_time > 200) 
   {
     // Update the requested mode depending on the active node. Basically
-    // switch it between the two.
+    // switch it between the available modes
 
-    if (OPERATION_MODE_BEACONS_HEARD == activeMode)
-      requestedMode = OPERATION_MODE_NCDXF_IARU;
-    else
-      requestedMode = OPERATION_MODE_BEACONS_HEARD;
+    switch(activeMode) {
+
+      case OPERATION_MODE_BEACONS_HEARD:
+        requestedMode = OPERATION_MODE_NCDXF_IARU;
+        break;
+        
+      case OPERATION_MODE_NCDXF_IARU:
+        requestedMode = OPERATION_MODE_DAYLIGHT;
+        break;
+        
+      case OPERATION_MODE_DAYLIGHT:
+        requestedMode = OPERATION_MODE_BEACONS_HEARD;
+        break;
+
+      default:
+        break;
+    }
 
     // Serial.printf("********** INTERRUPT, requested mode = %d\n", activeMode);
   }
@@ -421,6 +436,33 @@ void doBeaconsActiveMode() {
   }
 }
 
+time_t lastDaylight = -1;
+
+void doDaylightMode() {
+
+  // Here we are displaying beacons that are in daylight.
+  
+  // We need to decide if the time is right to move on
+
+  // Get the time
+  
+  time_t timeNow;
+  time(&timeNow);
+
+  // Is it time to update the beacons in daylight
+  
+  if ((-1 == lastBeaconsActive) || (timeNow > lastDaylight + 60)) {
+
+    // Yes, update the beacons in daylight
+    
+    beaconsShowBeaconsInDaylight();
+
+    // Update the time of the last step
+    
+    time(&lastDaylight);
+  }
+}
+
 void loop() {
   
   // What we do here depend on what state we are in.
@@ -474,15 +516,23 @@ void loop() {
 
       if (activeMode == requestedMode) {
 
-        // No change.
+        // No change, decode the active mode and action it
 
-        if (activeMode == OPERATION_MODE_BEACONS_HEARD) {
+        switch(activeMode) {
+          case OPERATION_MODE_BEACONS_HEARD:
 
-          doBeaconsHeardMode();
-        }
-        else {
+            doBeaconsHeardMode();
+            break;
+            
+          case OPERATION_MODE_NCDXF_IARU:
 
-          doBeaconsActiveMode();
+            doBeaconsActiveMode();
+            break;
+            
+          case OPERATION_MODE_DAYLIGHT:
+
+            doDaylightMode();
+            break;
         }
       }
       else {
@@ -494,35 +544,55 @@ void loop() {
         ledTurnOffAllFrequencyLeds();
 
         // What's changing
+
+        switch(requestedMode) {
+          
+          case OPERATION_MODE_BEACONS_HEARD:
+
+            // Usual mode, reporting beacons that have been heard. All we
+            // need to do is reset the timer.
+
+            lastBeaconsHeard = -1;
+            break;
+            
+          case OPERATION_MODE_NCDXF_IARU:
+
+            // NCDXF/IARU Transmission schedule mode
+
+            // Clear down all beacons LED
+
+            ledTurnOffAllBeaconLeds();
+          
+            // Reset the time
+
+            lastBeaconsActive = -1;
+          
+            // Set the frequency colours
+          
+            beaconsShowFrequencyColours();
+
+            // Clean up all beacons
+
+            clearActiveBeaconColours();
+            sendAllBeaconsOffToBeaconListeners();         
+            break;
+            
+          case OPERATION_MODE_DAYLIGHT:
+
+            // Reset the time
+
+            lastDaylight = -1;
+            
+            // Turn off all the frequency leds
+            
+            ledTurnOffAllFrequencyLeds();
+
+            // Ditto on any webpage
+            
+            sendAllFrequenciesOffToBeaconListeners();
+            break;          
+        }
         
-        if (OPERATION_MODE_BEACONS_HEARD == requestedMode) {
-
-          // Usual mode, reporting beacons that have been heard
-
-          lastBeaconsHeard = -1;
-        }
-        else {
-
-          // NCDXF/IARU Transmission schedule mode
-
-          // Clear down all beacons LED
-
-          ledTurnOffAllBeaconLeds();
-          
-          // Reset the tim
-
-          lastBeaconsActive = -1;
-          
-          // Set the frequency colours
-          
-          beaconsShowFrequencyColours();
-
-          // Clean up all beacons
-
-          clearActiveBeaconColours();
-          sendAllBeaconsOffToBeaconListeners();
-        }
-
         // Finally make this the active mode
 
         activeMode = requestedMode;

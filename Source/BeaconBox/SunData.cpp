@@ -269,8 +269,8 @@ SunData *GetSunPosition(int year, int month, int day, int hour, int minute, doub
   double azimuth = Rad2Deg(atan2(yhor, xhor)) + 180;
   double altitude = Rad2Deg(asin(zhor));
 
-  struct SunData SunData;
-
+  static struct SunData SunData;
+ 
   SunData.RightAscension = rightAscension;
   SunData.Declination = declination;
   SunData.Azimuth = azimuth;
