@@ -1,0 +1,28 @@
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 56" fill="none">
+
+						<style>
+
+							.frequency {
+    							font-family: Georgia, "Trebuchet MS", Arial, Helvetica, sans-serif;
+    							font-size: 8px;
+    							font-weight: bold;
+							}
+
+  						</style>
+
+						<circle id="F_14100_C" cx="20" cy="20" r="10" stroke="black" stroke-width="2" fill="white" />
+						<text id="F_14100_T" x="0" y="50" fill="black" class="frequency">14.100Mhz</text>
+
+						<circle id="F_18110_C" cx="70" cy="20" r="10" stroke="black" stroke-width="2" fill="white" />
+						<text id="F_18110_T" x="50" y="50" fill="black" class="frequency">18.110Mhz</text>
+
+						<circle id="F_21150_C" cx="120" cy="20" r="10" stroke="black" stroke-width="2" fill="white" />
+						<text id="F_21150_T" x="100" y="50" fill="black" class="frequency">21.150Mhz</text>
+
+						<circle id="F_24930_C" cx="170" cy="20" r="10" stroke="black" stroke-width="2" fill="white" />
+						<text id="F_24930_T" x="150" y="50" fill="black" class="frequency">24.930Mhz</text>
+
+						<circle id="F_28200_C" cx="220" cy="20" r="10" stroke="black" stroke-width="2" fill="white" />
+						<text id="F_28200_T" x="200" y="50" fill="black" class="frequency">28.200Mhz</text>
+
+					</svg>

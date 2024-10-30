@@ -44,6 +44,9 @@ namespace ConsoleApp14
 
         static void Main(string[] args)
         {
+            DateTime n = new DateTime(2024, 10, 30, 15, 30, 0);
+            SunCalc.SunData xy = SunCalc.GetSunPosition(n, 52.0597, 1.1481);
+
             Beacon B_4U1UN = new Beacon() { Call = "4U1UN", GridSquare = "FN30as" };
             Beacon B_VE8AT = new Beacon() { Call = "VE8AT", GridSquare = "CP38gh" };
             Beacon B_W6WX = new Beacon() { Call = "W6WX", GridSquare = "CM97bd" };
