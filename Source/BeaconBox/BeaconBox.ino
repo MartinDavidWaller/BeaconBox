@@ -116,6 +116,13 @@ void IRAM_ATTR switchInterrupt() {
   last_interrupt_time = interrupt_time;
 }
 
+void configurationUpdateHandler() {
+
+  // Pass on any change to the LED brightness
+
+  ledBrightness(configuration.LEDBrightness);
+}
+
 // This is the setup routine. It all starts here.
 
 void setup() {
@@ -143,8 +150,7 @@ void setup() {
   // Setup the LEDs and put on a short display.
 
   ledChainSetUp();
-  ledChainBlinkAll();
-
+  
   // Read the configuration data from the EEPROM
 
   Serial.println("");
@@ -199,6 +205,7 @@ void setup() {
     strcpy((char*)&configuration.SpotterWildcards[0],DEFAULT_SPOTTER_WILDCARDS);
     configuration.SpotterTimeOutMinutes = DEFAULT_SPOTTER_TIMEOUT_MINUTES;
     configuration.FrequencyStepTimeSeconds = DEFAULT_FREQUENCY_STEP_TIME_SECONDS;
+    configuration.LEDBrightness = DEFAULT_LED_BRIGHTNESS;
 
     Serial.println("Writing new configuration");
     Serial.println("");
@@ -226,7 +233,12 @@ void setup() {
     Serial.println("SPIFFS Mount Failed");
     return;
   }
-  
+
+  // Blink the LEDs
+
+  ledBrightness(configuration.LEDBrightness);
+  ledChainBlinkAll();
+    
   // Open the root object
   
   File root = SPIFFS.open("/");
@@ -289,7 +301,7 @@ void setup() {
 
   // Next setup the Web Server
 
-  webServerSetUp();
+  webServerSetUp(&configurationUpdateHandler);
 
   // Set the current state
 

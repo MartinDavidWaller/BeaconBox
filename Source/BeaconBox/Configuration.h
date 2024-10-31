@@ -28,6 +28,7 @@ struct Configuration
   char TimeZone[TIMEZONE_SIZE + 1];
   uint8_t SpotterTimeOutMinutes;
   uint8_t FrequencyStepTimeSeconds;
+  uint8_t LEDBrightness;
 };
 
 // The EPPROM_DATA structure wraps the configuration structure and adds a checksum

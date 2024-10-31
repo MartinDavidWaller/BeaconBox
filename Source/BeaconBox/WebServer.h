@@ -5,7 +5,7 @@
  *  Copyright (c) 2024
  */
  
-extern void webServerSetUp();
+extern void webServerSetUp(void configurationUpdateHandler());
 extern void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char *rbnTime);
 extern void sendBeaconColourToBeaconListeners(char *beacon, char *colour, char *subText);
 extern void sendFrequencyColourToBeaconListeners(double frequency, char *colour);

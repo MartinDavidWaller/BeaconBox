@@ -17,13 +17,33 @@ CRGB leds[LED_CHAIN_LENGTH];
 void ledChainSetUp() {
 
   FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, LED_CHAIN_LENGTH);
-  FastLED.setBrightness(64);
+  FastLED.setBrightness(255);
+}
+
+void ledBrightness(uint8_t newBrightness) {
+  
+  FastLED.setBrightness(newBrightness);
 }
 
 //
 // This method is called to blink all the LEDs in the chain.
 //
 void ledChainBlinkAll() {
+
+  double p = 1.0;
+  for(int i = 0; i < 20; i++) {
+
+    leds[i] = CRGB::Yellow;
+
+    leds[i].r = leds[i].r * p;
+    leds[i].g = leds[i].g * p;
+    leds[i].b = leds[i].b * p;
+
+    p -= 0.05;
+  }
+
+  FastLED.show();
+  delay(5000);
   
   // Make all the LEDs white
   

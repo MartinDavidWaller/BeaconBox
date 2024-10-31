@@ -716,8 +716,7 @@ Serial.printf("....%s\n",beaconFreequencyTimes[b].Call);
 
     // Set the beacon colour to black
 
-    CRGB beaconColour = CRGB::Brown;
-
+    CRGB beaconColour = CRGB::DarkSlateGrey; // CRGB::Brown;
 
     struct SunData *sunData = GetSunPosition(
       timeInfo->tm_year, 
@@ -728,20 +727,16 @@ Serial.printf("....%s\n",beaconFreequencyTimes[b].Call);
       beaconFreequencyTimes[b].Latitude,
       beaconFreequencyTimes[b].Longitude);
 
-    
-
-    if (sunData->Altitude > 40) {
+    if (sunData->Altitude > 0) {
 
       Serial.printf("....%s %f\n",beaconFreequencyTimes[b].Call, sunData->Altitude);
       
       beaconColour = CRGB::Yellow;
-    }
-    else if (sunData->Altitude > 0) {
+      beaconColour.r = beaconColour.r * sunData->Altitude / 100;
+      beaconColour.g = beaconColour.g * sunData->Altitude / 100;
+      beaconColour.b = beaconColour.b * sunData->Altitude / 100;
 
-      Serial.printf("....%s %f\n",beaconFreequencyTimes[b].Call, sunData->Altitude);
-      
-      beaconColour = CRGB(0xf0,0xe8,0x91);
-      beaconColour = CRGB(0x00, 0xcc, 0x66);
+      Serial.printf("....%d %d %d\n",beaconColour.r, beaconColour.g, beaconColour.b);
     }    
 
     ledSetIndexColour(beaconLEDs[beaconFreequencyTimes[b].Beacon], beaconColour);

@@ -25,6 +25,8 @@ AsyncWebSocket beaconDataWebSocket("/beaconData");
 StaticJsonDocument<200> beaconJSONOut; 
 StaticJsonDocument<200> rbnJSONOut;        
 
+void (*configurationUpdateHandler)();
+
 extern time_t startUpTime;
 extern struct Configuration configuration;
 
@@ -37,6 +39,7 @@ void onDoSettingsUpdate(AsyncWebServerRequest *request){
   AsyncWebParameter* spotterWildcardsInputParam = request->getParam("spotterWildcardsInput");
   AsyncWebParameter* spotterTimeOutMinutesInputParam = request->getParam("spotterTimeOutMinutesInput");
   AsyncWebParameter* frequencyStepTimeSecondsInputParam = request->getParam("frequencyStepTimeSecondsInput");
+  AsyncWebParameter* ledBrightnessInputParam = request->getParam("ledBrightnessInput");
 
   Serial.println("Update settings:");
   
@@ -61,6 +64,9 @@ void onDoSettingsUpdate(AsyncWebServerRequest *request){
   Serial.print("...frequencyStepTimeSecondsInputParam = ");
   Serial.println(frequencyStepTimeSecondsInputParam->value().c_str());  
 
+  Serial.print("...ledBrightnessInputParam = ");
+  Serial.println(ledBrightnessInputParam->value().c_str());    
+
   strcpy((char*)&configuration.Hostname[0],hostnameInputParam->value().c_str());
   strcpy((char*)&configuration.WiFi_SSID[0],ssidInputParam->value().c_str());
   strcpy((char*)&configuration.WiFi_Password[0],passwordInputParam->value().c_str());
@@ -68,10 +74,15 @@ void onDoSettingsUpdate(AsyncWebServerRequest *request){
   strcpy((char*)&configuration.SpotterWildcards[0],spotterWildcardsInputParam->value().c_str());
   configuration.SpotterTimeOutMinutes = atoi(spotterTimeOutMinutesInputParam->value().c_str());
   configuration.FrequencyStepTimeSeconds = atoi(frequencyStepTimeSecondsInputParam->value().c_str());
+  configuration.LEDBrightness = atoi(ledBrightnessInputParam->value().c_str());
 
   // Write it out
     
   writeConfiguration(&configuration); 
+
+  // Notify the world
+
+  configurationUpdateHandler();
 
   // Redirect to the settings page
     
@@ -92,6 +103,7 @@ void onGetSettingsData(AsyncWebServerRequest *request){
   response->printf("SpotterWildcards=\"%s\" ",&configuration.SpotterWildcards[0]); 
   response->printf("SpotterTimeOutMinutes=\"%d\" ",configuration.SpotterTimeOutMinutes);
   response->printf("FrequencyStepTimeSeconds=\"%d\" ",configuration.FrequencyStepTimeSeconds);
+  response->printf("LEDBrightness=\"%d\" ",configuration.LEDBrightness);
   
   response->printf("/>");
 
@@ -377,8 +389,13 @@ void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char 
   }
 }
 
-extern void webServerSetUp()
+extern void webServerSetUp(void _configurationUpdateHandler())
 { 
+
+  // Save the configuration update handler
+  
+  configurationUpdateHandler = _configurationUpdateHandler;
+  
   // Setup the websockets
 
   rbnDataWebSocket.onEvent(onBeaconDataWebSocketEvent);

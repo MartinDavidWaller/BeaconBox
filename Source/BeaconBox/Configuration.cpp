@@ -43,6 +43,7 @@ void dumpConfiguration(struct Configuration *configuration)
   Serial.printf("   TimeZone: ................... %s\n",configuration->TimeZone);
   Serial.printf("   SpotterTimeOutMinutes ....... %d\n",configuration->SpotterTimeOutMinutes);
   Serial.printf("   FrequencyStepTimeSeconds .... %d\n",configuration->FrequencyStepTimeSeconds);
+  Serial.printf("   LEDBrightness ............... %d\n",configuration->LEDBrightness);
 }
 
 //

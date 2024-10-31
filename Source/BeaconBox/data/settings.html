@@ -30,6 +30,7 @@
         			$("#spotterWildcardsInput").val(settingsData.getAttribute("SpotterWildcards"));
         			$("#spotterTimeOutMinutesInput").val(settingsData.getAttribute("SpotterTimeOutMinutes"));
         			$("#frequencyStepTimeSecondsInput").val(settingsData.getAttribute("FrequencyStepTimeSeconds"));
+        			$("#ledBrightnessInput").val(settingsData.getAttribute("LEDBrightness"));
 
     			}).fail(function (jqXHR, textStatus) {
 
@@ -59,6 +60,13 @@
 
             	var select = $("#frequencyStepTimeSecondsInput");
 	            for (var i = 1; i < 121; i++) {
+					$("<option/>", { value: i, text: i }).appendTo(select);
+				}
+
+            	// Populate the ledBrightness drop down
+
+            	var select = $("#ledBrightnessInput");
+	            for (var i = 1; i < 256; i++) {
 					$("<option/>", { value: i, text: i }).appendTo(select);
 				}
 
@@ -241,6 +249,35 @@
                             	    <td>Frequency Step Time (Seconds):</td>
                             	    <td>
                             	    	<select name="frequencyStepTimeSecondsInput" id="frequencyStepTimeSecondsInput"></select>
+                                   	</td>
+                            	</tr>
+
+                   	     	</table>
+                  	  	</fieldset>
+
+                    	<br />
+
+                    	<fieldset>
+                        	<legend>LED Display</legend>
+
+							<button type="button" class="collapsible">Click for help.</button>
+							<div class="content">
+							    <p>
+								    <ul>
+								        <li>
+								            LED Brightness - This controls the brightness of the LED display. This ranges
+								            from 1 to 255 with 255 being the brightest.
+								        </li>
+								    </ul>
+						        </p>
+							</div>
+
+                        	<table>
+
+                            	<tr>
+                            	    <td>LED Brighness (1 - 255) 255 being the brightest:</td>
+                            	    <td>
+                            	    	<select name="ledBrightnessInput" id="ledBrightnessInput"></select>
                                    	</td>
                             	</tr>
 

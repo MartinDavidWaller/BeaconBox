@@ -48,8 +48,9 @@
 
 // Define routines and functions
 
-void ledChainSetUp();
-void ledChainBlinkAll();
-void ledSetIndexColour(int index,CRGB colour);
-void ledTurnOffAllFrequencyLeds();
-void ledTurnOffAllBeaconLeds();
+extern void ledChainSetUp();
+extern void ledChainBlinkAll();
+extern void ledSetIndexColour(int index,CRGB colour);
+extern void ledTurnOffAllFrequencyLeds();
+extern void ledTurnOffAllBeaconLeds();
+extern void ledBrightness(uint8_t newBrightness);
