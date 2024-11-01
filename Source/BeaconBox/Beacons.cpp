@@ -727,17 +727,25 @@ Serial.printf("....%s\n",beaconFreequencyTimes[b].Call);
       beaconFreequencyTimes[b].Latitude,
       beaconFreequencyTimes[b].Longitude);
 
-    if (sunData->Altitude > 0) {
+    if (sunData->Altitude > 20) {
 
       Serial.printf("....%s %f\n",beaconFreequencyTimes[b].Call, sunData->Altitude);
       
       beaconColour = CRGB::Yellow;
-      beaconColour.r = beaconColour.r * sunData->Altitude / 100;
-      beaconColour.g = beaconColour.g * sunData->Altitude / 100;
-      beaconColour.b = beaconColour.b * sunData->Altitude / 100;
 
       Serial.printf("....%d %d %d\n",beaconColour.r, beaconColour.g, beaconColour.b);
     }    
+    else if (sunData->Altitude > 0) {
+
+      Serial.printf("....%s %f\n",beaconFreequencyTimes[b].Call, sunData->Altitude);
+      
+      beaconColour = CRGB::Yellow;
+      beaconColour.r = beaconColour.r * 0.5;
+      beaconColour.g = beaconColour.g * 0.5;
+      beaconColour.b = beaconColour.b * 0.5;
+
+      Serial.printf("....%d %d %d\n",beaconColour.r, beaconColour.g, beaconColour.b);
+    }      
 
     ledSetIndexColour(beaconLEDs[beaconFreequencyTimes[b].Beacon], beaconColour);
 

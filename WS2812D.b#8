@@ -128,14 +128,14 @@
 <plain>
 <text x="8.89" y="38.1" size="1.016" layer="51" rot="R90">VCC</text>
 <text x="8.89" y="67.31" size="1.016" layer="51" rot="R90">VCC</text>
-<text x="11.43" y="67.31" size="1.016" layer="51" rot="R90">GND</text>
+<text x="11.43" y="67.31" size="1.016" layer="25" rot="R90">GND</text>
 <text x="11.43" y="38.1" size="1.016" layer="51" rot="R90">GND</text>
 <text x="13.97" y="38.1" size="1.016" layer="51" rot="R90">DIN</text>
-<text x="13.97" y="67.31" size="1.016" layer="51" rot="R90">DOUT</text>
-<wire x1="5.08" y1="73.66" x2="22.86" y2="73.66" width="0.1524" layer="51"/>
-<wire x1="22.86" y1="73.66" x2="22.86" y2="35.56" width="0.1524" layer="51"/>
-<wire x1="22.86" y1="35.56" x2="5.08" y2="35.56" width="0.1524" layer="51"/>
-<wire x1="5.08" y1="35.56" x2="5.08" y2="73.66" width="0.1524" layer="51"/>
+<text x="13.97" y="67.31" size="1.4224" layer="121" rot="R90">DOUT</text>
+<wire x1="5.08" y1="73.66" x2="22.86" y2="73.66" width="0.1524" layer="20"/>
+<wire x1="22.86" y1="73.66" x2="22.86" y2="35.56" width="0.1524" layer="20"/>
+<wire x1="22.86" y1="35.56" x2="5.08" y2="35.56" width="0.1524" layer="20"/>
+<wire x1="5.08" y1="35.56" x2="5.08" y2="73.66" width="0.1524" layer="20"/>
 </plain>
 <libraries>
 <library name="con-lstb" urn="urn:adsk.eagle:library:162">

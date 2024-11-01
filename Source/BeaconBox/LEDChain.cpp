@@ -30,20 +30,20 @@ void ledBrightness(uint8_t newBrightness) {
 //
 void ledChainBlinkAll() {
 
-  double p = 1.0;
-  for(int i = 0; i < 20; i++) {
+  //double p = 1.0;
+  //for(int i = 0; i < 20; i++) {
 
-    leds[i] = CRGB::Yellow;
+    //leds[i] = CRGB::Yellow;
 
-    leds[i].r = leds[i].r * p;
-    leds[i].g = leds[i].g * p;
-    leds[i].b = leds[i].b * p;
+    //leds[i].r = leds[i].r * p;
+    //leds[i].g = leds[i].g * p;
+    //leds[i].b = leds[i].b * p;
 
-    p -= 0.05;
-  }
+    //p -= 0.05;
+  //}
 
-  FastLED.show();
-  delay(5000);
+  //FastLED.show();
+  //delay(5000);
   
   // Make all the LEDs white
   
