@@ -2,14 +2,14 @@ EAGLE AutoRouter Statistics:
 
 Job           : D:/CloadStorage/OneDrive/GitHubRepositories/BeaconBox/WS2812D.brd
 
-Start at      : 17:03:52 (01/11/2024)
-End at        : 17:03:55 (01/11/2024)
+Start at      : 15:36:59 (02/11/2024)
+End at        : 15:37:02 (02/11/2024)
 Elapsed time  : 00:00:01
 
 Signals       :     5   RoutingGrid: 6 mil  Layers: 2
 Connections   :     9   predefined:  0 ( 0 Vias )
 
-Router memory :   110920
+Router memory :   139568
 
 Passname          : TopRouter     Route Optimize1 Optimize2 Optimize3 Optimize4
 

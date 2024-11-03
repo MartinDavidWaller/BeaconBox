@@ -17,7 +17,14 @@
   * 
   * Map from https://www.fla-shop.com/svg/
   */
-  
+
+  /*
+   * EAGLE PCB Libraries
+   * 
+   * ESP32 - 30 Pin - https://github.com/shridattdudhat/ESP32-DEVKITV1
+   * ESP32 - 38 Pin - https://hackaday.io/project/46280/files             DevKitC
+   */
+   
  #include "Arduino.h"
 
 #include <FastLED.h>
