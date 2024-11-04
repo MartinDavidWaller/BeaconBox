@@ -77,6 +77,24 @@
             setTimeout(updateUpTime, INDEX_UPDATE_MILLISECONDS);
         }
 
+        function getModeChange() {
+
+			// Get a mode change
+
+		    $.ajax({
+		    	url: "getModeChange"
+		    }).done(function (data) {
+
+		    	// We have changed the mode!
+
+		       	// Do nothing for now
+
+		    }).fail(function (jqXHR, textStatus) {
+
+		    	alert("Contact with host lost! " + textStatus);
+		    });
+		}
+
 		function makeWebSocketConnection() {
 
             // Build the RBN WebSocket
@@ -198,14 +216,21 @@
     <body>
         <div class='norm'>
 
-            <h1>
-                <span id="programName">[programName]</span>&nbsp;<span id="programVersion">[programVersion]</span>
-                <br/>
-                Up Time: <span id="upTime">[upTime]</span>
-                <br/>
-                Free Heap: <span id="freeHeap">[freeHeap]</span>
-            </h1>
+			<div>
+            	<h1>
+                	<span id="programName">[programName]</span>&nbsp;<span id="programVersion">[programVersion]</span>
+                	<br/>
+                	Up Time: <span id="upTime">[upTime]</span>
+                	<br/>
+                	Free Heap: <span id="freeHeap">[freeHeap]</span>
+            	</h1>
+            </div>
 
+			<button
+				id="modeButton"
+				style="margin-bottom: 10px; background-color:black; border-radius: 25px; color:white; font-size:20px; width:150px; height:50px;"
+				onclick="getModeChange();">Mode</button>
+			<br/>
             <button id="homeButton" onclick="window.location.href='index.html';">Home</button>
             <button id="reverseBeaconNetworkDataButton" onclick="window.location.href='reverseBeaconNetworkData.html';">Reverse Beacon Network Data</button>
             <button id="settingsButton" onclick="window.location.href='settings.html';">Settings</button>
@@ -372,6 +397,6 @@
 
             </div>
         </div>
-        <div id=footer>Copyright &copy; <span id="programCopyright"></span></div>
+        <div id=footer><span id="programCopyright"></span></div>
     </body>
 </html>

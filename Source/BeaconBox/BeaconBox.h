@@ -33,6 +33,13 @@
 
 #define MODE_PIN 25
 
+// LEDs - two LED types are supported WS2812B and WS2812D (8mm)
+
+#define LED_TYPE_WS2812B 1
+#define LED_TYPE_WS2812D 2
+
+#define LED_TYPE LED_TYPE_WS2812B
+
 // Defined methods / data
 
 //extern struct RuntimeData runtimeData;

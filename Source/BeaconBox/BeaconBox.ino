@@ -24,6 +24,20 @@
    * ESP32 - 30 Pin - https://github.com/shridattdudhat/ESP32-DEVKITV1
    * ESP32 - 38 Pin - https://hackaday.io/project/46280/files             DevKitC
    */
+
+  /*
+   * Read all the flash
+   * 
+   * C:\Users\marti>C:\Users\marti\AppData\Local\Arduino15\packages\esp32\tools\esptool_py\4.6/esptool.exe --chip esp32 --port COM4 --baud 921600 read_flash 0 ALL flash_contents.bin
+   * 
+   * Erase all the flash
+   * 
+   * C:\Users\marti>C:\Users\marti\AppData\Local\Arduino15\packages\esp32\tools\esptool_py\4.6/esptool.exe --chip esp32 --port COM4 --baud 921600 erase_flash
+   * 
+   * Write flash
+   * 
+   * C:\Users\marti>C:\Users\marti\AppData\Local\Arduino15\packages\esp32\tools\esptool_py\4.6/esptool.exe --chip esp32 --port COM4 --baud 921600 write_flash 0x0 flash_contents.bin
+   */
    
  #include "Arduino.h"
 
@@ -82,6 +96,27 @@ boolean startAP() {
   return result;
 }  
 
+void stepTheMode() {
+
+  switch(activeMode) {
+
+    case OPERATION_MODE_BEACONS_HEARD:
+      requestedMode = OPERATION_MODE_NCDXF_IARU;
+      break;
+        
+    case OPERATION_MODE_NCDXF_IARU:
+      requestedMode = OPERATION_MODE_DAYLIGHT;
+      break;
+        
+    case OPERATION_MODE_DAYLIGHT:
+      requestedMode = OPERATION_MODE_BEACONS_HEARD;
+      break;
+
+    default:
+      break;
+  }  
+}
+
 void IRAM_ATTR switchInterrupt() {
 
   static unsigned long last_interrupt_time = 0;
@@ -97,25 +132,7 @@ void IRAM_ATTR switchInterrupt() {
     // Update the requested mode depending on the active node. Basically
     // switch it between the available modes
 
-    switch(activeMode) {
-
-      case OPERATION_MODE_BEACONS_HEARD:
-        requestedMode = OPERATION_MODE_NCDXF_IARU;
-        break;
-        
-      case OPERATION_MODE_NCDXF_IARU:
-        requestedMode = OPERATION_MODE_DAYLIGHT;
-        break;
-        
-      case OPERATION_MODE_DAYLIGHT:
-        requestedMode = OPERATION_MODE_BEACONS_HEARD;
-        break;
-
-      default:
-        break;
-    }
-
-    // Serial.printf("********** INTERRUPT, requested mode = %d\n", activeMode);
+    stepTheMode();
   }
 
   // Update the last interrupt time
@@ -128,6 +145,13 @@ void configurationUpdateHandler() {
   // Pass on any change to the LED brightness
 
   ledBrightness(configuration.LEDBrightness);
+}
+
+void modeChangeHandler() {
+
+  // Step the moode
+
+  stepTheMode();
 }
 
 // This is the setup routine. It all starts here.
@@ -308,7 +332,7 @@ void setup() {
 
   // Next setup the Web Server
 
-  webServerSetUp(&configurationUpdateHandler);
+  webServerSetUp(&configurationUpdateHandler, &modeChangeHandler);
 
   // Set the current state
 

@@ -26,9 +26,30 @@ StaticJsonDocument<200> beaconJSONOut;
 StaticJsonDocument<200> rbnJSONOut;        
 
 void (*configurationUpdateHandler)();
+void (*modeChangeHandler)();
 
 extern time_t startUpTime;
 extern struct Configuration configuration;
+
+void onDoReboot(AsyncWebServerRequest *request){
+
+  // Redirect to the index page
+    
+  request->redirect("index.html");  
+
+  ESP.restart();
+}
+
+void onGetModeChange(AsyncWebServerRequest *request){
+
+  // Pass on the request
+  
+  modeChangeHandler();
+  
+  // Redirect to the index page,
+    
+  request->redirect("index.html");  
+}
 
 void onDoSettingsUpdate(AsyncWebServerRequest *request){
 
@@ -121,7 +142,7 @@ void onGetNameVersion(AsyncWebServerRequest *request){
 
   response->printf("Name=\"%s\" ",PROGRAM_NAME);
   response->printf("Version=\"V%d.%d\" ",PROGRAM_VERSION_MAJOR,PROGRAM_VERSION_MINOR); 
-  response->printf("Copyright=\"[YEAR] M.D.Waller G0PJO. All rights reserved.\"");
+  response->printf("Copyright=\"M.D.Waller G0PJO. (c) Copyright [YEAR]. All rights reserved.\"");
 
   response->printf("/>");
 
@@ -389,12 +410,13 @@ void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char 
   }
 }
 
-extern void webServerSetUp(void _configurationUpdateHandler())
+extern void webServerSetUp(void _configurationUpdateHandler(), void _modeChangeHandler())
 { 
 
-  // Save the configuration update handler
+  // Save the configuration update handler and the mode change handler
   
   configurationUpdateHandler = _configurationUpdateHandler;
+  modeChangeHandler = _modeChangeHandler;
   
   // Setup the websockets
 
@@ -406,6 +428,8 @@ extern void webServerSetUp(void _configurationUpdateHandler())
   
   // Setup the webserver
 
+  server.on("/doReboot", HTTP_GET, onDoReboot);
+  server.on("/getModeChange", HTTP_GET, onGetModeChange);
   server.on("/doSettingsUpdate", HTTP_GET, onDoSettingsUpdate);  
   server.on("/getNameVersion", HTTP_GET, onGetNameVersion);
   server.on("/getSettingsData", HTTP_GET, onGetSettingsData);

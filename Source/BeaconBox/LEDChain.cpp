@@ -6,6 +6,7 @@
  */
  
  #include "LEDChain.h"
+ #include "BeaconBox.h"
 
 // Define the working data
 
@@ -16,7 +17,19 @@ CRGB leds[LED_CHAIN_LENGTH];
 //
 void ledChainSetUp() {
 
+#if LED_TYPE == LED_TYPE_WS2812B 
+
   FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, LED_CHAIN_LENGTH);
+#elif LED_TYPE == LED_TYPE_WS2812D
+
+  FastLED.addLeds<WS2812B, LED_PIN, RGB>(leds, LED_CHAIN_LENGTH);
+#else
+
+  #error LED_TYPE - Unrecognised value.
+#endif
+
+  // Set full brightness
+  
   FastLED.setBrightness(255);
 }
 
