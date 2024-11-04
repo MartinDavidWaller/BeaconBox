@@ -657,4 +657,9 @@ void loop() {
             
       break;        
   }
+
+  // This delay is important. It stops other threads being starved
+  // of CPU time.
+  
+  delay(1) ;
 }
