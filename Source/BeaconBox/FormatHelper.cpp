@@ -1,23 +1,23 @@
 /*
  *  FormatHelper.cpp
- *  
+ *
  *  Author:   M.D. Waller - G0PJO
  *  Copyright (c) 2024
  */
- 
-#include <time.h>                      
-#include <sys/time.h>                   
+
+#include <time.h>
+#include <sys/time.h>
 #include <HardwareSerial.h>
 #include <WiFi.h>
 
-char *moy[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+char *moy[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
 char *FormatFrequency(float frequency) {
 
-  static char formatBuffer[20];  
-  
-  sprintf(formatBuffer,"%.3f Mhz",frequency);
+  static char formatBuffer[20];
+
+  sprintf(formatBuffer,"%.3f MHz",frequency);
 
   return formatBuffer;
 }
@@ -25,11 +25,11 @@ char *FormatFrequency(float frequency) {
 char *FormatTimeAsDateTime(time_t _time) {
 
   static char formatBuffer[20];
-  
+
   struct tm *timeInfo;
-  
+
   timeInfo = localtime(&_time);
-  
+
   sprintf(formatBuffer,"%02d-%s-%03d %02d:%02d:%02d",
     timeInfo->tm_mday,
     moy[timeInfo->tm_mon],
@@ -37,7 +37,7 @@ char *FormatTimeAsDateTime(time_t _time) {
     timeInfo->tm_hour,
     timeInfo->tm_min,
     timeInfo->tm_sec);
-  
+
   return formatBuffer;
 }
 
@@ -47,7 +47,7 @@ char *FormatIPAddress(IPAddress ipAddress) {
 
   sprintf(formatBuffer,"%d.%d.%d.%d",ipAddress[0],ipAddress[1],ipAddress[2],ipAddress[3]);
 
-  return formatBuffer;  
+  return formatBuffer;
 }
 
 #define SECONDS_PER_MINUTE (60)
@@ -57,9 +57,9 @@ char *FormatIPAddress(IPAddress ipAddress) {
 char *FormatUptime(time_t *bootTime) {
 
   static char formatBuffer[20] = {0};
-  
+
   struct tm *timeInfo;
-  
+
   timeInfo = localtime(bootTime);
 
   if (timeInfo->tm_year + 1900 < 2018) {
@@ -67,12 +67,12 @@ char *FormatUptime(time_t *bootTime) {
   }
   else {
 
-    time_t now; 
+    time_t now;
     time(&now);
 
     time_t upTimeSeconds;
     upTimeSeconds = now - *bootTime;
-    
+
     int daysUp = upTimeSeconds / SECONDS_PER_DAY;
     upTimeSeconds = upTimeSeconds - (daysUp * SECONDS_PER_DAY);
 
@@ -80,7 +80,7 @@ char *FormatUptime(time_t *bootTime) {
     upTimeSeconds = upTimeSeconds - (hoursUp * SECONDS_PER_HOUR);
 
     int minutesUp = upTimeSeconds / SECONDS_PER_MINUTE;
-    upTimeSeconds = upTimeSeconds - (minutesUp * SECONDS_PER_MINUTE);  
+    upTimeSeconds = upTimeSeconds - (minutesUp * SECONDS_PER_MINUTE);
 
     sprintf(formatBuffer,"%d %02d:%02d:%02d\0",
       daysUp,
@@ -89,5 +89,5 @@ char *FormatUptime(time_t *bootTime) {
       (int)upTimeSeconds);
   }
 
-  return formatBuffer;   
+  return formatBuffer;
 }

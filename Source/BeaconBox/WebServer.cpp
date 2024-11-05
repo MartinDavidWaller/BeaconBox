@@ -1,6 +1,6 @@
 /*
  *  WebServer.cpp
- *  
+ *
  *  Author:   M.D. Waller - G0PJO
  *  Copyright (c) 2024
  */
@@ -14,16 +14,16 @@
 #include "FormatHelper.h"
 #include "SPIFFS.h"
 #include <HardwareSerial.h>
-#include <time.h>                      
-#include <sys/time.h>         
+#include <time.h>
+#include <sys/time.h>
 #include "Configuration.h"
 #include "BeaconBox.h"
 
-AsyncWebServer server(80); 
+AsyncWebServer server(80);
 AsyncWebSocket rbnDataWebSocket("/rbnData");
 AsyncWebSocket beaconDataWebSocket("/beaconData");
-StaticJsonDocument<200> beaconJSONOut; 
-StaticJsonDocument<200> rbnJSONOut;        
+StaticJsonDocument<200> beaconJSONOut;
+StaticJsonDocument<200> rbnJSONOut;
 
 void (*configurationUpdateHandler)();
 void (*modeChangeHandler)();
@@ -34,8 +34,8 @@ extern struct Configuration configuration;
 void onDoReboot(AsyncWebServerRequest *request){
 
   // Redirect to the index page
-    
-  request->redirect("index.html");  
+
+  request->redirect("index.html");
 
   ESP.restart();
 }
@@ -43,12 +43,12 @@ void onDoReboot(AsyncWebServerRequest *request){
 void onGetModeChange(AsyncWebServerRequest *request){
 
   // Pass on the request
-  
+
   modeChangeHandler();
-  
+
   // Redirect to the index page,
-    
-  request->redirect("index.html");  
+
+  request->redirect("index.html");
 }
 
 void onDoSettingsUpdate(AsyncWebServerRequest *request){
@@ -63,13 +63,13 @@ void onDoSettingsUpdate(AsyncWebServerRequest *request){
   AsyncWebParameter* ledBrightnessInputParam = request->getParam("ledBrightnessInput");
 
   Serial.println("Update settings:");
-  
+
   Serial.print("...hostnameInput = ");
   Serial.println(hostnameInputParam->value().c_str());
-      
+
   Serial.print("...passwordInputParam = ");
   Serial.println(passwordInputParam->value().c_str());
-      
+
   Serial.print("...ssidInputParam = ");
   Serial.println(ssidInputParam->value().c_str());
 
@@ -77,16 +77,16 @@ void onDoSettingsUpdate(AsyncWebServerRequest *request){
   Serial.println(callsignInputParam->value().c_str());
 
   Serial.print("...spotterWildcardsInputnInputParam = ");
-  Serial.println(spotterWildcardsInputParam->value().c_str());  
+  Serial.println(spotterWildcardsInputParam->value().c_str());
 
   Serial.print("...spotterTimeOutInputParam = ");
   Serial.println(spotterTimeOutMinutesInputParam->value().c_str());
 
   Serial.print("...frequencyStepTimeSecondsInputParam = ");
-  Serial.println(frequencyStepTimeSecondsInputParam->value().c_str());  
+  Serial.println(frequencyStepTimeSecondsInputParam->value().c_str());
 
   Serial.print("...ledBrightnessInputParam = ");
-  Serial.println(ledBrightnessInputParam->value().c_str());    
+  Serial.println(ledBrightnessInputParam->value().c_str());
 
   strcpy((char*)&configuration.Hostname[0],hostnameInputParam->value().c_str());
   strcpy((char*)&configuration.WiFi_SSID[0],ssidInputParam->value().c_str());
@@ -98,16 +98,16 @@ void onDoSettingsUpdate(AsyncWebServerRequest *request){
   configuration.LEDBrightness = atoi(ledBrightnessInputParam->value().c_str());
 
   // Write it out
-    
-  writeConfiguration(&configuration); 
+
+  writeConfiguration(&configuration);
 
   // Notify the world
 
   configurationUpdateHandler();
 
   // Redirect to the settings page
-    
-  request->redirect("settings.html");  
+
+  request->redirect("settings.html");
 }
 
 void onGetSettingsData(AsyncWebServerRequest *request){
@@ -121,11 +121,11 @@ void onGetSettingsData(AsyncWebServerRequest *request){
   response->printf("WiFiSSID=\"%s\" ",&configuration.WiFi_SSID[0]);
   response->printf("WiFiPassword=\"%s\" ",&configuration.WiFi_Password[0]);
   response->printf("Callsign=\"%s\" ",&configuration.Callsign[0]);
-  response->printf("SpotterWildcards=\"%s\" ",&configuration.SpotterWildcards[0]); 
+  response->printf("SpotterWildcards=\"%s\" ",&configuration.SpotterWildcards[0]);
   response->printf("SpotterTimeOutMinutes=\"%d\" ",configuration.SpotterTimeOutMinutes);
   response->printf("FrequencyStepTimeSeconds=\"%d\" ",configuration.FrequencyStepTimeSeconds);
   response->printf("LEDBrightness=\"%d\" ",configuration.LEDBrightness);
-  
+
   response->printf("/>");
 
   request->send(response);
@@ -141,7 +141,7 @@ void onGetNameVersion(AsyncWebServerRequest *request){
   response->printf("<IndexNameVersion ");
 
   response->printf("Name=\"%s\" ",PROGRAM_NAME);
-  response->printf("Version=\"V%d.%d\" ",PROGRAM_VERSION_MAJOR,PROGRAM_VERSION_MINOR); 
+  response->printf("Version=\"V%d.%d\" ",PROGRAM_VERSION_MAJOR,PROGRAM_VERSION_MINOR);
   response->printf("Copyright=\"M.D.Waller G0PJO. (c) Copyright [YEAR]. All rights reserved.\"");
 
   response->printf("/>");
@@ -152,17 +152,17 @@ void onGetNameVersion(AsyncWebServerRequest *request){
 void onGetUpTime(AsyncWebServerRequest *request){
 
   //char lineBuffer[20 + 1];
-  
+
   AsyncResponseStream *response = request->beginResponseStream("text/xml");
 
   response->printf("<?xml version=\"1.0\" encoding=\"utf-16\"?>");
   response->printf("<UpTime ");
-  
+
   response->printf("UpTime=\"%s\" ",FormatUptime(&startUpTime));
   response->printf("FreeHeap=\"%d\"",ESP.getFreeHeap());
 
-  
-  
+
+
   response->printf("/>");
 
   request->send(response);
@@ -175,9 +175,9 @@ void onGetSIDDs(AsyncWebServerRequest *request){
 
   Serial.println("");
   Serial.println("Scanning for SSIDs");
-  
+
   // We need to return a blob of XML containing the visible SSIDs
-  
+
   strcpy(b,"<SSIDs>");
 
 //**************
@@ -188,7 +188,7 @@ void onGetSIDDs(AsyncWebServerRequest *request){
   } else if(n){
     for (int i = 0; i < n; ++i){
     // Add the SSID to the result
-      
+
     strcat(b,"<SSID Name = \"");
     strcat(b,WiFi.SSID(i).c_str());
     strcat(b,"\" />");
@@ -202,11 +202,11 @@ void onGetSIDDs(AsyncWebServerRequest *request){
   }
 
   // Complete the XML
-  
+
   strcat(b,"</SSIDs>");
 
   // Send it to the server
-  
+
   request->send(200, "text/xml", b);
 }
 
@@ -215,21 +215,21 @@ void onBeaconDataWebSocketEvent(AsyncWebSocket * server, AsyncWebSocketClient * 
   Serial.println("onRBNDataWebSocketEvent");
 
   if(type == WS_EVT_CONNECT){
- 
+
     Serial.println("Websocket client connection received");
     //client->text("Hello from ESP32 Server");
- 
+
   } else if(type == WS_EVT_DISCONNECT){
-    
+
     Serial.println("Client disconnected");
- 
-  }  
+
+  }
 }
 
 void sendAllBeaconsOffToBeaconListeners() {
 
   // Clear the json object
-  
+
   beaconJSONOut.clear();
 
   // Add the data to the JSON object
@@ -248,9 +248,9 @@ void sendAllBeaconsOffToBeaconListeners() {
 void sendBeaconOnOffToBeaconListeners(char *beacon, bool onOff) {
 
   char cvtBuffer[100];
-  
+
   // Clear the json object
-  
+
   beaconJSONOut.clear();
 
   // Add the data to the JSON object
@@ -271,15 +271,15 @@ void sendBeaconOnOffToBeaconListeners(char *beacon, bool onOff) {
 void sendBeaconColourToBeaconListeners(char *beacon, char *colour, char *subText) {
 
   char cvtBuffer[100];
-  
+
   // Clear the json object
-  
+
   beaconJSONOut.clear();
 
   // Add the data to the JSON object
 
   beaconJSONOut["ACTION"] = "BEACON_COLOUR";
-  beaconJSONOut["BEACON"] = beacon;  
+  beaconJSONOut["BEACON"] = beacon;
   beaconJSONOut["COLOUR"] = colour;
   beaconJSONOut["SUBTEXT"] = subText;
 
@@ -295,7 +295,7 @@ void sendBeaconColourToBeaconListeners(char *beacon, char *colour, char *subText
 void sendAllFrequenciesOffToBeaconListeners() {
 
   // Clear the json object
-  
+
   beaconJSONOut.clear();
 
   // Add the data to the JSON object
@@ -314,18 +314,18 @@ void sendAllFrequenciesOffToBeaconListeners() {
 void sendFrequencyActiveInActiveToBeaconListeners(double frequency, bool activeInActive) {
 
   char cvtBuffer[100];
-  
+
   // Clear the json object
-  
+
   beaconJSONOut.clear();
 
   // Add the data to the JSON object
 
   beaconJSONOut["ACTION"] = "FREQUENCY_ACTIVE_INACTIVE";
 
-  sprintf(cvtBuffer,"%d",(int)(frequency * 1000)); 
+  sprintf(cvtBuffer,"%d",(int)(frequency * 1000));
   beaconJSONOut["FREQUENCY"] = cvtBuffer;
-  
+
   beaconJSONOut["ACTIVEINACTIVE"] = true == activeInActive ? "1" : "0";
 
   // Serialise it to the buffer
@@ -340,18 +340,18 @@ void sendFrequencyActiveInActiveToBeaconListeners(double frequency, bool activeI
 void sendFrequencyColourToBeaconListeners(double frequency, char *colour) {
 
   char cvtBuffer[100];
-  
+
   // Clear the json object
-  
+
   beaconJSONOut.clear();
 
   // Add the data to the JSON object
 
   beaconJSONOut["ACTION"] = "FREQUENCY_COLOUR";
 
-  sprintf(cvtBuffer,"%d",(int)(frequency * 1000)); 
+  sprintf(cvtBuffer,"%d",(int)(frequency * 1000));
   beaconJSONOut["FREQUENCY"] = cvtBuffer;
-  
+
   beaconJSONOut["COLOUR"] = colour;
 
   // Serialise it to the buffer
@@ -368,36 +368,36 @@ void onRBNDataWebSocketEvent(AsyncWebSocket * server, AsyncWebSocketClient * cli
   Serial.println("onRBNDataWebSocketEvent");
 
   if(type == WS_EVT_CONNECT){
- 
+
     Serial.println("Websocket client connection received");
     //client->text("Hello from ESP32 Server");
- 
+
   } else if(type == WS_EVT_DISCONNECT){
-    
+
     Serial.println("Client disconnected");
- 
-  }  
+
+  }
 }
 
 void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char *rbnTime) {
 
   // Do we have space to queue up the next message?
-  
+
   if (true == rbnDataWebSocket.availableForWriteAll()) {
-  
+
     char cvtBuffer[100];
-  
+
     // Clear the json object
-  
+
     rbnJSONOut.clear();
 
     // Add the data to the JSON object
-  
+
     rbnJSONOut["SPOTTER"] = spotter;
     rbnJSONOut["SPOTTED"] = spotted;
     rbnJSONOut["TIME"] = rbnTime;
 
-    sprintf(cvtBuffer,"%.03f Mhz",frequency / 1000.0);
+    sprintf(cvtBuffer,"%.03f MHz",frequency / 1000.0);
     rbnJSONOut["FREQUENCY"] = cvtBuffer;
 
     // Serialise it to the buffer
@@ -411,32 +411,32 @@ void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char 
 }
 
 extern void webServerSetUp(void _configurationUpdateHandler(), void _modeChangeHandler())
-{ 
+{
 
   // Save the configuration update handler and the mode change handler
-  
+
   configurationUpdateHandler = _configurationUpdateHandler;
   modeChangeHandler = _modeChangeHandler;
-  
+
   // Setup the websockets
 
   rbnDataWebSocket.onEvent(onBeaconDataWebSocketEvent);
   server.addHandler(&beaconDataWebSocket);
-  
+
   rbnDataWebSocket.onEvent(onRBNDataWebSocketEvent);
   server.addHandler(&rbnDataWebSocket);
-  
+
   // Setup the webserver
 
   server.on("/doReboot", HTTP_GET, onDoReboot);
   server.on("/getModeChange", HTTP_GET, onGetModeChange);
-  server.on("/doSettingsUpdate", HTTP_GET, onDoSettingsUpdate);  
+  server.on("/doSettingsUpdate", HTTP_GET, onDoSettingsUpdate);
   server.on("/getNameVersion", HTTP_GET, onGetNameVersion);
   server.on("/getSettingsData", HTTP_GET, onGetSettingsData);
   server.on("/getSSIDs", HTTP_GET, onGetSIDDs);
   server.on("/getUpTime", HTTP_GET, onGetUpTime);
-    
+
   server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
-  
+
   server.begin();
 }

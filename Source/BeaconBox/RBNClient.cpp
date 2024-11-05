@@ -105,7 +105,7 @@ bool rbnClientProcessData(char *callsign) {
 
             // We have a valid RBN spot, pass it on for processing
 
-            ledSetIndexColour(LED_MISC_1,CRGB::Green);
+            ledSetIndexColour(LED_DATA,CRGB::Green);
 
             char *spotter = parts[RBN_SPOTTER];
             char *spotted = parts[RBN_SPOTTED];
@@ -134,7 +134,7 @@ bool rbnClientProcessData(char *callsign) {
             
             beaconsSpotted(spotter,spotted,frequency);
 
-            ledSetIndexColour(LED_MISC_1,CRGB::Black);
+            ledSetIndexColour(LED_DATA,CRGB::Black);
           }
         }
       }
@@ -143,6 +143,10 @@ bool rbnClientProcessData(char *callsign) {
         // ?
         
       }
+
+      // Put in a short delay, just to help keep other threads active
+
+      delay(1);
     }
 
     //digitalWrite(LED_PIN,LOW);

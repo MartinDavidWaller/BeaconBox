@@ -43,7 +43,7 @@
 #define LED_BEACON_FIRST LED_VE8AT
 #define LED_BEACON_LAST LED_ZL6B
 
-#define LED_MISC_1 23
+#define LED_DATA 23
 #define LED_MISC_2 24
 
 // Define routines and functions

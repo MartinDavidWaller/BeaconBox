@@ -39,12 +39,13 @@
    * C:\Users\marti>C:\Users\marti\AppData\Local\Arduino15\packages\esp32\tools\esptool_py\4.6/esptool.exe --chip esp32 --port COM4 --baud 921600 write_flash 0x0 flash_contents.bin
    */
    
- #include "Arduino.h"
+#include "Arduino.h"
 
 #include <FastLED.h>
 #include "SPIFFS.h"
 #include <WiFi.h>
 
+#include "Animation.h"
 #include "BeaconBox.h"
 #include "Beacons.h"
 #include "Configuration.h"
@@ -53,16 +54,6 @@
 #include "Progress.h"
 #include "RBNClient.h"
 #include "WebServer.h"
-
-// The following enumeration is used to control the operation mode
-
-typedef enum {
-  
-  OPERATION_MODE_BEACONS_HEARD,     // Usual mode, reporting beacons that have been heard
-  OPERATION_MODE_NCDXF_IARU,        // NCDXF/IARU Transmission schedule mode
-  OPERATION_MODE_DAYLIGHT           // Daylight mode
-  
-} OPERATION_MODE;
 
 // The following manifests are used to control the active state
 
@@ -334,6 +325,10 @@ void setup() {
 
   webServerSetUp(&configurationUpdateHandler, &modeChangeHandler);
 
+  // Next setup the animation
+
+  animationSetUp(&modeChangeHandler);
+
   // Set the current state
 
   currentState = STATE_CONNECTING_TO_WIFI;  
@@ -541,7 +536,14 @@ void loop() {
 
           // Update the current state to receiving RBN data
         
-          currentState = STATE_RECIEVING_RBN_DATA;          
+          currentState = STATE_RECIEVING_RBN_DATA;     
+
+          // UPdate the animation
+
+          animationSetState(true, 
+            ANIMATION_MODE_HEARD_TIMEOUT_SECONDS, 
+            ANIMATION_MODE_NCDXFIARU_TIMEOUT_SECONDS, 
+            ANIMATION_MODE_DAYLIGHT_TIMEOUT_SECONDS);
         }
         else {
 
@@ -577,6 +579,10 @@ void loop() {
             doDaylightMode();
             break;
         }
+
+        // Process any animation
+
+        //////////////////////////////////////////////////////////////animationAnimate();
       }
       else {
 
@@ -654,7 +660,7 @@ void loop() {
 
         currentState = STATE_CONNECTING_TO_REVERSE_BEACON_NETWORK;
       }
-            
+
       break;        
   }
 

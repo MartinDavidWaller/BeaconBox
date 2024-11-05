@@ -10,7 +10,7 @@
 #define PROGRAM_NAME "BeaconBox"
 #define PROGRAM_VERSION_MAJOR 0
 #define PROGRAM_VERSION_MINOR 6
-#define BETA_TEXT ""
+//define BETA_TEXT ""
 #define COPYRIGHT_TEXT "(C) M.D.Waller G0PJO"
 
 // ----
@@ -25,9 +25,9 @@
 #define DEFAULT_FREQUENCY_STEP_TIME_SECONDS 5
 #define DEFAULT_LED_BRIGHTNESS 255
 
-#define DEBUG 0
+//define DEBUG 0
 
-#define MAX_SECONDS_BEFORE_RESTART 60
+//define MAX_SECONDS_BEFORE_RESTART 60
 
 // The mode pin must support pullout. See https://forum.arduino.cc/t/esp32-pins-that-support-pullup/1173356/3
 
@@ -40,8 +40,26 @@
 
 #define LED_TYPE LED_TYPE_WS2812B
 
+// Define the animation defaults
+
+#define ANIMATION_ACTIVE false;
+#define ANIMATION_MODE_HEARD_TIMEOUT_SECONDS 30
+#define ANIMATION_MODE_NCDXFIARU_TIMEOUT_SECONDS 60
+#define ANIMATION_MODE_DAYLIGHT_TIMEOUT_SECONDS 10
+
+// The following enumeration is used to control the operation mode
+
+typedef enum {
+  
+  OPERATION_MODE_BEACONS_HEARD,     // Usual mode, reporting beacons that have been heard
+  OPERATION_MODE_NCDXF_IARU,        // NCDXF/IARU Transmission schedule mode
+  OPERATION_MODE_DAYLIGHT           // Daylight mode
+  
+} OPERATION_MODE;
+
 // Defined methods / data
 
+extern OPERATION_MODE activeMode;
 //extern struct RuntimeData runtimeData;
 //extern bool doSaveDirtyFriends;
 //extern bool doListenWithVolume;
