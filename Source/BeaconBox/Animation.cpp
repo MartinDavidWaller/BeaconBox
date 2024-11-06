@@ -10,13 +10,15 @@
 #include "BeaconBox.h"
 
 static bool animationActive;
-static void (*modeChangeHandler)();
+static void (*modeChangeHandler)(bool manualEvent);
 static time_t lastAnimationSwap;
+static time_t lastManualEvent;
 static int modeHeardTimeoutSeconds;
 static int modeNcdxfIaruTimeoutSeconds;
 static int modeDaylightTimeoutSeconds;
+static int manualEventTimeoutSeconds;
 
-void animationSetUp(void _modeChangeHandler()) {
+void animationSetUp(void _modeChangeHandler(bool manualEvent)) {
 
   // Save the parameters
 
@@ -25,64 +27,114 @@ void animationSetUp(void _modeChangeHandler()) {
   // Set any default
   
   animationActive = false;
+  lastManualEvent = 0;
 }
 
-void animationSetState(bool _active, int _modeHeardTimeoutSeconds, int _modeNcdxfIaruTimeoutSeconds, int _modeDaylightTimeoutSeconds) {
+void animationSetState(bool _active, int _modeHeardTimeoutSeconds, int _modeNcdxfIaruTimeoutSeconds, int _modeDaylightTimeoutSeconds, int _manualEventTimeoutSeconds) {
   
   animationActive = _active;
   modeHeardTimeoutSeconds = _modeHeardTimeoutSeconds;
   modeNcdxfIaruTimeoutSeconds = _modeNcdxfIaruTimeoutSeconds;
   modeDaylightTimeoutSeconds = _modeDaylightTimeoutSeconds;
+  manualEventTimeoutSeconds = _manualEventTimeoutSeconds;
 
   time(&lastAnimationSwap);
 }
 
 void animationAnimate() {
-  
+
+  //Serial.printf("animationAnimate\n");
+   
+  // Get the time
+    
+  time_t timeNow;
+  time(&timeNow);
+    
   // We only need to do something if we are active
-  
+
   if (true == animationActive) {
 
-    // Do we need to step the mode?
+    // The next decision is based on any last manual event and whether it has
+    // times out our not.
 
-    bool stepMode = false;
-    
-    // Get the time
-    
-    time_t timeNow;
-    time(&timeNow);
+    bool proceed = true;
+
+    if (0 != lastManualEvent) {
+
+      Serial.printf("...ManualEvent %d\n",manualEventTimeoutSeconds);
         
-    // We are active! What mode are we in?
+      // We have a manual event outstanding
 
-    switch(activeMode) {
+      if (timeNow > (lastManualEvent + manualEventTimeoutSeconds)) {
 
-      case OPERATION_MODE_BEACONS_HEARD:
+        // Yes, procees
 
-        stepMode = timeNow > (lastAnimationSwap + modeHeardTimeoutSeconds);
-        break;
+        proceed = true;
 
-      case OPERATION_MODE_NCDXF_IARU:
+        // Clear down the last manual event time
 
-        stepMode = timeNow > (lastAnimationSwap + modeNcdxfIaruTimeoutSeconds);
-        break;
+        lastManualEvent = 0;
 
-      case OPERATION_MODE_DAYLIGHT:
+        // Refresh the lastAnimationSwap time
+        
+        time(&lastAnimationSwap);
+      }
+      else {
 
-        stepMode = timeNow > (lastAnimationSwap + modeDaylightTimeoutSeconds);
-        break;
+        // Not time to proceed
+        
+        proceed = false;
+      }
     }
 
-    // Do we need to step mode?
+    // Do we procees?
 
-    if (true == stepMode) {
+    if (true == proceed) {
+      
+      // Do we need to step the mode?
 
-      // Yes, it's time to move on. Step the mode
+      bool stepMode = false;
+            
+      // We are active! What mode are we in?
 
-      modeChangeHandler();
+      switch(activeMode) {
 
-      // Update the awap time
+        case OPERATION_MODE_BEACONS_HEARD:
+
+          stepMode = timeNow > (lastAnimationSwap + modeHeardTimeoutSeconds);
+          break;
+
+        case OPERATION_MODE_NCDXF_IARU:
+
+          stepMode = timeNow > (lastAnimationSwap + modeNcdxfIaruTimeoutSeconds);
+          break;
+
+        case OPERATION_MODE_DAYLIGHT:
+
+          stepMode = timeNow > (lastAnimationSwap + modeDaylightTimeoutSeconds);
+          break;
+      }
+
+      // Do we need to step mode?
+
+      if (true == stepMode) {
+
+        // Yes, it's time to move on. Step the mode
+
+        modeChangeHandler(false);
+
+        // Update the awap time
           
-      lastAnimationSwap = timeNow;
+        lastAnimationSwap = timeNow;
+      }
     }
   }
+}
+
+void animationManualEvent() {
+
+  // Update the time of the last manual event
+
+  time(&lastManualEvent);
+  Serial.printf("...animationManualEvent %d\n",lastManualEvent);
 }

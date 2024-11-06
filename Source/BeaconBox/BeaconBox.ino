@@ -124,6 +124,10 @@ void IRAM_ATTR switchInterrupt() {
     // switch it between the available modes
 
     stepTheMode();
+
+    // Tell the animation
+
+    animationManualEvent();
   }
 
   // Update the last interrupt time
@@ -138,8 +142,17 @@ void configurationUpdateHandler() {
   ledBrightness(configuration.LEDBrightness);
 }
 
-void modeChangeHandler() {
+void modeChangeHandler(bool manualEvent) {
 
+  // If this is a manual event then we may need to step the mode
+
+  if (true == manualEvent) {
+
+    // Tell the animation about the manual event
+    
+    animationManualEvent();
+  }
+  
   // Step the moode
 
   stepTheMode();
@@ -538,12 +551,13 @@ void loop() {
         
           currentState = STATE_RECIEVING_RBN_DATA;     
 
-          // UPdate the animation
+          // Update the animation
 
           animationSetState(true, 
             ANIMATION_MODE_HEARD_TIMEOUT_SECONDS, 
             ANIMATION_MODE_NCDXFIARU_TIMEOUT_SECONDS, 
-            ANIMATION_MODE_DAYLIGHT_TIMEOUT_SECONDS);
+            ANIMATION_MODE_DAYLIGHT_TIMEOUT_SECONDS,
+            ANIMATION_MANUAL_EVENT_TIMEOUT_SECONDS);
         }
         else {
 
@@ -582,7 +596,7 @@ void loop() {
 
         // Process any animation
 
-        //////////////////////////////////////////////////////////////animationAnimate();
+        animationAnimate();
       }
       else {
 

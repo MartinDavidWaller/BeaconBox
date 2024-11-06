@@ -26,7 +26,7 @@ StaticJsonDocument<200> beaconJSONOut;
 StaticJsonDocument<200> rbnJSONOut;
 
 void (*configurationUpdateHandler)();
-void (*modeChangeHandler)();
+void (*modeChangeHandler)(bool manualEvent);
 
 extern time_t startUpTime;
 extern struct Configuration configuration;
@@ -44,7 +44,7 @@ void onGetModeChange(AsyncWebServerRequest *request){
 
   // Pass on the request
 
-  modeChangeHandler();
+  modeChangeHandler(true);
 
   // Redirect to the index page,
 
@@ -410,7 +410,7 @@ void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char 
   }
 }
 
-extern void webServerSetUp(void _configurationUpdateHandler(), void _modeChangeHandler())
+extern void webServerSetUp(void _configurationUpdateHandler(), void _modeChangeHandler(bool manualEvent))
 {
 
   // Save the configuration update handler and the mode change handler
