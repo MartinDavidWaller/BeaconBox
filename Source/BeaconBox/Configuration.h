@@ -29,6 +29,14 @@ struct Configuration
   uint8_t SpotterTimeOutMinutes;
   uint8_t FrequencyStepTimeSeconds;
   uint8_t LEDBrightness;
+
+  // Animation Specific Settings
+
+  bool AnimationEnabled;
+  uint8_t BeaconsHeardDurationSeconds;
+  uint8_t BeaconsActiveDurationSeconds;
+  uint8_t BeaconsInDaylightDurationSeconds;
+  uint8_t ManualModeTimeoutSeconds;
 };
 
 // The EPPROM_DATA structure wraps the configuration structure and adds a checksum

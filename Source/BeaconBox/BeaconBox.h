@@ -10,7 +10,6 @@
 #define PROGRAM_NAME "BeaconBox"
 #define PROGRAM_VERSION_MAJOR 0
 #define PROGRAM_VERSION_MINOR 6
-//define BETA_TEXT ""
 #define COPYRIGHT_TEXT "(C) M.D.Waller G0PJO"
 
 // ----
@@ -25,10 +24,6 @@
 #define DEFAULT_FREQUENCY_STEP_TIME_SECONDS 5
 #define DEFAULT_LED_BRIGHTNESS 255
 
-//define DEBUG 0
-
-//define MAX_SECONDS_BEFORE_RESTART 60
-
 // The mode pin must support pullout. See https://forum.arduino.cc/t/esp32-pins-that-support-pullup/1173356/3
 
 #define MODE_PIN 25
@@ -42,11 +37,17 @@
 
 // Define the animation defaults
 
-#define ANIMATION_ACTIVE false;
+#define ANIMATION_ACTIVE false
 #define ANIMATION_MODE_HEARD_TIMEOUT_SECONDS 30
 #define ANIMATION_MODE_NCDXFIARU_TIMEOUT_SECONDS 30
 #define ANIMATION_MODE_DAYLIGHT_TIMEOUT_SECONDS 10
 #define ANIMATION_MANUAL_EVENT_TIMEOUT_SECONDS 60
+
+#define DEFAULT_ANIMATION_ENABLED true
+#define DEFAULT_ANIMATION_BEACONS_HEARD_DURATION_SECONDS 30
+#define DEFAULT_ANIMATION_BEACONS_ACTIVE_DURATION_SECONDS 30
+#define DEFAULT_ANIMATION_BEACONS_IN_DAYLIGHT_DURATION_SECONDS 10
+#define DEFAULT_ANIMATION_MANUAL_MODE_TIMEOUT_SECONDS 60
 
 // The following enumeration is used to control the operation mode
 

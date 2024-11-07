@@ -242,6 +242,12 @@ void setup() {
     configuration.FrequencyStepTimeSeconds = DEFAULT_FREQUENCY_STEP_TIME_SECONDS;
     configuration.LEDBrightness = DEFAULT_LED_BRIGHTNESS;
 
+    configuration.AnimationEnabled = DEFAULT_ANIMATION_ENABLED;
+    configuration.BeaconsHeardDurationSeconds = DEFAULT_ANIMATION_BEACONS_HEARD_DURATION_SECONDS;
+    configuration.BeaconsActiveDurationSeconds = DEFAULT_ANIMATION_BEACONS_ACTIVE_DURATION_SECONDS;
+    configuration.BeaconsInDaylightDurationSeconds = DEFAULT_ANIMATION_BEACONS_IN_DAYLIGHT_DURATION_SECONDS;
+    configuration.ManualModeTimeoutSeconds = DEFAULT_ANIMATION_MANUAL_MODE_TIMEOUT_SECONDS;
+
     Serial.println("Writing new configuration");
     Serial.println("");
     hexDump((char *)&configuration,sizeof(Configuration));

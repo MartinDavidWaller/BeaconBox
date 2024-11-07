@@ -38,6 +38,14 @@
     			});
 			}
 
+			function populateSelect(selectId,minValue,maxValue) {
+
+			    var select = $("#" + selectId);
+			    for (var i = minValue; i <= maxValue; i++) {
+					$("<option/>", { value: i, text: i }).appendTo(select);
+				}
+			}
+
         	// At this point the page is running
 
         	$(document).ready(function () {
@@ -49,26 +57,15 @@
             	if (true === isSafari)
                 	$('#refreshRow').hide();
 
-            	// Populate the spotterTimeOut drop down
+				// Populate all numeric selects
 
-            	var select = $("#spotterTimeOutMinutesInput");
-	            for (var i = 1; i < 31; i++) {
-					$("<option/>", { value: i, text: i }).appendTo(select);
-				}
-
-            	// Populate the frequencyStepTime drop down
-
-            	var select = $("#frequencyStepTimeSecondsInput");
-	            for (var i = 1; i < 121; i++) {
-					$("<option/>", { value: i, text: i }).appendTo(select);
-				}
-
-            	// Populate the ledBrightness drop down
-
-            	var select = $("#ledBrightnessInput");
-	            for (var i = 1; i < 256; i++) {
-					$("<option/>", { value: i, text: i }).appendTo(select);
-				}
+				populateSelect("spotterTimeOutMinutesInput",1,30);
+				populateSelect("frequencyStepTimeSecondsInput",1,120);
+				populateSelect("ledBrightnessInput",1,255);
+				populateSelect("beaconsHeardDurationInput",0,2 * 60);
+				populateSelect("beaconsActiveDurationInput",0,2 * 60);
+				populateSelect("beaconsInDaylightDurationInput",0,2 * 60);
+				populateSelect("manualModeTimeoutInput",1,5 * 60);
 
             	updateNameVersion();
             	updateForm();
@@ -258,7 +255,7 @@
                     	<br />
 
                     	<fieldset>
-                        	<legend>LED Display</legend>
+                        	<legend>Display</legend>
 
 							<button type="button" class="collapsible">Click for help.</button>
 							<div class="content">
@@ -275,13 +272,49 @@
                         	<table>
 
                             	<tr>
-                            	    <td>LED Brighness (1 - 255) 255 being the brightest:</td>
+                            	    <td>LED Brightness (1 - 255) 255 being the brightest:</td>
                             	    <td>
                             	    	<select name="ledBrightnessInput" id="ledBrightnessInput"></select>
                                    	</td>
                             	</tr>
 
+                            	<tr>
+                            	    <td>Enable Animation:</td>
+                            	    <td>
+										<input type="checkbox" name="enableAnimationInput" id="enableAnimationInput" />
+                                   	</td>
+                            	</tr>
+
+                            	<tr>
+                            	    <td style="padding-left: 30px;">Beacons Heard Duration (Seconds):</td>
+                            	    <td>
+										<select name="beaconsHeardDurationInput" id="beaconsHeardDurationInput"></select>
+                                   	</td>
+                            	</tr>
+
+                            	<tr>
+                            	    <td style="padding-left: 30px;">Beacons Active Duration (Seconds):</td>
+                            	    <td>
+										<select name="beaconsActiveDurationInput" id="beaconsActiveDurationInput"></select>
+                                   	</td>
+                            	</tr>
+
+                            	<tr>
+                            	    <td style="padding-left: 30px;">Beacons In Daylight Duration (Seconds):</td>
+                            	    <td>
+										<select name="beaconsInDaylightDurationInput" id="beaconsInDaylightDurationInput"></select>
+                                   	</td>
+                            	</tr>
+
+                            	<tr>
+                            	    <td style="padding-left: 30px;">Manual Mode Timeout (Seconds):</td>
+                            	    <td>
+										<select name="manualModeTimeoutInput" id="manualModeTimeoutInput"></select>
+                                   	</td>
+                            	</tr>
+
                    	     	</table>
+
                   	  	</fieldset>
 
                     	<br />
@@ -294,6 +327,9 @@
                             	</td>
                         	</tr>
                     	</table>
+
+                    	<br />
+                    	<br />
                 	</form>
             	</div>
         	</div>

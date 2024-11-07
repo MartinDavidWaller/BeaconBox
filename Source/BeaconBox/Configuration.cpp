@@ -33,17 +33,23 @@ uint16_t Fletcher16( uint8_t *data, int count )
 void dumpConfiguration(struct Configuration *configuration)
 {
   Serial.println("Configuration");
-  Serial.printf("   MajorVersion: ............... %d\n",configuration->MajorVersion);
-  Serial.printf("   MinorVersion: ............... %d\n",configuration->MinorVersion);
-  Serial.printf("   Hostname: ................... %s\n",configuration->Hostname);
-  Serial.printf("   WiFi_SSID: .................. %s\n",configuration->WiFi_SSID);
-  Serial.printf("   WiFi_Password: .............. %s\n",configuration->WiFi_Password);
-  Serial.printf("   Callsign: ................... %s\n",configuration->Callsign);
-  Serial.printf("   Spotter Wildcards: .......... %s\n",configuration->SpotterWildcards);
-  Serial.printf("   TimeZone: ................... %s\n",configuration->TimeZone);
-  Serial.printf("   SpotterTimeOutMinutes ....... %d\n",configuration->SpotterTimeOutMinutes);
-  Serial.printf("   FrequencyStepTimeSeconds .... %d\n",configuration->FrequencyStepTimeSeconds);
-  Serial.printf("   LEDBrightness ............... %d\n",configuration->LEDBrightness);
+  Serial.printf("   MajorVersion: ....................... %d\n",configuration->MajorVersion);
+  Serial.printf("   MinorVersion: ....................... %d\n",configuration->MinorVersion);
+  Serial.printf("   Hostname: ........................... %s\n",configuration->Hostname);
+  Serial.printf("   WiFi_SSID: .......................... %s\n",configuration->WiFi_SSID);
+  Serial.printf("   WiFi_Password: ...................... %s\n",configuration->WiFi_Password);
+  Serial.printf("   Callsign: ........................... %s\n",configuration->Callsign);
+  Serial.printf("   Spotter Wildcards: .................. %s\n",configuration->SpotterWildcards);
+  Serial.printf("   TimeZone: ........................... %s\n",configuration->TimeZone);
+  Serial.printf("   SpotterTimeOutMinutes ............... %d\n",configuration->SpotterTimeOutMinutes);
+  Serial.printf("   FrequencyStepTimeSeconds ............ %d\n",configuration->FrequencyStepTimeSeconds);
+  Serial.printf("   LEDBrightness ....................... %d\n",configuration->LEDBrightness);
+
+  Serial.printf("   AnimationEnabled .................... %s\n",true == configuration->AnimationEnabled ? "True" : "False");
+  Serial.printf("   BeaconsHeardDurationSeconds ......... %d\n",configuration->BeaconsHeardDurationSeconds);
+  Serial.printf("   BeaconsActiveDurationSeconds ........ %d\n",configuration->BeaconsActiveDurationSeconds);
+  Serial.printf("   BeaconsInDaylightDurationSeconds .... %d\n",configuration->BeaconsInDaylightDurationSeconds);
+  Serial.printf("   ManualModeTimeoutSeconds ............ %d\n",configuration->ManualModeTimeoutSeconds);
 }
 
 //
