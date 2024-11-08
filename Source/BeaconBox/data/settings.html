@@ -32,6 +32,12 @@
         			$("#frequencyStepTimeSecondsInput").val(settingsData.getAttribute("FrequencyStepTimeSeconds"));
         			$("#ledBrightnessInput").val(settingsData.getAttribute("LEDBrightness"));
 
+					$("#enableAnimationInput").attr('checked',"true" === settingsData.getAttribute("AnimationEnabled"));
+  					$("#beaconsHeardDurationInput").val(settingsData.getAttribute("BeaconsHeardDurationSeconds"));
+  					$("#beaconsActiveDurationInput").val(settingsData.getAttribute("BeaconsActiveDurationSeconds"));
+  					$("#beaconsInDaylightDurationInput").val(settingsData.getAttribute("BeaconsInDaylightDurationSeconds"));
+  					$("#manualModeTimeoutInput").val(settingsData.getAttribute("ManualModeTimeoutSeconds"));
+
     			}).fail(function (jqXHR, textStatus) {
 
         			alert("Contact with host lost! " + textStatus);
@@ -264,6 +270,29 @@
 								        <li>
 								            LED Brightness - This controls the brightness of the LED display. This ranges
 								            from 1 to 255 with 255 being the brightest.
+								        </li>
+								        <li>
+								            Enable Animation - In animation mode BeaconBox cycles through each of the three
+								            modes. The time it spends in each mode is controlled by the three settings below.
+								            If any mode is set to 0 then it is not part of the animation. For the animation to
+								            be active at least 2 durations must be greater than 0.
+								        </li>
+								        <li>
+								            Beacons Heard Duration (Seconds) - This controls the time in seconds spent in beacons
+								            heard mode. The ranges from 0 - 120 seconds.
+								        </li>
+								        <li>
+								            Beacons Active Duration (Seconds)- This controls the time in seconds spent in beacons
+								            active mode. The ranges from 0 - 120 seconds.
+								        </li>
+								        <li>
+								            Beacons In Daylight Duration (Seconds) - This controls the time in seconds spent in beacons
+								            in daylight mode. The ranges from 0 - 120 seconds.
+								        </li>
+								        <li>
+								            Manual Mode Timeout (Seconds) - If, with animation enabled, the user makes use of the Mode
+								            button then the mode change is honoured. It will remain in the chosen mode for the given
+								            number of seconds before returning to animation mode.
 								        </li>
 								    </ul>
 						        </p>

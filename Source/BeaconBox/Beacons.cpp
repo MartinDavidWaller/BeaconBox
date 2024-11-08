@@ -10,10 +10,6 @@
 // https://iaruhfbeacons.wordpress.com/schedule-of-ibp-ncdxf-beacon-transmissions/
 //
 
-// Mutes https://forum.arduino.cc/t/how-to-use-mutex/964924
-
-// https://github.com/wizard97/Embedded_RingBuf_CPP
-
 #include "Arduino.h"
 #include <mutex>
 #include <time.h>
@@ -696,7 +692,9 @@ void beaconsShowActiveBeacons() {
 
 void beaconsShowBeaconsInDaylight() {
 
+#if DEBUG_BEACONS_IN_DAYLIGHT > 0
   Serial.printf("beaconsShowBeaconsInDaylight\n");
+#endif
 
   // Start by getting the current time
 
@@ -712,7 +710,9 @@ void beaconsShowBeaconsInDaylight() {
   
   for(int b = 0; b < 18; b++) {
 
-Serial.printf("....%s\n",beaconFreequencyTimes[b].Call);
+#if DEBUG_BEACONS_IN_DAYLIGHT > 0
+    Serial.printf("....%s\n",beaconFreequencyTimes[b].Call);
+#endif
 
     // Set the beacon colour to black
 
@@ -729,30 +729,30 @@ Serial.printf("....%s\n",beaconFreequencyTimes[b].Call);
 
     if (sunData->Altitude > 20) {
 
+#if DEBUG_BEACONS_IN_DAYLIGHT > 0
       Serial.printf("....%s %f\n",beaconFreequencyTimes[b].Call, sunData->Altitude);
+#endif
       
       beaconColour = CRGB::Yellow;
-
-      Serial.printf("....%d %d %d\n",beaconColour.r, beaconColour.g, beaconColour.b);
     }    
     else if (sunData->Altitude > 0) {
 
+#if DEBUG_BEACONS_IN_DAYLIGHT > 0
       Serial.printf("....%s %f\n",beaconFreequencyTimes[b].Call, sunData->Altitude);
+#endif
       
       beaconColour = CRGB::Yellow;
       beaconColour.r = beaconColour.r * 0.5;
       beaconColour.g = beaconColour.g * 0.5;
       beaconColour.b = beaconColour.b * 0.5;
-
-      Serial.printf("....%d %d %d\n",beaconColour.r, beaconColour.g, beaconColour.b);
     }      
 
+    // Set the LED colour
+    
     ledSetIndexColour(beaconLEDs[beaconFreequencyTimes[b].Beacon], beaconColour);
 
-    //if (CRGB::Black == beaconColour) {
-      //beaconColour = CRGB::White;
-    //}
-
+    // Tell any webpage listeners
+    
     setBeaconColourAndFrequency(beaconFreequencyTimes[b].Call, beaconFreequencyTimes[b].Beacon, beaconColour, "");
   } 
 }

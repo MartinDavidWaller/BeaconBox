@@ -156,6 +156,43 @@ void modeChangeHandler(bool manualEvent) {
   // Step the moode
 
   stepTheMode();
+
+  // If this is not a manual event then it must be an animation event. The
+  // problem we have now is that the the mode we have stepped to might be
+  // one with a zero duration. We need to check for this and move on if
+  // that is the case. The thing we do know is that at leat two modes
+  // have none zero durations so if we find we have a zero duration then
+  // simply moving on again will correct it!
+
+  if (false == manualEvent) {
+    
+    switch(requestedMode) {
+
+      case OPERATION_MODE_BEACONS_HEARD:
+
+        if (0 == configuration.BeaconsHeardDurationSeconds) {
+          requestedMode = OPERATION_MODE_NCDXF_IARU;
+        }
+        break;
+        
+      case OPERATION_MODE_NCDXF_IARU:
+
+        if (0 == configuration.BeaconsActiveDurationSeconds) {
+          requestedMode = OPERATION_MODE_DAYLIGHT;
+        }
+        break;
+        
+      case OPERATION_MODE_DAYLIGHT:
+    
+        if (0 == configuration.BeaconsInDaylightDurationSeconds) {
+          requestedMode = OPERATION_MODE_BEACONS_HEARD;
+        }   
+        break;
+
+      default:
+        break;
+    }  
+  }
 }
 
 // This is the setup routine. It all starts here.
@@ -557,13 +594,9 @@ void loop() {
         
           currentState = STATE_RECIEVING_RBN_DATA;     
 
-          // Update the animation
-
-          animationSetState(true, 
-            ANIMATION_MODE_HEARD_TIMEOUT_SECONDS, 
-            ANIMATION_MODE_NCDXFIARU_TIMEOUT_SECONDS, 
-            ANIMATION_MODE_DAYLIGHT_TIMEOUT_SECONDS,
-            ANIMATION_MANUAL_EVENT_TIMEOUT_SECONDS);
+          // Update the animation start time
+          
+          animationStart();
         }
         else {
 
@@ -657,7 +690,8 @@ void loop() {
             ledTurnOffAllFrequencyLeds();
 
             // Ditto on any webpage
-            
+
+            clearActiveBeaconColours();
             sendAllFrequenciesOffToBeaconListeners();
             break;          
         }

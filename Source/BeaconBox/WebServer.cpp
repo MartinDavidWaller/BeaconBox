@@ -62,6 +62,12 @@ void onDoSettingsUpdate(AsyncWebServerRequest *request){
   AsyncWebParameter* frequencyStepTimeSecondsInputParam = request->getParam("frequencyStepTimeSecondsInput");
   AsyncWebParameter* ledBrightnessInputParam = request->getParam("ledBrightnessInput");
 
+  AsyncWebParameter* enableAnimationInputParam = request->getParam("enableAnimationInput");
+  AsyncWebParameter* beaconsHeardDurationInputParam = request->getParam("beaconsHeardDurationInput");
+  AsyncWebParameter* beaconsActiveDurationInputParam = request->getParam("beaconsActiveDurationInput");
+  AsyncWebParameter* beaconsInDaylightDurationInputParam = request->getParam("beaconsInDaylightDurationInput");
+  AsyncWebParameter* manualModeTimeoutInputParam = request->getParam("manualModeTimeoutInput");
+            
   Serial.println("Update settings:");
 
   Serial.print("...hostnameInput = ");
@@ -97,6 +103,12 @@ void onDoSettingsUpdate(AsyncWebServerRequest *request){
   configuration.FrequencyStepTimeSeconds = atoi(frequencyStepTimeSecondsInputParam->value().c_str());
   configuration.LEDBrightness = atoi(ledBrightnessInputParam->value().c_str());
 
+  configuration.AnimationEnabled = (0 == strcmp("on", enableAnimationInputParam->value().c_str()));
+  configuration.BeaconsHeardDurationSeconds = atoi(beaconsHeardDurationInputParam->value().c_str());
+  configuration.BeaconsActiveDurationSeconds = atoi(beaconsActiveDurationInputParam->value().c_str());
+  configuration.BeaconsInDaylightDurationSeconds = atoi(beaconsInDaylightDurationInputParam->value().c_str());
+  configuration.ManualModeTimeoutSeconds = atoi(manualModeTimeoutInputParam->value().c_str());
+  
   // Write it out
 
   writeConfiguration(&configuration);
@@ -125,6 +137,12 @@ void onGetSettingsData(AsyncWebServerRequest *request){
   response->printf("SpotterTimeOutMinutes=\"%d\" ",configuration.SpotterTimeOutMinutes);
   response->printf("FrequencyStepTimeSeconds=\"%d\" ",configuration.FrequencyStepTimeSeconds);
   response->printf("LEDBrightness=\"%d\" ",configuration.LEDBrightness);
+
+  response->printf("AnimationEnabled=\"%s\" ",configuration.AnimationEnabled ? "true" : "false");
+  response->printf("BeaconsHeardDurationSeconds=\"%d\" ",configuration.BeaconsHeardDurationSeconds);
+  response->printf("BeaconsActiveDurationSeconds=\"%d\" ",configuration.BeaconsActiveDurationSeconds);
+  response->printf("BeaconsInDaylightDurationSeconds=\"%d\" ",configuration.BeaconsInDaylightDurationSeconds);
+  response->printf("ManualModeTimeoutSeconds=\"%d\" ",configuration.ManualModeTimeoutSeconds);
 
   response->printf("/>");
 
@@ -288,7 +306,6 @@ void sendBeaconColourToBeaconListeners(char *beacon, char *colour, char *subText
   char jsonString[1024];
   serializeJson(beaconJSONOut,jsonString);
 
-  Serial.printf("*********** %s\n",jsonString);
   beaconDataWebSocket.textAll(jsonString);
 }
 
@@ -307,7 +324,6 @@ void sendAllFrequenciesOffToBeaconListeners() {
   char jsonString[1024];
   serializeJson(beaconJSONOut,jsonString);
 
-  Serial.printf("*********** %s\n",jsonString);
   beaconDataWebSocket.textAll(jsonString);
 }
 
@@ -333,7 +349,6 @@ void sendFrequencyActiveInActiveToBeaconListeners(double frequency, bool activeI
   char jsonString[1024];
   serializeJson(beaconJSONOut,jsonString);
 
-  Serial.printf("*********** %s\n",jsonString);
   beaconDataWebSocket.textAll(jsonString);
 }
 
@@ -359,7 +374,6 @@ void sendFrequencyColourToBeaconListeners(double frequency, char *colour) {
   char jsonString[1024];
   serializeJson(beaconJSONOut,jsonString);
 
-  Serial.printf("*********** %s\n",jsonString);
   beaconDataWebSocket.textAll(jsonString);
 }
 

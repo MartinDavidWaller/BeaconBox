@@ -189,7 +189,7 @@
 <text x="118.11" y="1.27" size="1.778" layer="25">5 - xxxxxxxxxx     2 - xxxxxxxxxx
 4 - xxxxxxxxxx     1 - xxxxxxxxxx
 3 - xxxxxxxxxx</text>
-<text x="16.51" y="40.64" size="1.9304" layer="25">Frequency - V1.0</text>
+<text x="16.51" y="39.37" size="2.54" layer="25">Frequency - V1.0</text>
 </plain>
 <libraries>
 <library name="G0PJO - LED">

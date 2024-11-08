@@ -9,7 +9,7 @@
 
 #define PROGRAM_NAME "BeaconBox"
 #define PROGRAM_VERSION_MAJOR 0
-#define PROGRAM_VERSION_MINOR 6
+#define PROGRAM_VERSION_MINOR 7
 #define COPYRIGHT_TEXT "(C) M.D.Waller G0PJO"
 
 // ----
@@ -37,12 +37,6 @@
 
 // Define the animation defaults
 
-#define ANIMATION_ACTIVE false
-#define ANIMATION_MODE_HEARD_TIMEOUT_SECONDS 30
-#define ANIMATION_MODE_NCDXFIARU_TIMEOUT_SECONDS 30
-#define ANIMATION_MODE_DAYLIGHT_TIMEOUT_SECONDS 10
-#define ANIMATION_MANUAL_EVENT_TIMEOUT_SECONDS 60
-
 #define DEFAULT_ANIMATION_ENABLED true
 #define DEFAULT_ANIMATION_BEACONS_HEARD_DURATION_SECONDS 30
 #define DEFAULT_ANIMATION_BEACONS_ACTIVE_DURATION_SECONDS 30
@@ -59,12 +53,10 @@ typedef enum {
   
 } OPERATION_MODE;
 
+// The following are used to control DEBUG output
+
+#define DEBUG_BEACONS_IN_DAYLIGHT 1
+
 // Defined methods / data
 
 extern OPERATION_MODE activeMode;
-//extern struct RuntimeData runtimeData;
-//extern bool doSaveDirtyFriends;
-//extern bool doListenWithVolume;
-//extern int doListenWithVolumeVolume;
-//extern void playSound(const int soundToPlay);
-//extern void setNewVolume();

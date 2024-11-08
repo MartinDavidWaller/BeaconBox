@@ -8,7 +8,7 @@
 // Define routines and functions
 
 void animationSetUp(void _modeChangeHandler(bool manualEvent));
-void animationSetState(bool _active, int _modeHeardTimeoutSeconds, int _modeNcdxfIaruTimeoutSeconds, int _modeDaylightTimeoutSeconds, int _manualEventTimeoutSeconds);
+void animationStart();
 void animationAnimate();
 void animationManualEvent();
 

@@ -8,15 +8,13 @@
 #include "Arduino.h"
 #include "Animation.h"
 #include "BeaconBox.h"
+#include "Configuration.h"
 
-static bool animationActive;
+extern struct Configuration configuration;
+
 static void (*modeChangeHandler)(bool manualEvent);
 static time_t lastAnimationSwap;
 static time_t lastManualEvent;
-static int modeHeardTimeoutSeconds;
-static int modeNcdxfIaruTimeoutSeconds;
-static int modeDaylightTimeoutSeconds;
-static int manualEventTimeoutSeconds;
 
 void animationSetUp(void _modeChangeHandler(bool manualEvent)) {
 
@@ -26,17 +24,11 @@ void animationSetUp(void _modeChangeHandler(bool manualEvent)) {
 
   // Set any default
   
-  animationActive = false;
   lastManualEvent = 0;
+  time(&lastAnimationSwap);
 }
 
-void animationSetState(bool _active, int _modeHeardTimeoutSeconds, int _modeNcdxfIaruTimeoutSeconds, int _modeDaylightTimeoutSeconds, int _manualEventTimeoutSeconds) {
-  
-  animationActive = _active;
-  modeHeardTimeoutSeconds = _modeHeardTimeoutSeconds;
-  modeNcdxfIaruTimeoutSeconds = _modeNcdxfIaruTimeoutSeconds;
-  modeDaylightTimeoutSeconds = _modeDaylightTimeoutSeconds;
-  manualEventTimeoutSeconds = _manualEventTimeoutSeconds;
+void animationStart() {
 
   time(&lastAnimationSwap);
 }
@@ -50,9 +42,21 @@ void animationAnimate() {
   time_t timeNow;
   time(&timeNow);
     
-  // We only need to do something if we are active
+  // We only need to do something if we are active and we have two, or more,
+  // of the animation settings with durations > 0
 
-  if (true == animationActive) {
+  int durationsGreaterThanZero = 0;
+  
+  if (configuration.BeaconsHeardDurationSeconds > 0)
+    durationsGreaterThanZero++;
+  
+  if (configuration.BeaconsActiveDurationSeconds > 0)
+    durationsGreaterThanZero++;
+
+  if (configuration.BeaconsInDaylightDurationSeconds > 0)
+    durationsGreaterThanZero++;        
+          
+  if ((true == configuration.AnimationEnabled) && (durationsGreaterThanZero > 1)) {
 
     // The next decision is based on any last manual event and whether it has
     // times out our not.
@@ -60,12 +64,10 @@ void animationAnimate() {
     bool proceed = true;
 
     if (0 != lastManualEvent) {
-
-      Serial.printf("...ManualEvent %d\n",manualEventTimeoutSeconds);
         
       // We have a manual event outstanding
 
-      if (timeNow > (lastManualEvent + manualEventTimeoutSeconds)) {
+      if (timeNow > (lastManualEvent + configuration.ManualModeTimeoutSeconds)) {
 
         // Yes, procees
 
@@ -101,17 +103,17 @@ void animationAnimate() {
 
         case OPERATION_MODE_BEACONS_HEARD:
 
-          stepMode = timeNow > (lastAnimationSwap + modeHeardTimeoutSeconds);
+          stepMode = timeNow > (lastAnimationSwap + configuration.BeaconsHeardDurationSeconds);
           break;
 
         case OPERATION_MODE_NCDXF_IARU:
 
-          stepMode = timeNow > (lastAnimationSwap + modeNcdxfIaruTimeoutSeconds);
+          stepMode = timeNow > (lastAnimationSwap + configuration.BeaconsActiveDurationSeconds);
           break;
 
         case OPERATION_MODE_DAYLIGHT:
 
-          stepMode = timeNow > (lastAnimationSwap + modeDaylightTimeoutSeconds);
+          stepMode = timeNow > (lastAnimationSwap + configuration.BeaconsInDaylightDurationSeconds);
           break;
       }
 
