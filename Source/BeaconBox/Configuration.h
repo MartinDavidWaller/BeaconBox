@@ -49,6 +49,11 @@ struct EEPROM_DATA
   uint16_t CheckSum;
 };
 
+// If the size of the configuration gets too big for the available EEPROM then the
+// following typedef will fail at compilation time.
+
+typedef char assertion_on_EEPROM_DATA[(sizeof(EEPROM_DATA) < EEPROM_SIZE) * 2 - 1 ];
+
 // The following methods are used to manipulate the configuration information
 
 bool readConfiguration(struct Configuration *configuration);
