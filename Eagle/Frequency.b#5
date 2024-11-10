@@ -176,19 +176,20 @@
 <plain>
 <text x="12.7" y="15.24" size="3.81" layer="25">14.100 MHz</text>
 <text x="45.72" y="15.24" size="3.81" layer="25">18.110 MHz</text>
-<text x="78.74" y="15.24" size="3.81" layer="25">21.150 MHz</text>
-<text x="113.03" y="15.24" size="3.81" layer="25">24.930 MHz</text>
-<text x="146.05" y="15.24" size="3.81" layer="25">28.200 MHz</text>
-<text x="180.34" y="15.24" size="3.81" layer="25">Data</text>
-<wire x1="0" y1="-3.81" x2="213.36" y2="-3.81" width="0.1524" layer="20"/>
-<wire x1="0" y1="45.72" x2="213.36" y2="45.72" width="0.1524" layer="20"/>
+<text x="77.47" y="15.24" size="3.81" layer="25">21.150 MHz</text>
+<text x="107.95" y="15.24" size="3.81" layer="25">24.930 MHz</text>
+<text x="138.43" y="15.24" size="3.81" layer="25">28.200 MHz</text>
+<text x="173.99" y="15.24" size="3.81" layer="25">Data</text>
+<wire x1="0" y1="-3.81" x2="200.66" y2="-3.81" width="0.1524" layer="20"/>
+<wire x1="0" y1="45.72" x2="200.66" y2="45.72" width="0.1524" layer="20"/>
 <wire x1="0" y1="-3.81" x2="0" y2="45.72" width="0.1524" layer="20"/>
-<wire x1="213.36" y1="45.72" x2="213.36" y2="-3.81" width="0.1524" layer="20"/>
-<text x="16.51" y="1.27" size="2.54" layer="25">M.D.Waller G0PJO (c) Copyright 2024</text>
-<text x="90.17" y="2.54" size="3.81" layer="25">Mode</text>
-<text x="128.27" y="1.27" size="1.778" layer="25">5 - xxxxxxxxxx     2 - xxxxxxxxxx
-4 - xxxxxxxxxx     1 - xxxxxxxxxx
+<wire x1="200.66" y1="45.72" x2="200.66" y2="-3.81" width="0.1524" layer="20"/>
+<text x="16.51" y="1.27" size="1.778" layer="25">M.D.Waller G0PJO (c) Copyright 2024. All rights reserved.</text>
+<text x="82.55" y="2.54" size="3.81" layer="25">Mode</text>
+<text x="118.11" y="1.27" size="1.778" layer="25">5 - GND            2 - xxxxxxxxxx
+4 - 5v                1 - xxxxxxxxxx
 3 - xxxxxxxxxx</text>
+<text x="16.51" y="39.37" size="2.54" layer="25">BeaconBox Frequency Plus Data V1.0</text>
 </plain>
 <libraries>
 <library name="G0PJO - LED">
@@ -851,92 +852,124 @@ design rules under a new name.</description>
 </pass>
 </autorouter>
 <elements>
-<element name="E$4" library="G0PJO - LED" package="WS2812B-PTH-KIT" value="" x="90.17" y="33.02" smashed="yes" rot="R180">
-<attribute name="NAME" x="90.17" y="27.686" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
-<attribute name="VALUE" x="90.17" y="37.465" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
+<element name="D3" library="G0PJO - LED" package="WS2812B-PTH-KIT" value="WS2812D" x="87.63" y="33.02" smashed="yes" rot="R180">
+<attribute name="NAME" x="87.63" y="27.686" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
+<attribute name="VALUE" x="87.63" y="37.465" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
 </element>
-<element name="E$5" library="G0PJO - LED" package="WS2812B-PTH-KIT" value="" x="26.67" y="33.02" smashed="yes" rot="R180">
+<element name="D1" library="G0PJO - LED" package="WS2812B-PTH-KIT" value="WS2812D" x="26.67" y="33.02" smashed="yes" rot="R180">
 <attribute name="NAME" x="26.67" y="27.686" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
 <attribute name="VALUE" x="26.67" y="37.465" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
 </element>
-<element name="E$1" library="G0PJO - LED" package="WS2812B-PTH-KIT" value="" x="57.15" y="33.02" smashed="yes" rot="R180">
+<element name="D2" library="G0PJO - LED" package="WS2812B-PTH-KIT" value="WS2812D" x="57.15" y="33.02" smashed="yes" rot="R180">
 <attribute name="NAME" x="57.15" y="27.686" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
 <attribute name="VALUE" x="57.15" y="37.465" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
 </element>
-<element name="E$2" library="G0PJO - LED" package="WS2812B-PTH-KIT" value="" x="123.19" y="33.02" smashed="yes" rot="R180">
-<attribute name="NAME" x="123.19" y="27.686" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
-<attribute name="VALUE" x="123.19" y="37.465" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
+<element name="D4" library="G0PJO - LED" package="WS2812B-PTH-KIT" value="WS2812D" x="118.11" y="33.02" smashed="yes" rot="R180">
+<attribute name="NAME" x="118.11" y="27.686" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
+<attribute name="VALUE" x="118.11" y="37.465" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
 </element>
-<element name="E$3" library="G0PJO - LED" package="WS2812B-PTH-KIT" value="" x="157.48" y="33.02" smashed="yes" rot="R180">
-<attribute name="NAME" x="157.48" y="27.686" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
-<attribute name="VALUE" x="157.48" y="37.465" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
+<element name="D5" library="G0PJO - LED" package="WS2812B-PTH-KIT" value="WS2812D" x="148.59" y="33.02" smashed="yes" rot="R180">
+<attribute name="NAME" x="148.59" y="27.686" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
+<attribute name="VALUE" x="148.59" y="37.465" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
 </element>
-<element name="E$6" library="G0PJO - LED" package="WS2812B-PTH-KIT" value="" x="185.42" y="31.75" smashed="yes" rot="R180">
-<attribute name="NAME" x="185.42" y="26.416" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
-<attribute name="VALUE" x="185.42" y="36.195" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
+<element name="D6" library="G0PJO - LED" package="WS2812B-PTH-KIT" value="WS2812D" x="179.07" y="33.02" smashed="yes" rot="R180">
+<attribute name="NAME" x="179.07" y="27.686" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
+<attribute name="VALUE" x="179.07" y="37.465" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
 </element>
-<element name="E$7" library="Clean-Kong" package="0207/7" value="" x="19.05" y="26.67" smashed="yes" rot="R90">
+<element name="R1" library="Clean-Kong" package="0207/7" value="75" x="19.05" y="26.67" smashed="yes" rot="R90">
 <attribute name="NAME" x="17.653" y="24.13" size="1.27" layer="25" ratio="10" rot="R90"/>
 <attribute name="VALUE" x="19.6088" y="24.384" size="1.27" layer="27" ratio="10" rot="R90"/>
 </element>
-<element name="E$8" library="Clean-Kong" package="0207/7" value="" x="49.53" y="26.67" smashed="yes" rot="R90">
+<element name="R2" library="Clean-Kong" package="0207/7" value="75" x="49.53" y="26.67" smashed="yes" rot="R90">
 <attribute name="NAME" x="48.133" y="24.13" size="1.27" layer="25" ratio="10" rot="R90"/>
 <attribute name="VALUE" x="50.0888" y="24.384" size="1.27" layer="27" ratio="10" rot="R90"/>
 </element>
-<element name="E$9" library="Clean-Kong" package="0207/7" value="" x="82.55" y="26.67" smashed="yes" rot="R90">
-<attribute name="NAME" x="81.153" y="24.13" size="1.27" layer="25" ratio="10" rot="R90"/>
-<attribute name="VALUE" x="83.1088" y="24.384" size="1.27" layer="27" ratio="10" rot="R90"/>
+<element name="R3" library="Clean-Kong" package="0207/7" value="75" x="80.01" y="26.67" smashed="yes" rot="R90">
+<attribute name="NAME" x="78.613" y="24.13" size="1.27" layer="25" ratio="10" rot="R90"/>
+<attribute name="VALUE" x="80.5688" y="24.384" size="1.27" layer="27" ratio="10" rot="R90"/>
 </element>
-<element name="E$10" library="Clean-Kong" package="0207/7" value="" x="149.86" y="26.67" smashed="yes" rot="R90">
-<attribute name="NAME" x="148.463" y="24.13" size="1.27" layer="25" ratio="10" rot="R90"/>
-<attribute name="VALUE" x="150.4188" y="24.384" size="1.27" layer="27" ratio="10" rot="R90"/>
+<element name="R5" library="Clean-Kong" package="0207/7" value="75" x="140.97" y="26.67" smashed="yes" rot="R90">
+<attribute name="NAME" x="139.573" y="24.13" size="1.27" layer="25" ratio="10" rot="R90"/>
+<attribute name="VALUE" x="141.5288" y="24.384" size="1.27" layer="27" ratio="10" rot="R90"/>
 </element>
-<element name="E$11" library="Clean-Kong" package="0207/7" value="" x="177.8" y="26.67" smashed="yes" rot="R90">
-<attribute name="NAME" x="176.403" y="24.13" size="1.27" layer="25" ratio="10" rot="R90"/>
-<attribute name="VALUE" x="178.3588" y="24.384" size="1.27" layer="27" ratio="10" rot="R90"/>
+<element name="R6" library="Clean-Kong" package="0207/7" value="75" x="171.45" y="26.67" smashed="yes" rot="R90">
+<attribute name="NAME" x="170.053" y="24.13" size="1.27" layer="25" ratio="10" rot="R90"/>
+<attribute name="VALUE" x="172.0088" y="24.384" size="1.27" layer="27" ratio="10" rot="R90"/>
 </element>
-<element name="E$12" library="Clean-Kong" package="0207/7" value="" x="115.57" y="26.67" smashed="yes" rot="R90">
-<attribute name="NAME" x="114.173" y="24.13" size="1.27" layer="25" ratio="10" rot="R90"/>
-<attribute name="VALUE" x="116.1288" y="24.384" size="1.27" layer="27" ratio="10" rot="R90"/>
+<element name="R4" library="Clean-Kong" package="0207/7" value="75" x="110.49" y="26.67" smashed="yes" rot="R90">
+<attribute name="NAME" x="109.093" y="24.13" size="1.27" layer="25" ratio="10" rot="R90"/>
+<attribute name="VALUE" x="111.0488" y="24.384" size="1.27" layer="27" ratio="10" rot="R90"/>
 </element>
-<element name="E$13" library="Clean-Kong" package="C050-025X075" value="" x="26.67" y="22.86" smashed="yes">
+<element name="C1" library="Clean-Kong" package="C050-025X075" value="100nf" x="26.67" y="22.86" smashed="yes">
 <attribute name="NAME" x="23.241" y="24.511" size="1.27" layer="25" ratio="10"/>
 <attribute name="VALUE" x="23.241" y="20.066" size="1.27" layer="27" ratio="10"/>
 </element>
-<element name="E$14" library="Clean-Kong" package="C050-025X075" value="" x="57.15" y="22.86" smashed="yes">
+<element name="C2" library="Clean-Kong" package="C050-025X075" value="100nf" x="57.15" y="22.86" smashed="yes">
 <attribute name="NAME" x="53.721" y="24.511" size="1.27" layer="25" ratio="10"/>
 <attribute name="VALUE" x="53.721" y="20.066" size="1.27" layer="27" ratio="10"/>
 </element>
-<element name="E$15" library="Clean-Kong" package="C050-025X075" value="" x="90.17" y="22.86" smashed="yes">
-<attribute name="NAME" x="86.741" y="24.511" size="1.27" layer="25" ratio="10"/>
-<attribute name="VALUE" x="86.741" y="20.066" size="1.27" layer="27" ratio="10"/>
+<element name="C3" library="Clean-Kong" package="C050-025X075" value="100nf" x="87.63" y="22.86" smashed="yes">
+<attribute name="NAME" x="84.201" y="24.511" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="84.201" y="20.066" size="1.27" layer="27" ratio="10"/>
 </element>
-<element name="E$16" library="Clean-Kong" package="C050-025X075" value="" x="123.19" y="22.86" smashed="yes">
-<attribute name="NAME" x="119.761" y="24.511" size="1.27" layer="25" ratio="10"/>
-<attribute name="VALUE" x="119.761" y="20.066" size="1.27" layer="27" ratio="10"/>
+<element name="C4" library="Clean-Kong" package="C050-025X075" value="100nf" x="118.11" y="22.86" smashed="yes">
+<attribute name="NAME" x="114.681" y="24.511" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="114.681" y="20.066" size="1.27" layer="27" ratio="10"/>
 </element>
-<element name="E$17" library="Clean-Kong" package="C050-025X075" value="" x="157.48" y="22.86" smashed="yes">
-<attribute name="NAME" x="154.051" y="24.511" size="1.27" layer="25" ratio="10"/>
-<attribute name="VALUE" x="154.051" y="20.066" size="1.27" layer="27" ratio="10"/>
+<element name="C5" library="Clean-Kong" package="C050-025X075" value="100nf" x="148.59" y="22.86" smashed="yes">
+<attribute name="NAME" x="145.161" y="24.511" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="145.161" y="20.066" size="1.27" layer="27" ratio="10"/>
 </element>
-<element name="E$18" library="Clean-Kong" package="C050-025X075" value="" x="185.42" y="22.86" smashed="yes">
-<attribute name="NAME" x="181.991" y="24.511" size="1.27" layer="25" ratio="10"/>
-<attribute name="VALUE" x="181.991" y="20.066" size="1.27" layer="27" ratio="10"/>
+<element name="C6" library="Clean-Kong" package="C050-025X075" value="100nf" x="179.07" y="22.86" smashed="yes">
+<attribute name="NAME" x="175.641" y="24.511" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="175.641" y="20.066" size="1.27" layer="27" ratio="10"/>
 </element>
 <element name="E$20" library="holes" library_urn="urn:adsk.eagle:library:237" package="3,3" package3d_urn="urn:adsk.eagle:package:14278/1" value="" x="7.62" y="38.1" smashed="yes"/>
 <element name="E$21" library="holes" library_urn="urn:adsk.eagle:library:237" package="3,3" package3d_urn="urn:adsk.eagle:package:14278/1" value="" x="7.62" y="3.81" smashed="yes"/>
-<element name="E$22" library="holes" library_urn="urn:adsk.eagle:library:237" package="3,3" package3d_urn="urn:adsk.eagle:package:14278/1" value="" x="204.47" y="38.1" smashed="yes"/>
-<element name="E$23" library="holes" library_urn="urn:adsk.eagle:library:237" package="3,3" package3d_urn="urn:adsk.eagle:package:14278/1" value="" x="204.47" y="5.08" smashed="yes"/>
-<element name="E$24" library="con-ptr500" library_urn="urn:adsk.eagle:library:181" package="AK500/5-H" package3d_urn="urn:adsk.eagle:package:9900/1" value="" x="182.88" y="3.81" smashed="yes" rot="R180">
-<attribute name="NAME" x="195.453" y="0.254" size="1.778" layer="25" ratio="10" rot="R180"/>
-<attribute name="VALUE" x="195.453" y="13.335" size="1.778" layer="27" ratio="10" rot="R180"/>
+<element name="E$22" library="holes" library_urn="urn:adsk.eagle:library:237" package="3,3" package3d_urn="urn:adsk.eagle:package:14278/1" value="" x="193.04" y="38.1" smashed="yes"/>
+<element name="E$23" library="holes" library_urn="urn:adsk.eagle:library:237" package="3,3" package3d_urn="urn:adsk.eagle:package:14278/1" value="" x="193.04" y="3.81" smashed="yes"/>
+<element name="CON1" library="con-ptr500" library_urn="urn:adsk.eagle:library:181" package="AK500/5-H" package3d_urn="urn:adsk.eagle:package:9900/1" value="" x="167.64" y="3.81" smashed="yes" rot="R180">
+<attribute name="NAME" x="180.213" y="0.254" size="1.778" layer="25" ratio="10" rot="R180"/>
+<attribute name="VALUE" x="180.213" y="13.335" size="1.778" layer="27" ratio="10" rot="R180"/>
 </element>
-<element name="E$19" library="switch" library_urn="urn:adsk.eagle:library:380" package="TL1105" value="" x="111.76" y="5.08" smashed="yes">
-<attribute name="NAME" x="108.585" y="2.54" size="1.27" layer="25" rot="R90"/>
-<attribute name="VALUE" x="116.84" y="2.54" size="1.27" layer="27" rot="R90"/>
+<element name="SW1" library="switch" library_urn="urn:adsk.eagle:library:380" package="TL1105" value="" x="104.14" y="5.08" smashed="yes">
+<attribute name="NAME" x="100.965" y="2.54" size="1.27" layer="25" rot="R90"/>
+<attribute name="VALUE" x="109.22" y="2.54" size="1.27" layer="27" rot="R90"/>
 </element>
 </elements>
 <signals>
+<signal name="S$1">
+<contactref element="SW1" pad="2"/>
+<contactref element="CON1" pad="5"/>
+<contactref element="D1" pad="GND"/>
+<contactref element="D2" pad="GND"/>
+<contactref element="D3" pad="GND"/>
+<contactref element="D4" pad="GND"/>
+<contactref element="D5" pad="GND"/>
+<contactref element="D6" pad="GND"/>
+<wire x1="147.701" y1="32.3691" x2="178.181" y2="32.3691" width="0" layer="19" extent="1-1"/>
+<wire x1="157.6324" y1="3.81" x2="147.701" y2="32.3691" width="0" layer="19" extent="1-1"/>
+<wire x1="117.221" y1="32.3691" x2="147.701" y2="32.3691" width="0" layer="19" extent="1-1"/>
+<wire x1="106.39" y1="8.33" x2="117.221" y2="32.3691" width="0" layer="19" extent="1-1"/>
+<wire x1="86.741" y1="32.3691" x2="117.221" y2="32.3691" width="0" layer="19" extent="1-1"/>
+<wire x1="56.261" y1="32.3691" x2="86.741" y2="32.3691" width="0" layer="19" extent="1-1"/>
+<wire x1="25.781" y1="32.3691" x2="56.261" y2="32.3691" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="S$2">
+<contactref element="D1" pad="VCC"/>
+<contactref element="CON1" pad="4"/>
+<contactref element="D2" pad="VCC"/>
+<contactref element="D3" pad="VCC"/>
+<contactref element="D4" pad="VCC"/>
+<contactref element="D5" pad="VCC"/>
+<contactref element="D6" pad="VCC"/>
+<wire x1="149.225" y1="32.9406" x2="179.705" y2="32.9406" width="0" layer="19" extent="1-1"/>
+<wire x1="118.745" y1="32.9406" x2="149.225" y2="32.9406" width="0" layer="19" extent="1-1"/>
+<wire x1="88.265" y1="32.9406" x2="118.745" y2="32.9406" width="0" layer="19" extent="1-1"/>
+<wire x1="57.785" y1="32.9406" x2="88.265" y2="32.9406" width="0" layer="19" extent="1-1"/>
+<wire x1="27.305" y1="32.9406" x2="57.785" y2="32.9406" width="0" layer="19" extent="1-1"/>
+<wire x1="162.6362" y1="3.81" x2="149.225" y2="32.9406" width="0" layer="19" extent="1-1"/>
+</signal>
 </signals>
 <mfgpreviewcolors>
 <mfgpreviewcolor name="soldermaskcolor" color="0xC8008000"/>
