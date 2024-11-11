@@ -56,6 +56,7 @@ typedef enum {
 // The following are used to control DEBUG output
 
 #define DEBUG_BEACONS_IN_DAYLIGHT 1
+#define DEBUG_SCAN_SSIDS 1
 
 // Defined methods / data
 

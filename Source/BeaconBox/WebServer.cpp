@@ -179,40 +179,62 @@ void onGetUpTime(AsyncWebServerRequest *request){
   response->printf("UpTime=\"%s\" ",FormatUptime(&startUpTime));
   response->printf("FreeHeap=\"%d\"",ESP.getFreeHeap());
 
-
-
   response->printf("/>");
 
   request->send(response);
 }
 
+//
+// This method is called to return all the available SSIDs
+//
 void onGetSIDDs(AsyncWebServerRequest *request){
 
+  // Build a buffer to write into and zero terminate it
+  
   char b[1024];
   b[0] = '\0';
 
+#if DEBUG_SCAN_SSIDS > 0
   Serial.println("");
   Serial.println("Scanning for SSIDs");
+#endif
 
   // We need to return a blob of XML containing the visible SSIDs
 
   strcpy(b,"<SSIDs>");
 
-//**************
-
   int n = WiFi.scanComplete();
-  if(n == -2){
+  if(n == -2) {
     WiFi.scanNetworks(true);
-  } else if(n){
-    for (int i = 0; i < n; ++i){
-    // Add the SSID to the result
+  } 
+  else if(n) {
 
-    strcat(b,"<SSID Name = \"");
-    strcat(b,WiFi.SSID(i).c_str());
-    strcat(b,"\" />");
+    // We have some SSIDs to return
+    
+    for (int i = 0; i < n; ++i) {
+      
+      // Add the SSID to the result. This doesn't always get the correct 
+      // answers. If you have WiFi on two frequencies then any trailing 
+      // index value may be missing.
 
-    Serial.println("... " + WiFi.SSID(i));
+      strcat(b,"<SSID Name = \"");
+      strcat(b,WiFi.SSID(i).c_str());
+      strcat(b,"\" />");
+
+#if DEBUG_SCAN_SSIDS > 0
+      Serial.println("... " + WiFi.SSID(i));
+#endif
+
+    //String ssid;
+    //uint8_t encryptionType;
+    //int32_t RSSI;
+    //uint8_t BSSID;
+    //int32_t channel;
+    //if (true == WiFi.getNetworkInfo(i, &ssid, &encryptionType, &RSSI, &BSSID, &channel)) {
+
+    //Serial.println(">>> " + ssid);
     }
+    
     WiFi.scanDelete();
     if(WiFi.scanComplete() == -2){
       WiFi.scanNetworks(true);

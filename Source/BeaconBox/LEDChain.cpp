@@ -31,6 +31,11 @@ void ledChainSetUp() {
   // Set full brightness
   
   FastLED.setBrightness(255);
+
+  // ESP32 onboard blue led
+  
+  //pinMode(2,OUTPUT);
+  //digitalWrite(2,HIGH);
 }
 
 void ledBrightness(uint8_t newBrightness) {

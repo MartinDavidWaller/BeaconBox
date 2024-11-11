@@ -51,7 +51,7 @@
 #include "Configuration.h"
 #include "Dump.h"
 #include "LEDChain.h"
-#include "Progress.h"
+#include "Errors.h"
 #include "RBNClient.h"
 #include "WebServer.h"
 
@@ -206,13 +206,11 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
   } 
 
-  Serial.println("Up and running");
+  Serial.printf("%s V%d.%d - Up and running", PROGRAM_NAME, PROGRAM_VERSION_MAJOR, PROGRAM_VERSION_MINOR);
   
   // Set up the mode button
 
   pinMode(MODE_PIN,INPUT_PULLUP);
-
-  Serial.printf("********** %d\n",digitalRead(MODE_PIN));
 
   // Set the active mode and requested mode to the default
 
@@ -222,6 +220,10 @@ void setup() {
   // Setup the LEDs and put on a short display.
 
   ledChainSetUp();
+
+  // Setup the errors
+
+  errorsSetUp();
   
   // Read the configuration data from the EEPROM
 
@@ -250,17 +252,14 @@ void setup() {
     else if ((configuration.MajorVersion != PROGRAM_VERSION_MAJOR) || 
              (configuration.MinorVersion != PROGRAM_VERSION_MINOR)) {
 
-      Serial.println("");
-      Serial.println("Different verison numbers.");
-      Serial.print("...Found V");
-      Serial.print(configuration.MajorVersion);
-      Serial.print(".");
-      Serial.println(configuration.MinorVersion);
-      Serial.print("...Expected V");
-      Serial.print(PROGRAM_VERSION_MAJOR);
-      Serial.print(".");
-      Serial.println(PROGRAM_VERSION_MINOR);    
-      Serial.println("");              
+      // Report the difference in version numbers
+
+      Serial.printf("Different verison numbers. Found V%d.%d, Expected V%d.%d\n",
+        configuration.MajorVersion,
+        configuration.MinorVersion,
+        PROGRAM_VERSION_MAJOR,
+        PROGRAM_VERSION_MINOR
+        );
     }
     else {
       Serial.println("");
@@ -308,7 +307,14 @@ void setup() {
   Serial.println("");
 
   if(false == SPIFFS.begin(true)) {
+
+    // Tell the user 
+    
     Serial.println("SPIFFS Mount Failed");
+
+    // Display the error
+
+    errorOpeningSpiffs();
     return;
   }
 
@@ -345,17 +351,20 @@ void setup() {
   // Set the start time
 
   time(&startUpTime);
-
-  // Setup the progress LEDs
-
-  // ***************** progressSetUp();
   
   // Next start the Access Point
 
   bool accessPointStarted = startAP();
   if (false == accessPointStarted) {
+
+    // Tell the user 
+    
     Serial.println("");
     Serial.println("Failed to start the access point!");
+
+    // Display the error
+
+    errorOpeningAccessPoint();
   }
   else
   {
@@ -363,10 +372,6 @@ void setup() {
     
     IPAddress ipAddress = WiFi.softAPIP();
     Serial.printf("\nLocal Access Point IP: http://%s\n",ipAddress.toString().c_str());
-        
-    // Update the progress LEDs
-    
-    // ***************** progressAccessPointOpen();
   }
 
   // Setup the interrupt service routine
@@ -397,8 +402,9 @@ void connectToWiFi() {
 
   if (0 == strlen((char *)&configuration.WiFi_SSID[0])) {
 
-    // We don't currently have a SSID, we need to comminicate this to the
-    // end user somehow!
+    // We don't currently have a SSID, display the error
+
+    errorSettingsRequired();
   }
   else {
 
@@ -447,6 +453,10 @@ void connectToWiFi() {
       // Here the connection has failed
 
        Serial.printf("\nConnected to WiFi failed!\n");
+
+       // Display the error
+
+       errorConnectingToWiFi();
     }
     else {
 
