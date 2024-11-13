@@ -1,0 +1,6 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "ESP32")(type "KiCad")(uri "D:/CloadStorage/OneDrive/GitHubRepositories/BeaconBox/doit-esp32-devkit-kicad-master")(options "")(descr ""))
+  (lib (name "gggg")(type "KiCad")(uri "D:/Downloads/kicad-libraries-main/footprints/Espressif.pretty")(options "")(descr ""))
+  (lib (name "G0PJO")(type "KiCad")(uri "${KIPRJMOD}/G0PJO.pretty")(options "")(descr ""))
+)

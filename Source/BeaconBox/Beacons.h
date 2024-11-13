@@ -62,7 +62,7 @@
  // Define routines and functions
 
 void beaconsSetUp(char *spotterWildcards);
-void beaconsSpotted(char *spotter, char* spotted, double frequency);
+void beaconsSpotted(char *spotter, char* spotted, char* rbnType, double frequency);
 void dumpBeacons();
 void beaconsStepBeacon();
 void beaconsShowActiveBeacons();

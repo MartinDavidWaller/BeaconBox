@@ -6,7 +6,7 @@
  */
  
 extern void webServerSetUp(void configurationUpdateHandler(), void modeChangeHandler(bool manualEvent));
-extern void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char *rbnTime);
+extern void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char *rbnType, char *rbnTime);
 extern void sendBeaconColourToBeaconListeners(char *beacon, char *colour, char *subText);
 extern void sendFrequencyColourToBeaconListeners(double frequency, char *colour);
 extern void sendAllBeaconsOffToBeaconListeners();

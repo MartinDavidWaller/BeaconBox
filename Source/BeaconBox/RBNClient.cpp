@@ -14,9 +14,9 @@
 
 WiFiClient rbnClient;                             // WiFi client
 char rbnLineBuffer[RBN_LINE_BUFFER_SIZE + 1];     // Line buffer for the RBN data
-void (*spotHandler)(char *spotter, char *spotted, double frequency, char *rdbTime);
+void (*spotHandler)(char *spotter, char *spotted, double frequency, char *rbnType, char *rdbTime);
 
-bool rbnClientConnect(char *address, int port, void localSpotHandler(char *spotter, char*spotted, double frequency, char* rbnTime)) {
+bool rbnClientConnect(char *address, int port, void localSpotHandler(char *spotter, char*spotted, double frequency, char *rbnType, char* rbnTime)) {
 
   // Save the spot handler
 
@@ -110,6 +110,7 @@ bool rbnClientProcessData(char *callsign) {
             char *spotter = parts[RBN_SPOTTER];
             char *spotted = parts[RBN_SPOTTED];
             double frequency = atof(parts[RBN_FREQUENCY]);
+            char *rbnType = parts[RBN_TYPE];
             char *rbnTime = parts[12 == n ? RBN_TIME : RBN_TIME + 1];
 
             // Before we pass the data back we'll clean it up a little
@@ -130,9 +131,9 @@ bool rbnClientProcessData(char *callsign) {
 
             // Pass the data on
             
-            spotHandler(spotter,spotted,frequency,rbnTime);
+            spotHandler(spotter,spotted,frequency,rbnType,rbnTime);
             
-            beaconsSpotted(spotter,spotted,frequency);
+            beaconsSpotted(spotter,spotted,rbnType,frequency);
 
             ledSetIndexColour(LED_DATA,CRGB::Black);
           }

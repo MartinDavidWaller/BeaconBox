@@ -477,11 +477,11 @@ void connectToWiFi() {
   }
 }
 
-void spotHandler(char *spotter, char*spotted, double frequency, char *rbnTime) {
+void spotHandler(char *spotter, char*spotted, double frequency, char *rbnType, char *rbnTime) {
 
-  //Serial.printf("spotHandler: spotter: %s, spotted %s, frequency %f, time %s\n", spotter, spotted, frequency, rbnTime); 
+  //Serial.printf("spotHandler: spotter: %s, spotted %s, frequency %f, type %s, time %s\n", spotter, spotted, frequency, rbnType, rbnTime); 
 
-  sendToRBNDataListeners(spotter, spotted, frequency, rbnTime);
+  sendToRBNDataListeners(spotter, spotted, frequency, rbnType, rbnTime);
 }
 
 time_t lastBeaconsHeard = -1;

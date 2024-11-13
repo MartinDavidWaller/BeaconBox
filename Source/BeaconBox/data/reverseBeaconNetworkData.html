@@ -41,7 +41,7 @@
 
 
 				var msg = JSON.parse(evt.data);
-				$("#rbnBody").append('<tr><td>' + msg.SPOTTER + '</td><td>' + msg.SPOTTED + '</td><td>' + msg.FREQUENCY + '</td><td>' + msg.TIME + '</td></tr>');
+				$("#rbnBody").append('<tr><td>' + msg.SPOTTER + '</td><td>' + msg.SPOTTED + '</td><td>' + msg.FREQUENCY + '</td><td>' + msg.TYPE + '</td><td>' + msg.TIME + '</td></tr>');
 
 				var rowCount = $("#rbnBody > tr").length;
 
@@ -112,6 +112,7 @@
 				       		<th>Spotter</th>
 				       		<th>Spotted</th>
 				       		<th>Frequency</th>
+				       		<th>Type</th>
 				       		<th>Time</th>
 				        </tr>
 					</thead>

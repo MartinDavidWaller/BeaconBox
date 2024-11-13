@@ -208,12 +208,14 @@ void enqueueSpot(struct band *band, char *spotter) {
   xSemaphoreGive(mutex);
 }
 
-void beaconsSpotted(char *spotter, char *spotted, double frequency) {
+void beaconsSpotted(char *spotter, char *spotted, char* rbnType, double frequency) {
 
-  // Serial.printf("beaconsSpotted %-10s, spotted=%-10s, frequency %f\n", spotter, spotted, frequency);
+  // Serial.printf("beaconsSpotted %-10s, spotted=%-10s, type=%s, frequency %f\n", spotter, spotted, rbnType, frequency);
 
+  // Before searching for each one we can check the type, it should be NCDXF
   // If this a beacon of interest?
 
+if (0 == strcmp(rbnType,"NCDXF")) {
   for(int i = 0; i < NUMBER_OF_BEACONS; i++) {
 
     // Is this a beacon of interest?
@@ -288,6 +290,7 @@ void beaconsSpotted(char *spotter, char *spotted, double frequency) {
        break;
     }
   }
+}
 }
 
 char *beaconNames[] = {

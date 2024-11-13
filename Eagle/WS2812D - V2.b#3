@@ -176,7 +176,7 @@
 <plain>
 <text x="15.24" y="44.45" size="1.016" layer="25" rot="R180">VCC</text>
 <text x="15.24" y="62.23" size="1.016" layer="25" rot="R180">VCC</text>
-<text x="10.16" y="62.23" size="1.016" layer="25" rot="R180">GND</text>
+<text x="10.16" y="62.23" size="1.016" layer="26" rot="R180">GND</text>
 <text x="10.16" y="44.45" size="1.016" layer="25" rot="R180">GND</text>
 <text x="20.32" y="44.45" size="1.016" layer="25" rot="R180">DIN</text>
 <text x="20.32" y="62.23" size="1.016" layer="25" rot="R180">DOUT</text>

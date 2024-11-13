@@ -415,7 +415,7 @@ void onRBNDataWebSocketEvent(AsyncWebSocket * server, AsyncWebSocketClient * cli
   }
 }
 
-void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char *rbnTime) {
+void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char *rbnType, char *rbnTime) {
 
   // Do we have space to queue up the next message?
 
@@ -431,6 +431,7 @@ void sendToRBNDataListeners(char *spotter, char*spotted, double frequency, char 
 
     rbnJSONOut["SPOTTER"] = spotter;
     rbnJSONOut["SPOTTED"] = spotted;
+    rbnJSONOut["TYPE"] = rbnType;
     rbnJSONOut["TIME"] = rbnTime;
 
     sprintf(cvtBuffer,"%.03f MHz",frequency / 1000.0);
