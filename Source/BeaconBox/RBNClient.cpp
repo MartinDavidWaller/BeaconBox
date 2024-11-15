@@ -11,6 +11,7 @@
 #include "LEDChain.h"
 #include "RBNClient.h"
 #include "StringHelper.h"
+#include "WebServer.h"
 
 WiFiClient rbnClient;                             // WiFi client
 char rbnLineBuffer[RBN_LINE_BUFFER_SIZE + 1];     // Line buffer for the RBN data
@@ -106,7 +107,8 @@ bool rbnClientProcessData(char *callsign) {
             // We have a valid RBN spot, pass it on for processing
 
             ledSetIndexColour(LED_DATA,CRGB::Green);
-
+            //sendDataActiveInActiveToBeaconListeners(true);
+            
             char *spotter = parts[RBN_SPOTTER];
             char *spotted = parts[RBN_SPOTTED];
             double frequency = atof(parts[RBN_FREQUENCY]);
@@ -136,6 +138,7 @@ bool rbnClientProcessData(char *callsign) {
             beaconsSpotted(spotter,spotted,rbnType,frequency);
 
             ledSetIndexColour(LED_DATA,CRGB::Black);
+            //sendDataActiveInActiveToBeaconListeners(false);
           }
         }
       }

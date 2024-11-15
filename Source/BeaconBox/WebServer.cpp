@@ -374,6 +374,27 @@ void sendFrequencyActiveInActiveToBeaconListeners(double frequency, bool activeI
   beaconDataWebSocket.textAll(jsonString);
 }
 
+void sendDataActiveInActiveToBeaconListeners(bool activeInActive) {
+
+  char cvtBuffer[100];
+
+  // Clear the json object
+
+  beaconJSONOut.clear();
+
+  // Add the data to the JSON object
+
+  beaconJSONOut["ACTION"] = "DATA_ACTIVE_INACTIVE";
+  beaconJSONOut["ACTIVEINACTIVE"] = true == activeInActive ? "1" : "0";
+
+  // Serialise it to the buffer
+
+  char jsonString[1024];
+  serializeJson(beaconJSONOut,jsonString);
+
+  beaconDataWebSocket.textAll(jsonString);
+}
+
 void sendFrequencyColourToBeaconListeners(double frequency, char *colour) {
 
   char cvtBuffer[100];

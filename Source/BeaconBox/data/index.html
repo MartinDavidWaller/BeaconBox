@@ -167,6 +167,12 @@
 					$("#F_" + msg.FREQUENCY + "_T").attr("fill", colour);
 
 				}
+				//else if (msg.ACTION == "DATA_ACTIVE_INACTIVE") {
+
+				//	let activeInActive = msg.ACTIVEINACTIVE;
+
+				//	$("#Data_C").attr("fill", msg.ACTIVEINACTIVE == "1" ? "green" : "white");
+				//}
             };
 
 
@@ -251,7 +257,7 @@
 
 				<div style="width: 55%">
 
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 56" fill="none">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 56" fill="none">
 
 						<style>
 
@@ -277,6 +283,11 @@
 
 						<circle id="F_28200_C" cx="260" cy="20" r="10" stroke="black" stroke-width="2" fill="white" />
 						<text id="F_28200_T" x="240" y="50" fill="black" class="frequency">28.200 MHz</text>
+
+						<!--
+						<circle id="Data_C" cx="320" cy="20" r="10" stroke="black" stroke-width="2" fill="white" />
+						<text id="Data_T" x="310" y="50" fill="black" class="frequency">Data</text>
+						-->
 
 					</svg>
 				</div>

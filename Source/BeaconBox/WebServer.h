@@ -13,3 +13,4 @@ extern void sendAllBeaconsOffToBeaconListeners();
 extern void sendBeaconOnOffToBeaconListeners(char *beacon, bool onOff);
 extern void sendAllFrequenciesOffToBeaconListeners();
 extern void sendFrequencyActiveInActiveToBeaconListeners(double frequency, bool activeInActive);
+extern void sendDataActiveInActiveToBeaconListeners(bool activeInActive);

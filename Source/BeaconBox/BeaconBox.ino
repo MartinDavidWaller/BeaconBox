@@ -555,7 +555,7 @@ void doDaylightMode() {
 
   // Is it time to update the beacons in daylight
   
-  if ((-1 == lastBeaconsActive) || (timeNow > lastDaylight + 60)) {
+  if ((-1 == lastDaylight) || (timeNow > lastDaylight + 5 * 60)) {
 
     // Yes, update the beacons in daylight
     
