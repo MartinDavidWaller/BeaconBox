@@ -9,7 +9,8 @@
 
 // The following manifests define the values associated with the LED chain.
 
-#define LED_PIN 14
+#if BUILD_TYPE == BUILD_TYPE_TEST_BOARD
+
 #define LED_CHAIN_LENGTH 25
 
 #define LED_BEACON_FREQUENCY_14100 0
@@ -17,9 +18,6 @@
 #define LED_BEACON_FREQUENCY_21150 2
 #define LED_BEACON_FREQUENCY_24930 3
 #define LED_BEACON_FREQUENCY_28200 4
-
-#define LED_BEACON_FREQUENCY_FIRST LED_BEACON_FREQUENCY_14100
-#define LED_BEACON_FREQUENCY_LAST LED_BEACON_FREQUENCY_28200
 
 #define LED_VE8AT 5
 #define LED_KH6RS 6
@@ -45,6 +43,18 @@
 
 #define LED_DATA 23
 #define LED_MISC_2 24
+
+#elif BUILD_TYPE == BUILD_TYPE_YAESU_MAP
+
+#else
+
+  #error BUILD_TYPE - Unrecognised value.
+#endif
+
+#define LED_PIN 14
+
+#define LED_BEACON_FREQUENCY_FIRST LED_BEACON_FREQUENCY_14100
+#define LED_BEACON_FREQUENCY_LAST LED_BEACON_FREQUENCY_28200
 
 // Define routines and functions
 

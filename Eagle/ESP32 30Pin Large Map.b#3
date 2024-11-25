@@ -163,7 +163,7 @@
 <text x="49.53" y="53.34" size="2.54" layer="25">BeaconBox
 Large
 V1.0</text>
-<text x="15.24" y="3.81" size="1.778" layer="25">M.D.Waller G0PJO (c) Copyright 2024. All rights reserved.</text>
+<text x="15.24" y="3.81" size="1.6764" layer="25">M.D.Waller G0PJO (c) Copyright 2024. All rights reserved.</text>
 <text x="74.93" y="26.67" size="1.016" layer="25" rot="R90">5V</text>
 <text x="74.93" y="21.59" size="1.016" layer="25" rot="R90">GND</text>
 <text x="74.93" y="16.51" size="1.016" layer="25" rot="R90">DOUT</text>

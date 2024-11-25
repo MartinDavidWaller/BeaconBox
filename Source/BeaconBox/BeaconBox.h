@@ -35,6 +35,13 @@
 
 #define LED_TYPE LED_TYPE_WS2812B
 
+// Supported Builds
+
+#define BUILD_TYPE_TEST_BOARD 1
+#define BUILD_TYPE_YAESU_MAP 2
+
+#define BUILD_TYPE BUILD_TYPE_TEST_BOARD
+
 // Define the animation defaults
 
 #define DEFAULT_ANIMATION_ENABLED true

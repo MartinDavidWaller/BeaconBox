@@ -13,6 +13,7 @@
 #include "Arduino.h"
 #include <mutex>
 #include <time.h>
+#include "BeaconBox.h"
 #include "Beacons.h"
 #include "Configuration.h"
 #include "FormatHelper.h"
