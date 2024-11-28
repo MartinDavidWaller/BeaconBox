@@ -107,7 +107,7 @@ bool rbnClientProcessData(char *callsign) {
 
             // We have a valid RBN spot, pass it on for processing
 
-            ledSetIndexColour(LED_DATA,CRGB::Green);
+            ledSetIndexColour(LED_DATA,CRGB::Red);
             //sendDataActiveInActiveToBeaconListeners(true);
             
             char *spotter = parts[RBN_SPOTTER];

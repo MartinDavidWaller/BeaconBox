@@ -5,8 +5,8 @@
  *  Copyright (c) 2024
  */
  
- #include "LEDChain.h"
- #include "BeaconBox.h"
+#include "BeaconBox.h"
+#include "LEDChain.h"
 
 // Define the working data
 
