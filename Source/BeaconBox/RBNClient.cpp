@@ -7,6 +7,7 @@
 
 #include "Arduino.h"
 #include <WiFi.h>
+#include "BeaconBox.h"
 #include "Beacons.h"
 #include "LEDChain.h"
 #include "RBNClient.h"

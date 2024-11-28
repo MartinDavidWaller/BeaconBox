@@ -33,14 +33,24 @@
 #define LED_TYPE_WS2812B 1
 #define LED_TYPE_WS2812D 2
 
-#define LED_TYPE LED_TYPE_WS2812B
-
 // Supported Builds
 
 #define BUILD_TYPE_TEST_BOARD 1
 #define BUILD_TYPE_YAESU_MAP 2
 
-#define BUILD_TYPE BUILD_TYPE_TEST_BOARD
+#define BUILD_TYPE BUILD_TYPE_YAESU_MAP
+
+#if BUILD_TYPE == BUILD_TYPE_TEST_BOARD
+
+  #define LED_TYPE LED_TYPE_WS2812B
+    
+#elif BUILD_TYPE == BUILD_TYPE_YAESU_MAP
+
+  #define LED_TYPE LED_TYPE_WS2812D
+#else
+
+  #error BUILD_TYPE - Unrecognised value.
+#endif
 
 // Define the animation defaults
 

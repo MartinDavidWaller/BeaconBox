@@ -46,6 +46,37 @@
 
 #elif BUILD_TYPE == BUILD_TYPE_YAESU_MAP
 
+#define LED_CHAIN_LENGTH 24
+
+#define LED_BEACON_FREQUENCY_14100 0
+#define LED_BEACON_FREQUENCY_18110 1
+#define LED_BEACON_FREQUENCY_21150 2
+#define LED_BEACON_FREQUENCY_24930 3
+#define LED_BEACON_FREQUENCY_28200 4
+#define LED_DATA 5
+
+#define LED_ZL6B 6
+#define LED_VK6RBP 7
+#define LED_JA2IGY 8
+#define LED_VR2B 9
+#define LED_4S7B 10
+#define LED_RR90 11
+#define LED_4X6TU 12
+#define LED_5Z4B 13
+#define LED_ZS6DN 14
+#define LED_OH2B 15
+#define LED_CS3B 16
+#define LED_VE8AT 17
+#define LED_W6WX 18
+#define LED_KH6RS 19
+#define LED_4U1UN 20
+#define LED_YV5B 21
+#define LED_OA4B 22
+#define LED_LU4AA 23
+
+#define LED_BEACON_FIRST LED_ZL6B
+#define LED_BEACON_LAST LED_LU4AA
+
 #else
 
   #error BUILD_TYPE - Unrecognised value.
