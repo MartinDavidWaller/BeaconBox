@@ -41,6 +41,8 @@ The LEDS on the main board must be wired in the following order:
 * OA4B
 * LU4AA
 
+For more information about the 8mm LEDs see: https://www.electrokit.com/upload/product/41020/41020706/41020706.pdf
+
 ## Installing the software
 
 The software is distributed as a binary file that can be downloaded directly
