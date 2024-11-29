@@ -95,7 +95,7 @@ void ledChainBlinkAll() {
 
   // For the complate chain, incrementally turn them all on
   
-  for(int i = 0; i < LED_CHAIN_LENGTH - 1; i++)
+  for(int i = 0; i < LED_CHAIN_LENGTH; i++)
   { 
     // Make the LED white, show, and delay
 
@@ -111,7 +111,7 @@ void ledChainBlinkAll() {
 
   // For the complate chain, incrementally turn them all off
   
-  for(int i = 0; i < LED_CHAIN_LENGTH - 1; i++)
+  for(int i = 0; i < LED_CHAIN_LENGTH; i++)
   {
     // Make the LED black, show, and delay
     
