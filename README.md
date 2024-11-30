@@ -7,15 +7,19 @@ The following notes are here to supplement the BeaconBox in the
 
 | Component | Quantity | Potential Source
 | -------- | ------- | --------------|
-| Capacitors 100nf (104) | 24 |
+| Capacitor 100nf (104) | 24 |
+| Capacitor 1nf | 1 |
 | ESP32 WROOM-32 30 Pin | 1 | https://www.ebay.co.uk/itm/235648899105
 | Misc' Hardware - Nuts & Bolts, PCB standoffs etc. These requirements will depend on your build. | * | 
 | LED Holders 8mm | 18 | https://www.ebay.co.uk/itm/196322906972?var=496149156991
 | PCB - Beacon LED Board | 18 |
 | PCB - Frequencies Board | 1 |
 | PCB - Processor Board | 1 |
+| PCB Mount Terminal Block 3-Way | 2 |
+| PCB Mount Terminal Block 2-Way | 2 | 
 | Resistors 75 Ohm 1/4 Watt | 24 |
 | Switch 6x6x5mm Momentary PCB Tactile | 2 |
+| Wiring Loom | 3m of three different colours | 
 | WS2812D 8mm LEDs | 24 | https://www.ebay.co.uk/itm/134876658482
 
 ## Wiring the LEDs
