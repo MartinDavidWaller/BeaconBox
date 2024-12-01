@@ -7,6 +7,8 @@ The following notes are here to supplement the BeaconBox in the
 
 ## Component list
 
+Map and frame aside the following components will be required.
+
 | Component | Quantity | Potential Source
 | -------- | ------- | --------------|
 | Capacitor 100nf (104) | 24 |
@@ -28,24 +30,9 @@ The following notes are here to supplement the BeaconBox in the
 
 The LEDS on the main board must be wired in the following order:
 
-* ZL6B
-* VK6RBP
-* JA2IGY
-* VR2B
-* 4S7B
-* RR90
-* 4X6TU
-* 5Z4B
-* ZS6DN
-* OH2B
-* CS3B
-* VE8AT
-* W6WX
-* KH6RS
-* 4U1UN
-* YV5B
-* OA4B
-* LU4AA
+ZL6B, VK6RBP, JA2IGY, VR2B, 4S7B, RR90
+4X6TU, 5Z4B, ZS6DN, OH2B, CS3B, VE8AT
+W6WX, KH6RS, 4U1UN, YV5B, OA4B, and LU4AA
 
 For more information about the 8mm LEDs see: https://www.electrokit.com/upload/product/41020/41020706/41020706.pdf
 
