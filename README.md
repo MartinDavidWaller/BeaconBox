@@ -3,7 +3,7 @@
 The following notes are here to supplement the BeaconBox in the
 ????? edition of Practical Wireless.
 
-<img src="https://github.com/MartinDavidWaller/BeaconBox/blob/master/Pictures/Fig5.jpg?sanitize=true&raw=true" />
+<img src="Pictures/Fig5.jpg?sanitize=true&raw=true" />
 
 ## Component list
 
