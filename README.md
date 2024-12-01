@@ -3,6 +3,8 @@
 The following notes are here to supplement the BeaconBox in the
 ????? edition of Practical Wireless.
 
+<img src="https://github.com/MartinDavidWaller/BeaconBox/blob/master/Pictures/Fig5.jpg?sanitize=true&raw=true" />
+
 ## Component list
 
 | Component | Quantity | Potential Source
@@ -19,7 +21,7 @@ The following notes are here to supplement the BeaconBox in the
 | PCB Mount Terminal Block 2-Way | 2 | 
 | Resistors 75 Ohm 1/4 Watt | 24 |
 | Switch 6x6x5mm Momentary PCB Tactile | 2 |
-| Wiring Loom | 3m of three different colours | 
+| Wiring Loom | three different coloured wires, 3m of each | 
 | WS2812D 8mm LEDs | 24 | https://www.ebay.co.uk/itm/134876658482
 
 ## Wiring the LEDs
@@ -49,7 +51,23 @@ For more information about the 8mm LEDs see: https://www.electrokit.com/upload/p
 
 ## Installing the software
 
-The software is distributed as a binary file that can be downloaded directly
-to the ESP32 using ?????????
+The source code for BeaconBox is not available. The software is distributed as a binary file
+that can be downloaded directly to the ESP32 using esptool.exe that can be downloaded 
+from https://github.com/espressif/esptool/releases. Download and install esptool.exe.
 
-The source code for BeaconBox is not available. 
+What follows is very specific to Microsoft Windows but similar tools and processes will apply
+to MacOS etc.
+
+Next connect the ESP32 to your computer using a USB cable. The device should appear as a COM port. 
+You can use the Device Manager to identify thee new port - look for something called "USB-SERIAL CH340"
+or similar. To be sure you have the correct COM port you could unplug it and see it dissapear and 
+then plug it back in and see it appear. 
+
+Next open a command window and type the command:
+
+esptool.exe --chip esp32 --port COM4 --baud 921600 write_flash 0x0 BeaconBox.bin
+
+You may need to provide the complete path to the esptool.exe and you will probably need
+to change COM4 to the COM port identified above.
+
+ 
