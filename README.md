@@ -1,9 +1,25 @@
 # BeaconBox
 
-The following notes are here to supplement the BeaconBox in the
-????? edition of Practical Wireless.
+BeaconBox - bringing life to the "YAESU THE RADIO AMATEUR's WORLD MAP"
 
 <img src="Pictures/Fig5.jpg?sanitize=true&raw=true" />
+
+## Modes
+
+BeaconBox supports 3 three modes. The videos below demonstrate each one.
+
+### Beacons Heard Mode
+
+[![](https://i.ytimg.com/vi/FNRje14J34g/0.jpg)](https://www.youtube.com/watch?v=FNRje14J34g)
+
+### Beacons Active Mode
+
+[![](https://i.ytimg.com/vi/Vpn9oOLJUsw/0.jpg)](https://www.youtube.com/watch?v=Vpn9oOLJUsw)
+
+### Beacons In Daylight Mode
+
+[![](https://i.ytimg.com/vi/ngtQo7elz8o/0.jpg)](https://www.youtube.com/watch?v=ngtQo7elz8o)
+
 
 ## Component list
 
