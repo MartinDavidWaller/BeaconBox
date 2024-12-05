@@ -68,7 +68,7 @@ then plug it back in and see it appear.
 
 Next open a command window and type the command:
 
-esptool.exe --chip esp32 --port COM4 --baud 921600 write_flash 0x0 BeaconBox.bin
+esptool.exe --chip esp32 --port COM4 --baud 921600 write_flash 0x0 BeaconBox_V0_7.bin
 
 You may need to provide the complete path to the esptool.exe and you will probably need
 to change COM4 to the COM port identified above.
