@@ -1,4 +1,4 @@
-# BeaconBox
+# BeaconBox - As published in Practical Wireless March 2025
 
 BeaconBox - bringing life to the "YAESU THE RADIO AMATEUR's WORLD MAP"
 
@@ -6,17 +6,17 @@ BeaconBox - bringing life to the "YAESU THE RADIO AMATEUR's WORLD MAP"
 
 ## Modes
 
-BeaconBox supports 3 three modes. The videos below demonstrate each one.
+BeaconBox supports 3 three modes. The videos below demonstrate each one. 
 
-### Beacons Heard Mode
+### Beacons Heard Mode - Click on the image to launch the video.
 
 [![](https://i.ytimg.com/vi/FNRje14J34g/0.jpg)](https://www.youtube.com/watch?v=FNRje14J34g)
 
-### Beacons Active Mode
+### Beacons Active Mode - Click on the image to launch the video.
 
 [![](https://i.ytimg.com/vi/Vpn9oOLJUsw/0.jpg)](https://www.youtube.com/watch?v=Vpn9oOLJUsw)
 
-### Beacons In Daylight Mode
+### Beacons In Daylight Mode - Click on the image to launch the video.
 
 [![](https://i.ytimg.com/vi/ngtQo7elz8o/0.jpg)](https://www.youtube.com/watch?v=ngtQo7elz8o)
 
@@ -73,4 +73,6 @@ esptool.exe --chip esp32 --port COM4 --baud 921600 write_flash 0x0 BeaconBox_V0_
 You may need to provide the complete path to the esptool.exe and you will probably need
 to change COM4 to the COM port identified above.
 
- 
+## Issues
+
+Please do not hesitate to contact me at martin@the-wallers.net is you have any problems.
