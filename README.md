@@ -42,6 +42,10 @@ Map and frame aside the following components will be required.
 | Wiring Loom | three different coloured wires, 3m of each | 
 | WS2812D 8mm LEDs | 24 | https://www.ebay.co.uk/itm/134876658482
 
+Not that the ESP32 WROON-32 30 Pin should look like:
+
+<img src="Pictures/AsExpected.jpg?sanitize=true&raw=true" />
+
 ## Wiring the LEDs
 
 The LEDS on the main board must be wired in the following order:
