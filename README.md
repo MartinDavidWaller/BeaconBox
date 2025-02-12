@@ -29,7 +29,7 @@ Map and frame aside the following components will be required.
 | -------- | ------- | --------------|
 | Capacitor 100nf (104) | 24 |
 | Capacitor 1nf | 1 |
-| ESP32 WROOM-32 30 Pin | 1 | https://www.ebay.co.uk/itm/235648899105
+| ESP32 WROOM-32 30 Pin | 1 | https://www.ebay.co.uk/itm/235648899105 See the image below.
 | Misc' Hardware - Nuts & Bolts, PCB standoffs etc. These requirements will depend on your build. | * | 
 | LED Holders 8mm | 18 | https://www.ebay.co.uk/itm/196322906972?var=496149156991
 | PCB - Beacon LED Board | 18 |
