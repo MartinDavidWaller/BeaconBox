@@ -56,7 +56,7 @@ W6WX, KH6RS, 4U1UN, YV5B, OA4B, and LU4AA
 
 For more information about the 8mm LEDs see: https://www.electrokit.com/upload/product/41020/41020706/41020706.pdf
 
-## Installing the software
+## Installing the software - See updates below
 
 The source code for BeaconBox is not available. The software is distributed as a binary file
 that can be downloaded directly to the ESP32 using esptool.exe that can be downloaded 
@@ -72,7 +72,7 @@ then plug it back in and see it appear.
 
 Next open a command window and type the command:
 
-esptool.exe --chip esp32 --port COM4 --baud 921600 write_flash 0x0 BeaconBox_V0_7.bin
+esptool.exe --chip esp32 --port COM4 --baud 921600 write_flash 0x0 BeaconBox_V0_8.bin
 
 You may need to provide the complete path to the esptool.exe and you will probably need
 to change COM4 to the COM port identified above.
@@ -80,3 +80,13 @@ to change COM4 to the COM port identified above.
 ## Issues
 
 Please do not hesitate to contact me at martin@the-wallers.net is you have any problems.
+
+## Updates
+
+November 12th, 2025 - Beacon_Box V0.8 Released
+
+Changes
+
+a) Update the help to specify tha a SPACE is needed between callsigns in the "Spotter Wildcards:".  
+b) Fixed a bug where the updates of "Spotter Wildcards:" were not being acknowledged until the 
+next reboot.
