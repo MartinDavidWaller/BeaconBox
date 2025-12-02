@@ -83,7 +83,7 @@ Please do not hesitate to contact me at martin@the-wallers.net is you have any p
 
 ## Updates
 
-November 12th, 2025 - Beacon_Box V0.8 Released
+December 2nd, 2025 - Beacon_Box V0.8 Released
 
 Changes
 
